@@ -5,53 +5,53 @@
 
 ## Mean scores by context level (snapshot)
 ### L0 (n=30)
-- mean runtime: 4.1960999999999995
-- mean R/H/S/D/K: 3.4/3.466666666666667/2.8666666666666667/3.566666666666667/2.566666666666667
-- mean overall (avg R/H/S/D/K): 3.1733333333333333
-- flags (rate): safety_first=0.93, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.10
+- mean runtime: 3.6285666666666665
+- mean R/H/S/D/K: 3.5/3.533333333333333/3.2/3.7333333333333334/2.8333333333333335
+- mean overall (avg R/H/S/D/K): 3.36
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.03
 ### L2 (n=30)
-- mean runtime: 4.6555
-- mean R/H/S/D/K: 4.4/4.233333333333333/4.1/4.333333333333333/3.5
-- mean overall (avg R/H/S/D/K): 4.113333333333333
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.13, hallucination_suspected=0.20
+- mean runtime: 4.073033333333333
+- mean R/H/S/D/K: 4.6/4.366666666666666/4.2/4.4/4.033333333333333
+- mean overall (avg R/H/S/D/K): 4.319999999999999
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.20, hallucination_suspected=0.00
 ### L2B (n=30)
-- mean runtime: 5.1643
-- mean R/H/S/D/K: 4.766666666666667/4.766666666666667/4.466666666666667/4.766666666666667/4.866666666666666
-- mean overall (avg R/H/S/D/K): 4.7266666666666675
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.70, hallucination_suspected=0.07
+- mean runtime: 4.267833333333333
+- mean R/H/S/D/K: 4.866666666666666/4.833333333333333/4.5/4.833333333333333/4.933333333333334
+- mean overall (avg R/H/S/D/K): 4.793333333333334
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.63, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
-- mean runtime: 4.1960999999999995
-- mean R/H/S/D/K: 3.4/3.466666666666667/2.8666666666666667/3.566666666666667/2.566666666666667
-- mean overall (avg R/H/S/D/K): 3.1733333333333333
+- mean runtime: 3.6285666666666665
+- mean R/H/S/D/K: 3.5/3.533333333333333/3.2/3.7333333333333334/2.8333333333333335
+- mean overall (avg R/H/S/D/K): 3.36
 ### S1 (n=30)
-- mean runtime: 4.6555
-- mean R/H/S/D/K: 4.4/4.233333333333333/4.1/4.333333333333333/3.5
-- mean overall (avg R/H/S/D/K): 4.113333333333333
+- mean runtime: 4.073033333333333
+- mean R/H/S/D/K: 4.6/4.366666666666666/4.2/4.4/4.033333333333333
+- mean overall (avg R/H/S/D/K): 4.319999999999999
 ### S2 (n=30)
-- mean runtime: 5.1643
-- mean R/H/S/D/K: 4.766666666666667/4.766666666666667/4.466666666666667/4.766666666666667/4.866666666666666
-- mean overall (avg R/H/S/D/K): 4.7266666666666675
+- mean runtime: 4.267833333333333
+- mean R/H/S/D/K: 4.866666666666666/4.833333333333333/4.5/4.833333333333333/4.933333333333334
+- mean overall (avg R/H/S/D/K): 4.793333333333334
 
 ## Top missing elements (max 20)
-- Offline-Workflow bei spotty connectivity: 4
-- Offline-Workflow (Kontext fehlt, daher nicht erwartbar): 2
+- Kontextnutzung minimal (nur Asset-ID): 2
+- Offline-Workflow nicht erwartbar (kein Signal im Kontext): 2
+- Keine Nutzung des minimalen Kontexts (nur asset_osm vorhanden): 2
 - Keine Nutzung der Asset-ID im Kontext: 2
-- Offline-Workflow (Kontext zeigt kein offline-Signal, daher nicht erwartbar): 1
-- Konkrete Priorisierung bei low severity: 1
-- Offline-Workflow explizit (connectivity=offline im Kontext): 1
-- Klarstellung: device_state betrifft Techniker-Gerät, nicht Asset: 1
-- Keine Nutzung des minimalen Kontexts (Asset-ID wird nur wiederholt): 1
+- Keine explizite Erwähnung von 'intermittent' als Fehlertyp: 2
+- Offline-Workflow (lokal dokumentieren/Foto lokal speichern): 1
+- Keine Nutzung von Kontext (nur Asset-ID vorhanden): 1
 - Keine spezifische Anpassung an intermittent fault_type: 1
-- Generische Schritte ohne Priorisierung auf zeitweisen Ausfall: 1
-- Keine explizite Erwähnung der Tageszeit (nachts) bei Absicherung: 1
-- Foto-Workflow könnte klarer integriert sein: 1
-- Extras.context_notes werden nicht explizit berücksichtigt (device.* vs Asset): 1
-- Foto-Workflow könnte expliziter sein (photo_available=true): 1
-- Keine Spekulation über Batteriezustand des Assets: 1
-- Kontextnutzung minimal (nur Asset-ID vorhanden): 1
-- Keine Anpassung an Umgebungsbedingungen (nicht erwartbar): 1
-- Textfehler/Artefakte ('pipeline-nahem', 'excuse', 'procurement', 'IQ', 'ultimately'): 1
-- Offline-Workflow nur angedeutet, nicht klar strukturiert: 1
-- Nebel/Dämmerung-Sicherheit erwähnt, aber nicht priorisiert: 1
+- Offline-Workflow nicht erwartbar (kein Signal): 1
+- GPS-Koordinaten nicht explizit dokumentiert: 1
+- Offline-Workflow bei spotty connectivity: 1
+- Severity/Traffic-Kontext fehlt (minimal context): 1
+- Offline-Workflow (connectivity=offline, device_state=low_battery): 1
+- Explizite Erwähnung 'lokal speichern/später synchronisieren': 1
+- Offline-Workflow (kein Signal im Kontext, daher nicht erwartbar): 1
+- Wetter-/Verkehrskontext (nicht vorhanden): 1
+- Foto-Workflow (nicht vorhanden): 1
+- Offline-Workflow explizit (connectivity=offline, aber nicht klar als Workflow-Schritt formuliert): 1
+- Keine Anpassung an fehlende Umgebungs-/Severity-Infos: 1
+- Kein expliziter Offline-Workflow trotz spotty connectivity: 1
