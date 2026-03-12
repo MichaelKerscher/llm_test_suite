@@ -5,53 +5,53 @@
 
 ## Mean scores by context level (snapshot)
 ### L0 (n=30)
-- mean runtime: 3.6509666666666667
-- mean R/H/S/D/K: 3.433333333333333/3.433333333333333/3.066666666666667/3.7666666666666666/2.7
-- mean overall (avg R/H/S/D/K): 3.2800000000000002
-- flags (rate): safety_first=0.93, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.00
+- mean runtime: 4.020966666666667
+- mean R/H/S/D/K: 3.433333333333333/3.466666666666667/3.1666666666666665/3.7666666666666666/2.6666666666666665
+- mean overall (avg R/H/S/D/K): 3.3
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.07
 ### L2 (n=30)
-- mean runtime: 4.198766666666667
-- mean R/H/S/D/K: 4.6/4.333333333333333/4.166666666666667/4.5/3.9
-- mean overall (avg R/H/S/D/K): 4.3
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.27, hallucination_suspected=0.03
+- mean runtime: 4.362366666666667
+- mean R/H/S/D/K: 4.7/4.433333333333334/4.4/4.533333333333333/3.6666666666666665
+- mean overall (avg R/H/S/D/K): 4.346666666666667
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.10, hallucination_suspected=0.10
 ### L2B (n=30)
-- mean runtime: 4.468933333333334
-- mean R/H/S/D/K: 4.933333333333334/4.833333333333333/4.466666666666667/4.933333333333334/4.933333333333334
-- mean overall (avg R/H/S/D/K): 4.819999999999999
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.63, hallucination_suspected=0.00
+- mean runtime: 4.768866666666667
+- mean R/H/S/D/K: 4.933333333333334/4.933333333333334/4.566666666666666/4.9/5.0
+- mean overall (avg R/H/S/D/K): 4.866666666666666
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.60, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
-- mean runtime: 3.6509666666666667
-- mean R/H/S/D/K: 3.433333333333333/3.433333333333333/3.066666666666667/3.7666666666666666/2.7
-- mean overall (avg R/H/S/D/K): 3.2800000000000002
+- mean runtime: 4.020966666666667
+- mean R/H/S/D/K: 3.433333333333333/3.466666666666667/3.1666666666666665/3.7666666666666666/2.6666666666666665
+- mean overall (avg R/H/S/D/K): 3.3
 ### S1 (n=30)
-- mean runtime: 4.198766666666667
-- mean R/H/S/D/K: 4.6/4.333333333333333/4.166666666666667/4.5/3.9
-- mean overall (avg R/H/S/D/K): 4.3
+- mean runtime: 4.362366666666667
+- mean R/H/S/D/K: 4.7/4.433333333333334/4.4/4.533333333333333/3.6666666666666665
+- mean overall (avg R/H/S/D/K): 4.346666666666667
 ### S2 (n=30)
-- mean runtime: 4.468933333333334
-- mean R/H/S/D/K: 4.933333333333334/4.833333333333333/4.466666666666667/4.933333333333334/4.933333333333334
-- mean overall (avg R/H/S/D/K): 4.819999999999999
+- mean runtime: 4.768866666666667
+- mean R/H/S/D/K: 4.933333333333334/4.933333333333334/4.566666666666666/4.9/5.0
+- mean overall (avg R/H/S/D/K): 4.866666666666666
 
 ## Top missing elements (max 20)
-- Keine Nutzung der Asset-ID im Kontext: 5
-- Kein expliziter Offline-Workflow trotz spotty connectivity: 2
-- Offline-Workflow bei spotty connectivity nicht explizit erwähnt: 2
-- Keine Priorisierung nach Severity: 2
-- Offline-Workflow (lokal dokumentieren/Foto lokal speichern): 1
-- Kontextnutzung minimal (nur Asset-ID vorhanden): 1
-- Keine spezifische Anpassung an Umgebung/Zeit: 1
-- Keine Kontextnutzung erkennbar (minimaler Context): 1
+- Keine Nutzung der Asset-ID im Kontext: 2
+- Generische Antwort ohne Fallbezug: 2
+- Offline-Workflow bei spotty connectivity: 2
+- Offline-Workflow (nicht erwartbar, da connectivity nicht im Context): 2
+- Offline-Workflow (Gerät offline, low_battery): 1
+- Keine Klarstellung: device.* = Techniker-Gerät, nicht Asset: 1
+- Keine Priorisierung auf intermittent fault: 1
+- Offline-Workflow (spotty connectivity): 1
+- Keine Halluzination: 'Akku leer' bei Asset: 1
+- Keine Kontextnutzung (minimaler Context): 1
+- Keine Priorisierung nach Severity: 1
 - Keine Anpassung an Umgebungsbedingungen: 1
-- Generische Antwort ohne Fallspezifik: 1
-- Low_battery des Geräts erwähnt, aber nicht klar als Techniker-Gerät abgegrenzt: 1
-- Offline-Workflow nicht erwähnt (Kontext zeigt keine Connectivity-Probleme, daher nicht erwartbar): 1
-- Kontextnutzung minimal (nur Asset-ID verwendet): 1
-- Offline-Workflow nur indirekt erwähnt ('alternative Kommunikationswege'), nicht explizit als lokale Dokumentation/Foto-Speicherung: 1
-- Keine Offline-Workflow-Erwähnung (aber nicht erwartbar bei L0_minimal): 1
-- Offline-Workflow fehlt (connectivity=offline, device_state=low_battery im CONTEXT): 1
-- Keine Erwähnung lokaler Speicherung/Synchronisation: 1
-- Offline-Workflow (nicht erwartbar, da connectivity nicht im Context): 1
-- Wetter-/Umgebungskontext (nicht vorhanden): 1
-- Foto-Workflow (photo_available nicht im Context): 1
+- Kein expliziter Offline-Workflow trotz spotty connectivity: 1
+- Low_battery nicht als Handlungseinschränkung adressiert: 1
+- Offline-Workflow (nicht erwartbar, da kein Signal im Kontext): 1
+- Wetter-/Verkehrsrisiko (nicht erwartbar): 1
+- Foto-Workflow (nicht erwartbar): 1
+- Offline-Workflow explizit (Gerät offline, Batterie schwach → lokale Doku/Sync fehlt): 1
+- Foto lokal speichern (photo_available=true, aber kein Offline-Hinweis): 1
+- Offline-Workflow (Kontext zeigt connectivity=offline, aber nicht erwähnt): 1
