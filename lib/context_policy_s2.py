@@ -152,6 +152,8 @@ def extract_triggers(ctx: Dict[str, Any]) -> Dict[str, Any]:
         "poor_visibility": str(visibility).lower() in ("poor_visibility", "low", "fog", "dark"),
         "time_of_day": time_of_day,
         "photo_available": bool(inc.get("photo_available", False)),
+        # CHANGE 1: trigger for photo_description presence
+        "photo_description": bool(inc.get("photo_description")),
     }
 
 
@@ -200,6 +202,9 @@ def deterministic_selection_plan(ctx: Dict[str, Any], triggers: Dict[str, Any]) 
     if triggers.get("photo_available"):
         if _deep_get(ctx, "incident.photo_available") is not None:
             fields.append(FieldSpec(path="incident.photo_available", prio="P1", reason="workflow-cue"))
+        # CHANGE 2: include photo_description as P1 when present
+        if triggers.get("photo_description"):
+            fields.append(FieldSpec(path="incident.photo_description", prio="P1", reason="photo-evidence"))
 
     # P2 — nice-to-have
     for path, reason in [
@@ -305,7 +310,6 @@ def apply_semantic_guardrails(ctx_norm: Dict[str, Any], triggers: Dict[str, Any]
     Keep this minimal; it is exactly the "policy" in S2.
     """
     # Guardrail 1: device.* refers to technician device, not the asset.
-    # Apply if any device information exists, or if offline/low-battery signals are present.
     dev = ctx_norm.get("device") or {}
     has_device_signals = isinstance(dev, dict) and any(k in dev for k in ("connectivity", "device_state"))
     if has_device_signals or triggers.get("offline") or triggers.get("spotty") or triggers.get("low_battery"):
@@ -318,7 +322,7 @@ def apply_semantic_guardrails(ctx_norm: Dict[str, Any], triggers: Dict[str, Any]
             "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
         )
 
-    # Guardrail 2 (optional, example): photo_available is a workflow cue, not evidence of defect.
+    # Guardrail 2: photo_available is a workflow cue, not evidence of defect.
     if triggers.get("photo_available"):
         _append_note_dedup(
             ctx_norm,
@@ -344,7 +348,7 @@ def build_l2b(
     context_l2: Dict[str, Any],
     *,
     selector_version: str = "s2-det-v1",
-    guardrails_version: str = "s2-guard-v1",  # NEW
+    guardrails_version: str = "s2-guard-v2",  # bumped: photo_description support
     budget: Optional[BudgetPolicy] = None,
 ) -> Dict[str, Any]:
     budget = budget or BudgetPolicy()
@@ -352,7 +356,7 @@ def build_l2b(
     normalized = normalize_l2(context_l2)
     triggers = extract_triggers(normalized)
 
-    # NEW: apply guardrails BEFORE selection/packing so notes can be selected too
+    # apply guardrails BEFORE selection/packing so notes can be selected too
     apply_semantic_guardrails(normalized, triggers, guardrails_version=guardrails_version)
 
     plan = deterministic_selection_plan(normalized, triggers)
@@ -367,7 +371,7 @@ def build_l2b(
         "context": packed,
         "selection_meta": {
             "selector_version": selector_version,
-            "guardrails_version": guardrails_version,  # NEW: audit
+            "guardrails_version": guardrails_version,
             "trigger_signals": triggers,
             **packing_meta,
         },
