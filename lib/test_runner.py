@@ -23,8 +23,9 @@ def _normalize_client_name(name: str) -> str:
     return name or "unknown"
 
 
-def _result_dir_for_client(client_name: str) -> str:
-    return f"results/{client_name}"
+def _result_dir_for_client(client_name: str, model: str = "") -> str:
+    model_slug = (model or "unknown").replace(":", "-").replace("/", "-")
+    return f"results/{client_name}/{model_slug}"
 
 
 def _safe_json_dumps(obj) -> str:
@@ -37,7 +38,7 @@ def _safe_json_dumps(obj) -> str:
 def _sanitize_judge_jsonish(text: str) -> str:
     """
     Makes 'almost JSON' from LLM outputs parseable:
-    - fixes mojibake smart quotes (â€ž â€œ â€ etc.)
+    - fixes mojibake smart quotes (â€ž â€œ â€ etc.)
     - normalizes unicode quotes
     - removes BOM
     - removes common trailing commas before } or ]
@@ -49,11 +50,11 @@ def _sanitize_judge_jsonish(text: str) -> str:
 
     replacements = {
         # mojibake quotes
-        "â€ž": '"', "â€œ": '"', "â€": '"',
+        "â€ž": '"', "â€œ": '"', "â€": '"',
         "â€™": "'", "â€˜": "'",
         # real unicode quotes
-        "“": '"', "”": '"', "„": '"',
-        "’": "'", "‘": "'",
+        "\u201c": '"', "\u201d": '"', "\u201e": '"',
+        "\u2018": "'", "\u2019": "'",
     }
     for a, b in replacements.items():
         s = s.replace(a, b)
@@ -80,15 +81,6 @@ def _repair_unescaped_quotes_in_json_strings(s: str) -> str:
     Heuristic repair for invalid JSON produced by LLMs:
     replaces unescaped " inside JSON string literals with apostrophes ',
     so that json.loads() succeeds.
-
-    It keeps:
-      - string delimiters "
-      - escaped quotes \" unchanged
-    It only repairs a quote " when we are inside a string and it does NOT
-    look like the end of that string.
-
-    This specifically fixes cases like:
-      "short_justification": "Text mit ("Zitat") kaputt"
     """
     if not isinstance(s, str) or '"' not in s:
         return s
@@ -100,7 +92,6 @@ def _repair_unescaped_quotes_in_json_strings(s: str) -> str:
     n = len(s)
 
     def looks_like_string_end(idx: int) -> bool:
-        # idx points to a '"' while in_str=True and not escaped.
         j = idx + 1
         while j < n and s[j] in " \t\r\n":
             j += 1
@@ -120,7 +111,6 @@ def _repair_unescaped_quotes_in_json_strings(s: str) -> str:
                     out.append(ch)
                     esc = True
                 elif ch == '"':
-                    # Either closes string or is broken inner quote
                     if looks_like_string_end(i):
                         out.append(ch)
                         in_str = False
@@ -188,7 +178,6 @@ def _try_parse_judge_array(judge_out: str) -> list[dict] | None:
 
 
 def _score_block_to_expected_schema(block: dict) -> dict:
-    # fallback if not a dict
     if not isinstance(block, dict):
         return {
             "scores": {"R": 1, "H": 1, "S": 1, "D": 1, "K": 1},
@@ -202,11 +191,9 @@ def _score_block_to_expected_schema(block: dict) -> dict:
             "short_justification": "",
         }
 
-    # ensure nested containers exist
     scores = block.get("scores") if isinstance(block.get("scores"), dict) else {}
     flags = block.get("flags") if isinstance(block.get("flags"), dict) else {}
 
-    # clamp helper
     def _clamp_1_5(x, default=1):
         try:
             v = int(x)
@@ -354,10 +341,6 @@ def _strategy_of(tc: dict) -> str:
 
 
 def _s2_meta_to_request_params(selection_meta: dict | None) -> dict:
-    """
-    Flatten selection_meta into request_params-friendly keys.
-    Keeps log schema stable and makes aggregate_results trivial.
-    """
     if not isinstance(selection_meta, dict):
         return {
             "s2_selector_version": None,
@@ -417,6 +400,7 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
     test_id = tc["test_id"]
     client_name = _normalize_client_name(tc.get("client", "506"))
 
+    # FIX: use `or` so that None from loader correctly falls back to env var
     model = tc.get("model") or os.getenv("TESTSUITE_DEFAULT_MODEL", "gpt-4.1")
 
     input_data = tc["input"]
@@ -436,7 +420,6 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
         raise ValueError(f"Unbekannter Client: '{client_name}'")
     client = CLIENTS[client_name]
 
-    # --- Judge config (always defined for safe logging) ---
     has_judge = enable_judge and hasattr(client, "judge")
     judge_model = os.getenv("TESTSUITE_JUDGE_MODEL", model)
     judge_temp = float(os.getenv("TESTSUITE_JUDGE_TEMPERATURE", "0.0"))
@@ -466,11 +449,10 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
             selected_mode=judge_mode,
             internal_system_prompt=False,
         )
-        # sanitize single output too (doesn't hurt logging/reading)
         if isinstance(judge_out, str):
             judge_out = _sanitize_judge_jsonish(judge_out)
 
-    result_dir = _result_dir_for_client(client_name)
+    result_dir = _result_dir_for_client(client_name, model)
 
     s2_params = (
         _s2_meta_to_request_params(selection_meta)
@@ -522,9 +504,9 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
         raise ValueError(f"Unbekannter Client: '{client_name}'")
     client = CLIENTS[client_name]
 
+    # FIX: use `or` so that None from loader correctly falls back to env var
     default_model = testcases[0].get("model") or os.getenv("TESTSUITE_DEFAULT_MODEL", "gpt-4.1")
 
-    # --- Judge config (always defined for safe logging) ---
     has_judge = enable_judge and hasattr(client, "judge")
     judge_model = os.getenv("TESTSUITE_JUDGE_MODEL", default_model)
     judge_temp = float(os.getenv("TESTSUITE_JUDGE_TEMPERATURE", "0.0"))
@@ -537,7 +519,7 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
     fault_type = meta0.get("fault_type", "unknown")
     expected_elements = meta0.get("expected_elements_short", "")
 
-    out_dir = _result_dir_for_client(client_name)
+    out_dir = _result_dir_for_client(client_name, default_model)
     os.makedirs(out_dir, exist_ok=True)
 
     generated: list[dict] = []
@@ -546,7 +528,9 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
     for tc in testcases:
         input_data = tc["input"]
         test_id = tc["test_id"]
-        model = tc.get("model", default_model)
+
+        # FIX: use `or` so that None from loader correctly falls back to default_model
+        model = tc.get("model") or default_model
 
         strategy = _strategy_of(tc)
 
@@ -645,7 +629,7 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
         test_id = row["test_id"]
         tc = next(t for t in testcases if t["test_id"] == test_id)
         input_data = tc["input"]
-        model = row.get("model", default_model)
+        model = row.get("model") or default_model
 
         strategy = row.get("strategy") or _strategy_of(tc)
         selection_meta = row.get("selection_meta") or None

@@ -52,12 +52,15 @@ def load_testcases_from_csv(path: str) -> List[Dict[str, Any]]:
     Recommended columns (your setup):
       - incident_id
       - context_level   (e.g., L0_minimal / L2_full)
-      - strategy        (S0 / S1 / S2)  <-- NEW
+      - strategy        (S0 / S1 / S2)
 
     Optional columns supported:
       - client, model, run_index, input_type
       - image_path, audio_path, video_path
       - temperature, selected_mode, internal_system_prompt
+
+    Note: model is intentionally left as None when not set in CSV,
+    so that test_runner.py can resolve it from TESTSUITE_DEFAULT_MODEL env var.
     """
     out: List[Dict[str, Any]] = []
 
@@ -88,18 +91,22 @@ def load_testcases_from_csv(path: str) -> List[Dict[str, Any]]:
             csv_meta = {
                 "incident_id": incident_id,
                 "context_level": context_level,
-                "strategy": strategy,  # NEW
+                "strategy": strategy,
                 "csv_row": row_i,
             }
 
             condition_id = strategy or context_level or "unknown"
+
+            # FIX: model is set to None when not present in CSV,
+            # so test_runner.py resolves it from TESTSUITE_DEFAULT_MODEL.
+            model_raw = (row.get("model") or "").strip() or None
 
             test_data = {
                 "test_id": testcase_id,
                 "condition_id": condition_id,
                 "_source_file": path,
                 "client": (row.get("client") or "506").strip(),
-                "model": (row.get("model") or "gpt-4.1").strip(),
+                "model": model_raw,
                 "run_index": int((row.get("run_index") or "1").strip()),
                 "temperature": float((row.get("temperature") or "0.2").strip()),
                 "selected_mode": (row.get("selected_mode") or "BASIC").strip(),
