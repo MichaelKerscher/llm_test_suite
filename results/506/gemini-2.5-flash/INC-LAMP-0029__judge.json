@@ -2,24 +2,6 @@
   {
     "test_id": "INC-LAMP-0029-TC1",
     "scores": {
-      "R": 3,
-      "H": 4,
-      "S": 4,
-      "D": 4,
-      "K": 2
-    },
-    "flags": {
-      "safety_first": true,
-      "escalation_present": true,
-      "offline_workflow_mentioned": false,
-      "hallucination_suspected": false
-    },
-    "missing_elements": [],
-    "short_justification": "Gute Struktur mit Safety-first und klarer Eskalation. Kontext minimal (nur asset_osm), daher keine Offline-Workflow-Erwartung. K=2 wegen fehlender Kontextnutzung (keine Koordinaten/Umgebungsdaten genutzt, da nicht vorhanden)."
-  },
-  {
-    "test_id": "INC-LAMP-0029-TC2",
-    "scores": {
       "R": 4,
       "H": 4,
       "S": 4,
@@ -33,9 +15,31 @@
       "hallucination_suspected": false
     },
     "missing_elements": [
-      "Offline-Workflow explizit (connectivity=offline)"
+      "Offline-Workflow (nicht erwartbar bei L0_minimal)",
+      "Kontextnutzung minimal (nur Asset-ID vorhanden)"
     ],
-    "short_justification": "Sehr gute Antwort mit klarer Struktur, Safety-first, Eskalation und Kontextnutzung (Standort, Foto, Severity). K=3 weil connectivity=offline im CONTEXT steht, aber kein expliziter Offline-Workflow erwähnt wird."
+    "short_justification": "Strukturierte, sicherheitsorientierte Antwort mit klarer Schrittfolge (Absicherung → Sichtprüfung → Diagnose → Dokumentation → Eskalation). Dokumentation und Eskalation gut ausgearbeitet. Kontext minimal, daher K=3; keine Halluzinationen."
+  },
+  {
+    "test_id": "INC-LAMP-0029-TC2",
+    "scores": {
+      "R": 5,
+      "H": 4,
+      "S": 5,
+      "D": 5,
+      "K": 2
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": true
+    },
+    "missing_elements": [
+      "Offline-Workflow fehlt trotz connectivity=offline",
+      "Widerspruch device_state=ok vs. connectivity=offline wird falsch interpretiert"
+    ],
+    "short_justification": "Sehr gute Struktur, Safety-first, detaillierte Dokumentation und Eskalation. ABER: connectivity=offline wird ignoriert (kein Offline-Workflow), und 'Widerspruch device_state=ok vs. connectivity=offline' ist eine Halluzination (device.* beschreibt Techniker-Gerät, nicht Asset). K=2 wegen Halluzination."
   },
   {
     "test_id": "INC-LAMP-0029-TC3",
@@ -53,6 +57,6 @@
       "hallucination_suspected": false
     },
     "missing_elements": [],
-    "short_justification": "Exzellente Antwort: Safety-first, klare Schrittfolge, expliziter Offline-Workflow (lokal dokumentieren/später synchronisieren), nutzt alle relevanten Kontextfelder (Koordinaten, Foto, Severity, connectivity), keine Halluzinationen."
+    "short_justification": "Nahezu perfekt: Safety-first, klare Schrittfolge mit Stop-Conditions, detaillierte Dokumentation, Eskalation mit Priorität. Offline-Workflow explizit erwähnt ('lokal dokumentieren', 'später synchronisieren'). Nutzt extras.context_notes korrekt. Keine Halluzinationen."
   }
 ]
