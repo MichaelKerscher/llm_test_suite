@@ -20,10 +20,10 @@
 - mean overall (avg R/H/S/D/K): 4.746666666666667
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.70, hallucination_suspected=0.00
 ### unknown (n=120)
-- mean runtime: 9.999625
-- mean R/H/S/D/K: 4.883333333333334/4.833333333333333/4.858333333333333/4.958333333333333/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.9
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.45, hallucination_suspected=0.00
+- mean runtime: 9.512333333333334
+- mean R/H/S/D/K: 4.9/4.858333333333333/4.858333333333333/4.983333333333333/4.983333333333333
+- mean overall (avg R/H/S/D/K): 4.916666666666667
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.46, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
@@ -39,21 +39,21 @@
 - mean R/H/S/D/K: 4.833333333333333/4.766666666666667/4.366666666666666/4.8/4.966666666666667
 - mean overall (avg R/H/S/D/K): 4.746666666666667
 ### S2_ABL_NOASSET (n=30)
-- mean runtime: 10.189533333333333
-- mean R/H/S/D/K: 4.866666666666666/4.866666666666666/4.866666666666666/4.966666666666667/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.906666666666666
+- mean runtime: 10.498533333333334
+- mean R/H/S/D/K: 4.966666666666667/4.9/4.933333333333334/4.966666666666667/5.0
+- mean overall (avg R/H/S/D/K): 4.953333333333333
 ### S2_ABL_NODEV (n=30)
-- mean runtime: 9.4254
-- mean R/H/S/D/K: 4.966666666666667/4.9/4.9/4.966666666666667/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.9399999999999995
+- mean runtime: 9.087066666666667
+- mean R/H/S/D/K: 4.966666666666667/4.866666666666666/4.833333333333333/5.0/4.966666666666667
+- mean overall (avg R/H/S/D/K): 4.926666666666667
 ### S2_ABL_NOENV (n=30)
-- mean runtime: 10.315233333333333
-- mean R/H/S/D/K: 4.9/4.733333333333333/4.7/4.933333333333334/4.966666666666667
+- mean runtime: 9.396433333333334
+- mean R/H/S/D/K: 4.833333333333333/4.733333333333333/4.7/5.0/4.966666666666667
 - mean overall (avg R/H/S/D/K): 4.846666666666667
 ### S2_ABL_NOINC (n=30)
-- mean runtime: 10.068333333333333
-- mean R/H/S/D/K: 4.8/4.833333333333333/4.966666666666667/4.966666666666667/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.906666666666666
+- mean runtime: 9.0673
+- mean R/H/S/D/K: 4.833333333333333/4.933333333333334/4.966666666666667/4.966666666666667/5.0
+- mean overall (avg R/H/S/D/K): 4.9399999999999995
 
 ## Top missing elements (max 20)
 - Offline-Workflow bei spotty connectivity: 3
@@ -72,7 +72,7 @@
 - Keine Nutzung von Kontext-Signalen (nur Asset-ID vorhanden): 1
 - Keine Erwähnung von Offline-Workflow trotz minimalem Kontext: 1
 - Keine Erwähnung lokaler Dokumentation/Synchronisation: 1
-- Ticket-ID/Asset-ID explizit in Dokumentation: 1
-- Zeitstempel für Maßnahmen: 1
+- Priorisierung bei low severity könnte klarer sein: 1
 - Keine Kontextnutzung (minimal context verfügbar): 1
 - Keine Anpassung an Umgebung/Gerätezustand: 1
+- Kein expliziter Offline-Workflow trotz spotty connectivity: 1
