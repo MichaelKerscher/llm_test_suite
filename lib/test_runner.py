@@ -377,7 +377,8 @@ def _apply_s2_if_strategy(tc: dict, context: dict) -> tuple[dict, dict | None]:
     strategy = str(meta.get("strategy") or "").strip().upper()
     context_level = str(meta.get("context_level") or "").strip()
 
-    if not (strategy == "S2" and context_level == "L2_full"):
+    is_s2_variant = strategy == "S2" or strategy.startswith("S2_ABL_")
+    if not (is_s2_variant and context_level == "L2_full"):
         return context or {}, None
 
     budget_chars = int(os.getenv("S2_BUDGET_CHARS", "3500"))
