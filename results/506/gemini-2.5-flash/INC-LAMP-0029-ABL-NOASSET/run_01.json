@@ -1,0 +1,169 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0029-ABL-NOASSET",
+  "timestamp": "2026-03-16T16:43:04",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 15 Minuten. Bereich wirkt unsicher.",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-15T12:53:33+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme: Laterne dunkel, Pang/Cafe-Bereich unbeleuchtet. Mast ohne erkennbare Beschädigung, Schaltbox geschlossen.",
+        "reporter": "dispatch"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      },
+      "_selection_meta": {
+        "selector_version": "s2-det-v1",
+        "guardrails_version": "s2-guard-v2",
+        "trigger_signals": {
+          "severity": "high",
+          "fault_type": "outage",
+          "offline": true,
+          "spotty": false,
+          "connectivity": "offline",
+          "device_state": "ok",
+          "low_battery": false,
+          "weather": "clear",
+          "poor_visibility": true,
+          "time_of_day": "night",
+          "photo_available": true,
+          "photo_description": true
+        },
+        "budget_policy": {
+          "metric": "chars",
+          "max": 3500,
+          "used": 1055
+        },
+        "selected_fields": [
+          {
+            "path": "incident.fault_type",
+            "prio": "P0",
+            "reason": "must-have"
+          },
+          {
+            "path": "incident.severity",
+            "prio": "P0",
+            "reason": "must-have"
+          },
+          {
+            "path": "incident.reported_at",
+            "prio": "P0",
+            "reason": "time-anchor"
+          },
+          {
+            "path": "device.connectivity",
+            "prio": "P1",
+            "reason": "action-constraints"
+          },
+          {
+            "path": "device.device_state",
+            "prio": "P1",
+            "reason": "action-constraints"
+          },
+          {
+            "path": "environment.time_of_day",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.weather",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.lighting_condition",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.traffic_exposure",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "incident.photo_available",
+            "prio": "P1",
+            "reason": "workflow-cue"
+          },
+          {
+            "path": "incident.photo_description",
+            "prio": "P1",
+            "reason": "photo-evidence"
+          },
+          {
+            "path": "environment.noise_level",
+            "prio": "P2",
+            "reason": "nice-to-have"
+          },
+          {
+            "path": "incident.reporter",
+            "prio": "P2",
+            "reason": "nice-to-have"
+          },
+          {
+            "path": "extras.context_notes",
+            "prio": "P2",
+            "reason": "semantic-guardrail"
+          }
+        ],
+        "dropped_fields": [],
+        "compressed_fields": []
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": null,
+    "s2_guardrails_version": null,
+    "s2_budget_chars": null,
+    "s2_used_chars": null,
+    "s2_selected_fields": null,
+    "s2_dropped_fields": null,
+    "s2_compressed_fields": null
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Gerne, hier ist die Schritt-für-Schritt-Checkliste für den Vorfall der dunklen Straßenlampe, unter Berücksichtigung der Offline-Konnektivität und der hohen Priorität:\n\n**Checkliste: Dunkle Straßenlampe – Hohe Priorität (Nacht, schlechte Sicht)**\n\n1.  **Absicherung:**\n    *   Unverzüglich die Einsatzstelle sichern (z.B. Warnblinkanlage, Warndreieck, Warnleuchten aufstellen).\n    *   Sicherstellen, dass der Verkehr nicht gefährdet wird und Passant\\*innen gewarnt sind.\n    *   Persönliche Schutzausrüstung (PSA) tragen, insbesondere Warnkleidung.\n\n2.  **Sichtprüfung:**\n    *   Umfeld der Straßenlampe auf offensichtliche Gefahren prüfen (z.B. herabhängende Kabel, Beschädigungen am Mast oder der Schaltbox). Laut Beschreibung ist der Mast ohne erkennbare Beschädigung und die Schaltbox geschlossen.\n    *   Prüfen, ob andere Lampen im Bereich ebenfalls betroffen sind oder nur diese eine.\n    *   Auf externe Einflüsse achten (z.B. umgestürzte Bäume, Baufahrzeuge in der Nähe).\n\n3.  **Diagnose/Beobachtung:**\n    *   Versuchen, die Lampe über den Schalter am Mast (falls vorhanden und zugänglich) zu prüfen.\n    *   Akustische Auffälligkeiten (z.B. Brummen, Knistern) wahrnehmen.\n    *   Da die Lampe seit 15 Minuten dunkel ist und der Bereich unsicher wirkt, deutet dies auf einen akuten Ausfall hin.\n\n4.  **Dokumentation (Offline-Workflow beachten!):**\n    *   Alle Beobachtungen und durchgeführten Maßnahmen detailliert festhalten.\n    *   Fotos der Situation machen, insbesondere der dunklen Lampe und des Umfelds. Eine Nachtaufnahme mit unbeleuchtetem Bereich ist bereits vorhanden.\n    *   Standort der Lampe genau vermerken.\n    *   Da die Konnektivität offline ist, die Daten lokal auf dem Gerät speichern und sicherstellen, dass eine Synchronisation erfolgt, sobald wieder eine Verbindung besteht.\n\n5.  **Eskalation:**\n    *   Aufgrund der hohen Dringlichkeit (Nacht, schlechte Sicht, unsicherer Bereich) und des Ausfalls eine sofortige Meldung an die zuständige Leitstelle/Bereitschaftsdienst absetzen.\n    *   Informationen über die durchgeführte Absicherung und die Beobachtungen weitergeben.\n    *   Anweisungen für das weitere Vorgehen abwarten.\n\n**Wichtiger Hinweis:** Da die Konnektivität offline ist, ist es entscheidend, alle Schritte lokal zu dokumentieren und die Synchronisation nach Wiederherstellung der Verbindung nicht zu vergessen.",
+    "tokens_estimate_words": 288
+  },
+  "judge": "{\n  \"scores\": {\n    \"R\": 5,\n    \"H\": 5,\n    \"S\": 5,\n    \"D\": 5,\n    \"K\": 5\n  },\n  \"flags\": {\n    \"safety_first\": true,\n    \"escalation_present\": true,\n    \"offline_workflow_mentioned\": true,\n    \"hallucination_suspected\": false\n  },\n  \"missing_elements\": [],\n  \"short_justification\": \"Exzellente Antwort: Safety-first klar priorisiert, strukturierte Schrittfolge mit klaren Eskalations-Triggern bei severity=high/night. Offline-Workflow explizit adressiert, Kontext vollständig genutzt (photo, connectivity, time_of_day, severity), keine Halluzinationen.\"\n}",
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 6.085
+  },
+  "error": {}
+}
