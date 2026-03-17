@@ -1,0 +1,156 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0012-ABL-NOASSET",
+  "timestamp": "2026-03-17T07:54:34",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 20 Minuten. Bereich wirkt unsicher.",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T15:41:46+01:00",
+        "reporter": "patrol"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_power_mode"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      },
+      "_selection_meta": {
+        "selector_version": "s2-det-v1",
+        "guardrails_version": "s2-guard-v2",
+        "trigger_signals": {
+          "severity": "medium",
+          "fault_type": "outage",
+          "offline": false,
+          "spotty": true,
+          "connectivity": "spotty",
+          "device_state": "low_power_mode",
+          "low_battery": true,
+          "weather": "clear",
+          "poor_visibility": true,
+          "time_of_day": "night",
+          "photo_available": false,
+          "photo_description": false
+        },
+        "budget_policy": {
+          "metric": "chars",
+          "max": 3500,
+          "used": 774
+        },
+        "selected_fields": [
+          {
+            "path": "incident.fault_type",
+            "prio": "P0",
+            "reason": "must-have"
+          },
+          {
+            "path": "incident.severity",
+            "prio": "P0",
+            "reason": "must-have"
+          },
+          {
+            "path": "incident.reported_at",
+            "prio": "P0",
+            "reason": "time-anchor"
+          },
+          {
+            "path": "device.connectivity",
+            "prio": "P1",
+            "reason": "action-constraints"
+          },
+          {
+            "path": "device.device_state",
+            "prio": "P1",
+            "reason": "action-constraints"
+          },
+          {
+            "path": "environment.time_of_day",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.weather",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.lighting_condition",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.traffic_exposure",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.noise_level",
+            "prio": "P2",
+            "reason": "nice-to-have"
+          },
+          {
+            "path": "incident.reporter",
+            "prio": "P2",
+            "reason": "nice-to-have"
+          },
+          {
+            "path": "extras.context_notes",
+            "prio": "P2",
+            "reason": "semantic-guardrail"
+          }
+        ],
+        "dropped_fields": [],
+        "compressed_fields": []
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": null,
+    "s2_guardrails_version": null,
+    "s2_budget_chars": null,
+    "s2_used_chars": null,
+    "s2_selected_fields": null,
+    "s2_dropped_fields": null,
+    "s2_compressed_fields": null
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Guten Tag! Vielen Dank für Ihre Meldung. Eine dunkle Straßenlampe, besonders nachts und bei unsicherem Bereich, erfordert unser sofortiges Handeln. Sicherheit hat hier oberste Priorität.\n\nHier ist Ihre Checkliste für das Vorgehen vor Ort:\n\n1.  **Absicherung:**\n    *   **Verkehrssicherung:** Sichern Sie den Bereich um die defekte Straßenlampe umgehend ab, insbesondere da es sich um die Nachtzeit handelt und die Sicht schlecht ist. Nutzen Sie Warnblinklicht, Warnwesten und gegebenenfalls Warndreiecke oder Leitkegel, um andere Verkehrsteilnehmer\\*innen und sich selbst zu schützen.\n    *   **Persönliche Sicherheit:** Achten Sie auf Ihre eigene Sicherheit. Der dunkle Bereich kann unübersichtlich sein.\n\n2.  **Sichtprüfung (Umfeld & Lampe):**\n    *   **Umgebung:** Gibt es offensichtliche Schäden in der Nähe der Lampe (z.B. umgefahrene Masten, beschädigte Kabel, Bauarbeiten)?\n    *   **Lampenkopf:** Ist der Lampenkopf intakt? Sind die Leuchtmittel sichtbar beschädigt (z.B. Glasbruch)?\n    *   **Mast:** Sind am Mast sichtbare Beschädigungen, Korrosion oder Vandalismus erkennbar?\n    *   **Anschlusskasten:** Ist der Anschlusskasten am Mast geschlossen und unbeschädigt?\n\n3.  **Diagnose/Beobachtung:**\n    *   **Schaltuhr/Sicherung:** Falls zugänglich und sicher, prüfen Sie, ob eine Sicherung ausgelöst hat oder die Schaltuhr korrekt funktioniert. (Vorsicht: Nur bei entsprechender Qualifikation und unter Einhaltung aller Sicherheitsvorschriften!)\n    *   **Geruch/Geräusche:** Nehmen Sie ungewöhnliche Gerüche (z.B. verschmort) oder Geräusche wahr?\n    *   **Wackelkontakt:** Versuchen Sie vorsichtig, ob ein leichtes Rütteln am Mast (falls sicher) die Lampe kurz aufleuchten lässt (Hinweis auf Wackelkontakt).\n    *   **Dauer der Störung:** Die Angabe \"seit etwa 20 Minuten\" ist wichtig. Dies deutet auf einen plötzlichen Ausfall hin.\n\n4.  **Dokumentation:**\n    *   **Offline-Workflow:** Da die Konnektivität Ihres Geräts \"spotty\" ist und der Akkustand niedrig, dokumentieren Sie alle Feststellungen und Fotos zunächst lokal auf Ihrem Gerät.\n    *   **Fotos:** Machen Sie aussagekräftige Fotos vom Zustand der Lampe und der Umgebung.\n    *   **Details:** Notieren Sie den genauen Standort, die Uhrzeit der Feststellung, die Art des Ausfalls (komplett dunkel), eventuelle Schäden und Ihre Beobachtungen.\n    *   **Synchronisation:** Synchronisieren Sie die Daten, sobald Sie wieder eine stabile Verbindung haben.\n\n5.  **Eskalation:**\n    *   **Priorität:** Aufgrund der Dunkelheit, der schlechten Sicht und des unsicheren Bereichs ist dies ein Vorfall mittlerer Priorität (\"medium severity\"), der schnellstmöglich behoben werden muss.\n    *   **Meldung:** Leiten Sie die dokumentierten Informationen umgehend an die zuständige Stelle weiter (z.B. Bereitschaftsdienst, Störungsmanagement).\n    *   **Dringlichkeit:** Betonen Sie die Dringlichkeit der Reparatur aufgrund der Sicherheitsrelevanz für Verkehrsteilnehmer\\*innen und Anwohner\\*innen.\n\nSollten Sie weitere Informationen benötigen oder unsicher sein, fragen Sie bitte gezielt nach. Ihre Sicherheit und die der Öffentlichkeit stehen an erster Stelle.",
+    "tokens_estimate_words": 385
+  },
+  "judge": "{\n  \"scores\": {\n    \"R\": 5,\n    \"H\": 5,\n    \"S\": 5,\n    \"D\": 5,\n    \"K\": 5\n  },\n  \"flags\": {\n    \"safety_first\": true,\n    \"escalation_present\": true,\n    \"offline_workflow_mentioned\": true,\n    \"hallucination_suspected\": false\n  },\n  \"missing_elements\": [],\n  \"short_justification\": \"Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit konkreten Checks, nutzt Kontext optimal (spotty connectivity → Offline-Workflow, night+poor_visibility → Verkehrssicherung betont, medium severity → angemessene Eskalation). Dokumentation vollständig, keine Halluzinationen.\"\n}",
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 9.413
+  },
+  "error": {}
+}
