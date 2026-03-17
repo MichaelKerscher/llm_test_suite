@@ -1,0 +1,168 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0025-ABL-NOASSET",
+  "timestamp": "2026-03-17T07:36:35",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 20 Minuten. Bereich wirkt unsicher.",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-16T20:06:14+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme: Laterne dunkel, Gewerbegebiet ohne Beleuchtung. Mast intakt, Schaltbox geschlossen. Kein sichtbarer Vandalismus.",
+        "reporter": "citizen"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      },
+      "_selection_meta": {
+        "selector_version": "s2-det-v1",
+        "guardrails_version": "s2-guard-v2",
+        "trigger_signals": {
+          "severity": "high",
+          "fault_type": "outage",
+          "offline": false,
+          "spotty": false,
+          "connectivity": "online",
+          "device_state": "low_battery",
+          "low_battery": true,
+          "weather": "clear",
+          "poor_visibility": true,
+          "time_of_day": "night",
+          "photo_available": true,
+          "photo_description": true
+        },
+        "budget_policy": {
+          "metric": "chars",
+          "max": 3500,
+          "used": 886
+        },
+        "selected_fields": [
+          {
+            "path": "incident.fault_type",
+            "prio": "P0",
+            "reason": "must-have"
+          },
+          {
+            "path": "incident.severity",
+            "prio": "P0",
+            "reason": "must-have"
+          },
+          {
+            "path": "incident.reported_at",
+            "prio": "P0",
+            "reason": "time-anchor"
+          },
+          {
+            "path": "device.connectivity",
+            "prio": "P1",
+            "reason": "action-constraints"
+          },
+          {
+            "path": "device.device_state",
+            "prio": "P1",
+            "reason": "action-constraints"
+          },
+          {
+            "path": "environment.time_of_day",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.weather",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.lighting_condition",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.traffic_exposure",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "incident.photo_available",
+            "prio": "P1",
+            "reason": "workflow-cue"
+          },
+          {
+            "path": "incident.photo_description",
+            "prio": "P1",
+            "reason": "photo-evidence"
+          },
+          {
+            "path": "environment.noise_level",
+            "prio": "P2",
+            "reason": "nice-to-have"
+          },
+          {
+            "path": "incident.reporter",
+            "prio": "P2",
+            "reason": "nice-to-have"
+          },
+          {
+            "path": "extras.context_notes",
+            "prio": "P2",
+            "reason": "semantic-guardrail"
+          }
+        ],
+        "dropped_fields": [],
+        "compressed_fields": []
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": null,
+    "s2_guardrails_version": null,
+    "s2_budget_chars": null,
+    "s2_used_chars": null,
+    "s2_selected_fields": null,
+    "s2_dropped_fields": null,
+    "s2_compressed_fields": null
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Absolut! Eine dunkle Straßenlampe, besonders in einem unsicheren Bereich und bei Nacht, erfordert schnelles Handeln. Hier ist die Checkliste für das Vorgehen vor Ort:\n\n1.  Absicherung\n    *   **Priorität: Eigene Sicherheit und Verkehrssicherung!**\n    *   Fahrzeug sicher abstellen (Warnblinkanlage, Warnweste anlegen).\n    *   Gefahrenbereich absichern (Warndreieck, Blitzleuchte, ggf. Pylonen aufstellen), besonders bei hohem Verkehrsaufkommen oder schlechter Sicht.\n    *   Passanten aufmerksam machen und ggf. auf sicheren Abstand hinweisen.\n\n2.  Sichtprüfung\n    *   **Umfeld:** Ist nur diese eine Lampe betroffen oder mehrere? Gibt es weitere Auffälligkeiten (z.B. offene Verteilerkästen, beschädigte Kabel, Vandalismus)?\n    *   **Lampe:**\n        *   Ist der Mast intakt? (Laut Foto: intakt)\n        *   Ist die Leuchte selbst beschädigt (Glasbruch, herabhängende Teile)?\n        *   Ist die Schaltbox geschlossen? (Laut Foto: geschlossen)\n        *   Gibt es sichtbare Anzeichen für einen Kurzschluss (Schmauchspuren)?\n    *   **Stromversorgung:** Sind Sicherungen im näheren Umfeld (z.B. in einem Verteilerkasten) sichtbar ausgelöst? (Vorsicht: Nicht ohne Berechtigung und Fachkenntnis manipulieren!)\n\n3.  Diagnose/Beobachtung\n    *   **Fehlerbild:** Ist die Lampe komplett aus (kein Glimmen, kein Flackern)?\n    *   **Auslöser:** Gab es in der Nähe Bauarbeiten, einen Unfall oder andere Ereignisse, die den Ausfall verursacht haben könnten?\n    *   **Gerät:** Ihr Gerät hat einen niedrigen Akkustand. Planen Sie die Dokumentation entsprechend, um wichtige Informationen nicht zu verlieren.\n\n4.  Dokumentation\n    *   **Fotos:** Machen Sie aussagekräftige Fotos vom Zustand der Lampe und des Umfelds (Gesamtaufnahme, Detailaufnahmen von Schäden oder Auffälligkeiten). (Laut Kontext: Foto ist bereits vorhanden, zeigt dunkle Laterne im Gewerbegebiet, Mast intakt, Schaltbox geschlossen, kein Vandalismus.)\n    *   **Standort:** Genaue Positionsbestimmung (GPS-Koordinaten, Adresse, Mastnummer).\n    *   **Fehlerbeschreibung:** Detaillierte Beschreibung des Fehlerbildes und der durchgeführten Sichtprüfung.\n    *   **Uhrzeit:** Notieren Sie die genaue Uhrzeit der Feststellung und der Absicherung.\n    *   **Maßnahmen:** Welche Absicherungsmaßnahmen wurden getroffen?\n\n5.  Eskalation\n    *   **Meldung:** Leiten Sie alle gesammelten Informationen umgehend an die zuständige Stelle weiter (Leitwarte, Bereitschaftsdienst).\n    *   **Dringlichkeit:** Betonen Sie die hohe Priorität aufgrund der Dunkelheit, der schlechten Sicht und des unsicheren Bereichs bei hohem Verkehrsaufkommen.\n    *   **Folgeauftrag:** Klären Sie das weitere Vorgehen ab (z.B. Entsendung eines Elektrikers, temporäre Beleuchtung).\n    *   **Verbleib:** Bleiben Sie vor Ort, bis die Gefahrenstelle ausreichend gesichert oder die weitere Zuständigkeit geklärt ist, falls dies erforderlich ist.\n\n**Wichtige Annahme:** Da die Lampe seit 20 Minuten dunkel ist und der Bereich unsicher wirkt, gehe ich davon aus, dass eine sofortige Vor-Ort-Prüfung und Absicherung notwendig ist.",
+    "tokens_estimate_words": 365
+  },
+  "judge": "{\n  \"scores\": {\n    \"R\": 5,\n    \"H\": 5,\n    \"S\": 5,\n    \"D\": 5,\n    \"K\": 5\n  },\n  \"flags\": {\n    \"safety_first\": true,\n    \"escalation_present\": true,\n    \"offline_workflow_mentioned\": false,\n    \"hallucination_suspected\": false\n  },\n  \"missing_elements\": [],\n  \"short_justification\": \"Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Handlungsanweisungen, nutzt Kontext optimal (night/high traffic/poor visibility → Verkehrssicherung, photo_description → Sichtprüfung, low_battery → Hinweis Dokumentation planen), umfassende Dokumentations-Checkliste, klare Eskalation mit Dringlichkeit. Keine Halluzinationen, alle relevanten Elemente abgedeckt.\"\n}",
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 9.16
+  },
+  "error": {}
+}
