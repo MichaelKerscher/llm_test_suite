@@ -1,0 +1,169 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0016-ABL-NOASSET",
+  "timestamp": "2026-03-17T08:30:14",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "high",
+        "reported_at": "2026-01-17T13:48:16+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerung/Regen: Laterne aktuell an, Foto kurz nach gemeldetem Ausfall. Mast mit Wasserlaufspuren, Schaltbox geschlossen.",
+        "reporter": "dispatch"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "rain",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      },
+      "_selection_meta": {
+        "selector_version": "s2-det-v1",
+        "guardrails_version": "s2-guard-v2",
+        "trigger_signals": {
+          "severity": "high",
+          "fault_type": "intermittent",
+          "offline": false,
+          "spotty": true,
+          "connectivity": "spotty",
+          "device_state": "low_battery",
+          "low_battery": true,
+          "weather": "rain",
+          "poor_visibility": true,
+          "time_of_day": "dusk",
+          "photo_available": true,
+          "photo_description": true
+        },
+        "budget_policy": {
+          "metric": "chars",
+          "max": 3500,
+          "used": 1062
+        },
+        "selected_fields": [
+          {
+            "path": "incident.fault_type",
+            "prio": "P0",
+            "reason": "must-have"
+          },
+          {
+            "path": "incident.severity",
+            "prio": "P0",
+            "reason": "must-have"
+          },
+          {
+            "path": "incident.reported_at",
+            "prio": "P0",
+            "reason": "time-anchor"
+          },
+          {
+            "path": "device.connectivity",
+            "prio": "P1",
+            "reason": "action-constraints"
+          },
+          {
+            "path": "device.device_state",
+            "prio": "P1",
+            "reason": "action-constraints"
+          },
+          {
+            "path": "environment.time_of_day",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.weather",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.lighting_condition",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "environment.traffic_exposure",
+            "prio": "P1",
+            "reason": "risk-context"
+          },
+          {
+            "path": "incident.photo_available",
+            "prio": "P1",
+            "reason": "workflow-cue"
+          },
+          {
+            "path": "incident.photo_description",
+            "prio": "P1",
+            "reason": "photo-evidence"
+          },
+          {
+            "path": "environment.noise_level",
+            "prio": "P2",
+            "reason": "nice-to-have"
+          },
+          {
+            "path": "incident.reporter",
+            "prio": "P2",
+            "reason": "nice-to-have"
+          },
+          {
+            "path": "extras.context_notes",
+            "prio": "P2",
+            "reason": "semantic-guardrail"
+          }
+        ],
+        "dropped_fields": [],
+        "compressed_fields": []
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": null,
+    "s2_guardrails_version": null,
+    "s2_budget_chars": null,
+    "s2_used_chars": null,
+    "s2_selected_fields": null,
+    "s2_dropped_fields": null,
+    "s2_compressed_fields": null
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein sporadischer Fehler bei einer Straßenlampe, die zeitweise ausfällt und dann wieder funktioniert, erfordert eine strukturierte Vorgehensweise. Angesichts der Dämmerung, des Regens und der schlechten Sicht ist die Sicherheit oberstes Gebot. Die gemeldeten Wasserlaufspuren am Mast sind ein wichtiger Hinweis.\n\nHier ist die Checkliste für das Vorgehen vor Ort:\n\n1.  **Absicherung**\n    *   Sichern Sie den Arbeitsbereich gemäß den Vorschriften für Arbeiten im öffentlichen Raum (z.B. Warnbake, Warnleuchte), auch bei geringem Verkehrsaufkommen.\n    *   Stellen Sie sicher, dass Sie und andere Verkehrsteilnehmer\\*/innen nicht gefährdet werden.\n\n2.  **Sichtprüfung**\n    *   Überprüfen Sie die Leuchte und den Mast auf offensichtliche Beschädigungen, lockere Teile oder Vandalismus.\n    *   **Besonderes Augenmerk:** Prüfen Sie die Wasserlaufspuren am Mast. Woher kommen sie? Gibt es Anzeichen für Wassereintritt in die Schaltbox oder den Leuchtenkopf?\n    *   Kontrollieren Sie die Schaltbox auf äußere Unversehrtheit (ist sie wirklich geschlossen und dicht?).\n    *   Achten Sie auf ungewöhnliche Gerüche (z.B. verschmorte Isolierung).\n\n3.  **Diagnose/Beobachtung**\n    *   Da die Lampe aktuell an ist, beobachten Sie das Verhalten der Leuchte genau:\n        *   Flimmert sie?\n        *   Ist die Helligkeit konstant oder schwankend?\n        *   Gibt es ungewöhnliche Geräusche?\n    *   Versuchen Sie, den Fehler zu reproduzieren, falls dies ohne Risiko möglich ist (z.B. durch leichtes Rütteln am Mast, falls sicher).\n    *   **Annahme:** Die Wasserlaufspuren in Kombination mit dem sporadischen Fehler deuten auf einen möglichen Kurzschluss oder Kriechstrom durch Feuchtigkeit hin.\n\n4.  **Dokumentation**\n    *   Halten Sie alle Beobachtungen detailliert fest:\n        *   Aktueller Zustand der Lampe (an).\n        *   Umgebungsbedingungen (Dämmerung, Regen, schlechte Sicht).\n        *   Genaue Beschreibung der Wasserlaufspuren am Mast und deren Verlauf.\n        *   Zustand der Schaltbox.\n        *   Alle weiteren Auffälligkeiten.\n    *   Nutzen Sie das bereits vorhandene Foto und erstellen Sie bei Bedarf weitere Aufnahmen, insbesondere von den Wasserlaufspuren und der Schaltbox.\n    *   **Hinweis:** Aufgrund der \"spotty connectivity\" und des \"low\\_battery\" Ihres Geräts, dokumentieren Sie offline und synchronisieren Sie die Daten, sobald eine stabile Verbindung besteht.\n\n5.  **Eskalation**\n    *   Aufgrund der \"high severity\" des Fehlers (sporadischer Ausfall einer Leuchte bei schlechter Sicht) und des potenziellen Sicherheitsrisikos durch Wasser in Verbindung mit Elektrik, ist eine umgehende Eskalation erforderlich.\n    *   Informieren Sie Ihren Vorgesetzten über den Vorfall und die Beobachtungen.\n    *   Empfehlen Sie die Beauftragung eines Elektrikers zur detaillierten Prüfung der Verkabelung und der Komponenten auf Feuchtigkeitsschäden und Isolationsfehler.\n    *   Planen Sie eine Wiedervorlage zur Überprüfung der Leuchte, um sicherzustellen, dass der Fehler behoben wurde und nicht erneut auftritt.",
+    "tokens_estimate_words": 383
+  },
+  "judge": "{\n  \"scores\": {\n    \"R\": 5,\n    \"H\": 5,\n    \"S\": 5,\n    \"D\": 5,\n    \"K\": 5\n  },\n  \"flags\": {\n    \"safety_first\": true,\n    \"escalation_present\": true,\n    \"offline_workflow_mentioned\": true,\n    \"hallucination_suspected\": false\n  },\n  \"missing_elements\": [],\n  \"short_justification\": \"Exzellente Antwort: Safety-first klar priorisiert, strukturierte Schrittfolge mit klaren Stop-Conditions, nutzt alle Kontextinformationen (Wasser, Dämmerung, Regen, spotty connectivity, low battery, high severity) präzise und ohne Halluzinationen. Eskalation begründet und dokumentiert, Offline-Workflow explizit erwähnt.\"\n}",
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.82
+  },
+  "error": {}
+}
