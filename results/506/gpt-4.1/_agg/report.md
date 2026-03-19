@@ -5,20 +5,20 @@
 
 ## Mean scores by context level (snapshot)
 ### L0 (n=60)
-- mean runtime: 5.404066666666666
-- mean R/H/S/D/K: 3.6/3.7333333333333334/3.5166666666666666/3.95/2.65
-- mean overall (avg R/H/S/D/K): 3.49
+- mean runtime: 5.37015
+- mean R/H/S/D/K: 3.7/3.7333333333333334/3.6/4.1/2.716666666666667
+- mean overall (avg R/H/S/D/K): 3.57
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.07
 ### L2 (n=60)
-- mean runtime: 6.7625
-- mean R/H/S/D/K: 4.766666666666667/4.516666666666667/4.533333333333333/4.683333333333334/3.966666666666667
-- mean overall (avg R/H/S/D/K): 4.493333333333334
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.08, hallucination_suspected=0.07
+- mean runtime: 6.849866666666667
+- mean R/H/S/D/K: 4.733333333333333/4.533333333333333/4.55/4.666666666666667/4.066666666666666
+- mean overall (avg R/H/S/D/K): 4.510000000000001
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.08, hallucination_suspected=0.05
 ### L2B (n=60)
-- mean runtime: 6.701883333333333
-- mean R/H/S/D/K: 4.883333333333334/4.816666666666666/4.633333333333334/4.866666666666666/4.95
-- mean overall (avg R/H/S/D/K): 4.83
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.65, hallucination_suspected=0.00
+- mean runtime: 6.708983333333333
+- mean R/H/S/D/K: 4.9/4.833333333333333/4.65/4.883333333333334/4.983333333333333
+- mean overall (avg R/H/S/D/K): 4.85
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.63, hallucination_suspected=0.00
 ### unknown (n=120)
 - mean runtime: 11.180733333333334
 - mean R/H/S/D/K: 4.866666666666666/4.825/4.825/4.933333333333334/4.966666666666667
@@ -27,17 +27,17 @@
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=60)
-- mean runtime: 5.404066666666666
-- mean R/H/S/D/K: 3.6/3.7333333333333334/3.5166666666666666/3.95/2.65
-- mean overall (avg R/H/S/D/K): 3.49
+- mean runtime: 5.37015
+- mean R/H/S/D/K: 3.7/3.7333333333333334/3.6/4.1/2.716666666666667
+- mean overall (avg R/H/S/D/K): 3.57
 ### S1 (n=60)
-- mean runtime: 6.7625
-- mean R/H/S/D/K: 4.766666666666667/4.516666666666667/4.533333333333333/4.683333333333334/3.966666666666667
-- mean overall (avg R/H/S/D/K): 4.493333333333334
+- mean runtime: 6.849866666666667
+- mean R/H/S/D/K: 4.733333333333333/4.533333333333333/4.55/4.666666666666667/4.066666666666666
+- mean overall (avg R/H/S/D/K): 4.510000000000001
 ### S2 (n=60)
-- mean runtime: 6.701883333333333
-- mean R/H/S/D/K: 4.883333333333334/4.816666666666666/4.633333333333334/4.866666666666666/4.95
-- mean overall (avg R/H/S/D/K): 4.83
+- mean runtime: 6.708983333333333
+- mean R/H/S/D/K: 4.9/4.833333333333333/4.65/4.883333333333334/4.983333333333333
+- mean overall (avg R/H/S/D/K): 4.85
 ### S2_ABL_NOASSET (n=30)
 - mean runtime: 10.9962
 - mean R/H/S/D/K: 4.9/4.933333333333334/4.933333333333334/4.9/4.966666666666667
@@ -56,15 +56,13 @@
 - mean overall (avg R/H/S/D/K): 4.92
 
 ## Top missing elements (max 20)
-- Offline-Workflow bei spotty connectivity: 5
-- Kontextnutzung minimal (nur Asset-ID): 4
-- Kontextnutzung minimal (nur Asset-ID vorhanden): 4
+- Offline-Workflow bei spotty connectivity: 8
+- Kontextnutzung minimal (nur Asset-ID): 3
 - Offline-Workflow nicht explizit erwähnt trotz spotty connectivity: 2
 - Kein expliziter Offline-Workflow trotz connectivity=spotty: 2
 - Keine Nutzung der Asset-ID im Kontext: 2
-- Keine Anpassung an Umgebungsbedingungen: 2
 - Spezifische Stop-Conditions für Beobachtungsphase: 2
-- Severity-Bewusstsein (high nicht erkennbar): 2
+- Severity-Einschätzung fehlt (kein Signal im Kontext): 2
 - Klare Stop-Condition für Beobachtungsphase: 1
 - Konkrete Zeitangabe für Wiederholungsprüfung: 1
 - Explizite Stop-Condition für Beobachtungsphase: 1
@@ -76,3 +74,5 @@
 - Keine explizite Stop-Condition bei Gefahr: 1
 - Asset-ID/Mast-Nummer explizit erwähnen: 1
 - Ticket-ID/Asset-ID explizit in Dokumentation: 1
+- Asset-ID/OSM-ID explizit im Protokoll erwähnen: 1
+- GPS-Koordinaten für Dokumentation nennen: 1
