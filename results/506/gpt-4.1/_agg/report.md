@@ -5,19 +5,19 @@
 
 ## Mean scores by context level (snapshot)
 ### L0 (n=60)
-- mean runtime: 5.3046
-- mean R/H/S/D/K: 3.6166666666666667/3.7/3.4833333333333334/4.033333333333333/2.6666666666666665
-- mean overall (avg R/H/S/D/K): 3.5
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.12
+- mean runtime: 5.279683333333334
+- mean R/H/S/D/K: 3.65/3.7/3.5166666666666666/3.933333333333333/2.65
+- mean overall (avg R/H/S/D/K): 3.49
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.07
 ### L2 (n=60)
-- mean runtime: 6.7119
-- mean R/H/S/D/K: 4.766666666666667/4.55/4.45/4.666666666666667/4.083333333333333
-- mean overall (avg R/H/S/D/K): 4.503333333333333
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.13, hallucination_suspected=0.07
+- mean runtime: 6.920633333333333
+- mean R/H/S/D/K: 4.8/4.633333333333334/4.566666666666666/4.7/4.033333333333333
+- mean overall (avg R/H/S/D/K): 4.546666666666667
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.10, hallucination_suspected=0.05
 ### L2B (n=60)
-- mean runtime: 6.568
-- mean R/H/S/D/K: 4.9/4.816666666666666/4.6/4.883333333333334/4.983333333333333
-- mean overall (avg R/H/S/D/K): 4.836666666666667
+- mean runtime: 6.7412833333333335
+- mean R/H/S/D/K: 4.916666666666667/4.85/4.666666666666667/4.883333333333334/4.95
+- mean overall (avg R/H/S/D/K): 4.8533333333333335
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.62, hallucination_suspected=0.00
 ### unknown (n=120)
 - mean runtime: 11.180733333333334
@@ -27,17 +27,17 @@
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=60)
-- mean runtime: 5.3046
-- mean R/H/S/D/K: 3.6166666666666667/3.7/3.4833333333333334/4.033333333333333/2.6666666666666665
-- mean overall (avg R/H/S/D/K): 3.5
+- mean runtime: 5.279683333333334
+- mean R/H/S/D/K: 3.65/3.7/3.5166666666666666/3.933333333333333/2.65
+- mean overall (avg R/H/S/D/K): 3.49
 ### S1 (n=60)
-- mean runtime: 6.7119
-- mean R/H/S/D/K: 4.766666666666667/4.55/4.45/4.666666666666667/4.083333333333333
-- mean overall (avg R/H/S/D/K): 4.503333333333333
+- mean runtime: 6.920633333333333
+- mean R/H/S/D/K: 4.8/4.633333333333334/4.566666666666666/4.7/4.033333333333333
+- mean overall (avg R/H/S/D/K): 4.546666666666667
 ### S2 (n=60)
-- mean runtime: 6.568
-- mean R/H/S/D/K: 4.9/4.816666666666666/4.6/4.883333333333334/4.983333333333333
-- mean overall (avg R/H/S/D/K): 4.836666666666667
+- mean runtime: 6.7412833333333335
+- mean R/H/S/D/K: 4.916666666666667/4.85/4.666666666666667/4.883333333333334/4.95
+- mean overall (avg R/H/S/D/K): 4.8533333333333335
 ### S2_ABL_NOASSET (n=30)
 - mean runtime: 10.9962
 - mean R/H/S/D/K: 4.9/4.933333333333334/4.933333333333334/4.9/4.966666666666667
@@ -56,13 +56,13 @@
 - mean overall (avg R/H/S/D/K): 4.92
 
 ## Top missing elements (max 20)
-- Offline-Workflow bei spotty connectivity: 6
-- Kontextnutzung minimal (nur Asset-ID): 3
+- Kontextnutzung minimal (nur Asset-ID): 4
+- Offline-Workflow bei spotty connectivity: 3
+- Offline-Workflow (spotty connectivity): 3
 - Kein expliziter Offline-Workflow trotz connectivity=spotty: 2
 - Keine Nutzung der Asset-ID im Kontext: 2
 - Spezifische Stop-Conditions für Beobachtungsphase: 2
-- Keine Kontextnutzung erkennbar (nur Asset-ID vorhanden): 2
-- Keine Nutzung der Asset-ID im Kontext erkennbar: 2
+- Kontextnutzung minimal (nur Asset-ID vorhanden): 2
 - Klare Stop-Condition für Beobachtungsphase: 1
 - Konkrete Zeitangabe für Wiederholungsprüfung: 1
 - Explizite Stop-Condition für Beobachtungsphase: 1
