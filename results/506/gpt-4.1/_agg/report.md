@@ -1,24 +1,24 @@
-# Aggregation Report (506/gpt-4.1)
+# Aggregation Report (506\gpt-4.1) [combined]
 - judge_version filter: **judge_v1_1**
-- Tests (latest runs): **210**
-- Incidents with any deltas: **30**
+- Tests (latest runs): **300**
+- Incidents with any deltas: **60**
 
 ## Mean scores by context level (snapshot)
-### L0 (n=30)
-- mean runtime: 3.797433333333333
-- mean R/H/S/D/K: 3.433333333333333/3.5/3.1/3.8/2.6333333333333333
-- mean overall (avg R/H/S/D/K): 3.2933333333333334
+### L0 (n=60)
+- mean runtime: 5.404066666666666
+- mean R/H/S/D/K: 3.6/3.7333333333333334/3.5166666666666666/3.95/2.65
+- mean overall (avg R/H/S/D/K): 3.49
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.07
-### L2 (n=30)
-- mean runtime: 4.447533333333333
-- mean R/H/S/D/K: 4.633333333333334/4.366666666666666/4.2/4.4/3.566666666666667
-- mean overall (avg R/H/S/D/K): 4.233333333333333
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.07, hallucination_suspected=0.10
-### L2B (n=30)
-- mean runtime: 4.139466666666666
-- mean R/H/S/D/K: 4.833333333333333/4.766666666666667/4.366666666666666/4.8/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.746666666666667
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.70, hallucination_suspected=0.00
+### L2 (n=60)
+- mean runtime: 6.7625
+- mean R/H/S/D/K: 4.766666666666667/4.516666666666667/4.533333333333333/4.683333333333334/3.966666666666667
+- mean overall (avg R/H/S/D/K): 4.493333333333334
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.08, hallucination_suspected=0.07
+### L2B (n=60)
+- mean runtime: 6.701883333333333
+- mean R/H/S/D/K: 4.883333333333334/4.816666666666666/4.633333333333334/4.866666666666666/4.95
+- mean overall (avg R/H/S/D/K): 4.83
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.65, hallucination_suspected=0.00
 ### unknown (n=120)
 - mean runtime: 11.180733333333334
 - mean R/H/S/D/K: 4.866666666666666/4.825/4.825/4.933333333333334/4.966666666666667
@@ -26,18 +26,18 @@
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.46, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
-### S0 (n=30)
-- mean runtime: 3.797433333333333
-- mean R/H/S/D/K: 3.433333333333333/3.5/3.1/3.8/2.6333333333333333
-- mean overall (avg R/H/S/D/K): 3.2933333333333334
-### S1 (n=30)
-- mean runtime: 4.447533333333333
-- mean R/H/S/D/K: 4.633333333333334/4.366666666666666/4.2/4.4/3.566666666666667
-- mean overall (avg R/H/S/D/K): 4.233333333333333
-### S2 (n=30)
-- mean runtime: 4.139466666666666
-- mean R/H/S/D/K: 4.833333333333333/4.766666666666667/4.366666666666666/4.8/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.746666666666667
+### S0 (n=60)
+- mean runtime: 5.404066666666666
+- mean R/H/S/D/K: 3.6/3.7333333333333334/3.5166666666666666/3.95/2.65
+- mean overall (avg R/H/S/D/K): 3.49
+### S1 (n=60)
+- mean runtime: 6.7625
+- mean R/H/S/D/K: 4.766666666666667/4.516666666666667/4.533333333333333/4.683333333333334/3.966666666666667
+- mean overall (avg R/H/S/D/K): 4.493333333333334
+### S2 (n=60)
+- mean runtime: 6.701883333333333
+- mean R/H/S/D/K: 4.883333333333334/4.816666666666666/4.633333333333334/4.866666666666666/4.95
+- mean overall (avg R/H/S/D/K): 4.83
 ### S2_ABL_NOASSET (n=30)
 - mean runtime: 10.9962
 - mean R/H/S/D/K: 4.9/4.933333333333334/4.933333333333334/4.9/4.966666666666667
@@ -56,11 +56,15 @@
 - mean overall (avg R/H/S/D/K): 4.92
 
 ## Top missing elements (max 20)
-- Offline-Workflow bei spotty connectivity: 3
+- Offline-Workflow bei spotty connectivity: 5
+- Kontextnutzung minimal (nur Asset-ID): 4
+- Kontextnutzung minimal (nur Asset-ID vorhanden): 4
+- Offline-Workflow nicht explizit erwähnt trotz spotty connectivity: 2
 - Kein expliziter Offline-Workflow trotz connectivity=spotty: 2
 - Keine Nutzung der Asset-ID im Kontext: 2
+- Keine Anpassung an Umgebungsbedingungen: 2
 - Spezifische Stop-Conditions für Beobachtungsphase: 2
-- Kontextnutzung minimal (nur Asset-ID): 2
+- Severity-Bewusstsein (high nicht erkennbar): 2
 - Klare Stop-Condition für Beobachtungsphase: 1
 - Konkrete Zeitangabe für Wiederholungsprüfung: 1
 - Explizite Stop-Condition für Beobachtungsphase: 1
@@ -72,7 +76,3 @@
 - Keine explizite Stop-Condition bei Gefahr: 1
 - Asset-ID/Mast-Nummer explizit erwähnen: 1
 - Ticket-ID/Asset-ID explizit in Dokumentation: 1
-- Asset-ID/OSM-ID explizit im Protokoll erwähnen: 1
-- GPS-Koordinaten für Dokumentation nennen: 1
-- Kontext-Nutzung minimal (nur Asset-ID verwendet): 1
-- Keine Anpassung an fehlende Umgebungs-/Device-Infos: 1

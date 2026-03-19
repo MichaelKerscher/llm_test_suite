@@ -9,6 +9,7 @@ from lib.logger import log_response
 from lib.clients import CLIENTS
 
 import lib.context_policy_s2 as s2
+import lib.context_policy_signal as s2_signal
 
 load_dotenv()
 
@@ -383,7 +384,13 @@ def _apply_s2_if_strategy(tc: dict, context: dict) -> tuple[dict, dict | None]:
 
     budget_chars = int(os.getenv("S2_BUDGET_CHARS", "3500"))
 
-    s2_out = s2.build_l2b(context or {}, budget=s2.BudgetPolicy(max_chars=budget_chars))
+    # Domain dispatch: signal assets have traffic_signals/button_operated keys
+    ctx_asset = (context or {}).get("asset") or {}
+    is_signal_domain = "traffic_signals" in ctx_asset or "button_operated" in ctx_asset
+    if is_signal_domain:
+        s2_out = s2_signal.build_l2b(context or {}, budget=s2_signal.BudgetPolicy(max_chars=budget_chars))
+    else:
+        s2_out = s2.build_l2b(context or {}, budget=s2.BudgetPolicy(max_chars=budget_chars))
 
     ctx_selected = s2_out.get("context") or {}
     selection_meta = s2_out.get("selection_meta") or {}

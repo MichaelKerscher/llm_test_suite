@@ -4,7 +4,6 @@ import argparse
 from pathlib import Path
 from collections import defaultdict, Counter
 
-
 def _read_json(path: Path):
     try:
         with path.open("r", encoding="utf-8") as f:
@@ -17,34 +16,29 @@ def _latest_run_file(test_dir: Path) -> Path | None:
     """Prefer run_XX.json with highest XX; fallback run.json."""
     runs = sorted(test_dir.glob("run_*.json"))
     if runs:
-
         def idx(p: Path):
             try:
                 return int(p.stem.split("_")[1])
             except Exception:
                 return -1
-
         runs = [p for p in runs if idx(p) >= 0]
         runs = sorted(runs, key=idx)
         return runs[-1] if runs else None
-
     run_json = test_dir / "run.json"
     return run_json if run_json.exists() else None
 
 
 def _all_run_files(test_dir: Path) -> list[Path]:
-    """Return all run files ordered by run_index (run_01.json, run_02.json, ...)."""
+    """Return all run files ordered by run_index."""
     runs = list(test_dir.glob("run_*.json"))
     if not runs:
         run_json = test_dir / "run.json"
         return [run_json] if run_json.exists() else []
-
     def idx(p: Path):
         try:
             return int(p.stem.split("_")[1])
         except Exception:
             return -1
-
     runs = [p for p in runs if idx(p) >= 0]
     return sorted(runs, key=idx)
 
@@ -181,17 +175,35 @@ def main():
         default=None,
         help="filter runs by request_params.judge_version (e.g. judge_v1_1)",
     )
+    ap.add_argument(
+        "--domain",
+        default=None,
+        choices=["lamp", "signal"],
+        help="filter by domain: lamp (INC-LAMP-*) or signal (INC-SIGNAL-*). Omit for combined.",
+    )
     args = ap.parse_args()
 
     base = Path(args.results_dir) / args.client
     if not base.exists():
         raise SystemExit(f"[ERROR] Results dir not found: {base}")
 
-    out_dir = Path(args.out) if args.out else (base / "_agg")
+    domain_suffix = f"_{args.domain}" if args.domain else ""
+    out_dir = Path(args.out) if args.out else (base / f"_agg{domain_suffix}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # exclude only the _agg directory
-    test_dirs = [p for p in base.iterdir() if p.is_dir() and p.name != "_agg"]
+    # filter test dirs by domain (and exclude _agg dirs)
+    def _domain_prefix(domain: str | None) -> str | None:
+        if domain == "lamp":   return "INC-LAMP-"
+        if domain == "signal": return "INC-SIGNAL-"
+        return None
+
+    _prefix = _domain_prefix(args.domain)
+    test_dirs = [
+        p for p in base.iterdir()
+        if p.is_dir()
+        and not p.name.startswith("_agg")
+        and (_prefix is None or p.name.startswith(_prefix))
+    ]
 
     # ----------------------------
     # 1) Collect latest run per testcase (snapshot)
@@ -338,7 +350,8 @@ def main():
     missing_path.write_text(json.dumps(miss_counter.most_common(50), ensure_ascii=False, indent=2), encoding="utf-8")
 
     md = []
-    md.append(f"# Aggregation Report ({args.client})\n")
+    domain_label = f" [{args.domain}]" if args.domain else " [combined]"
+    md.append(f"# Aggregation Report ({args.client}){domain_label}\n")
     if args.judge_version:
         md.append(f"- judge_version filter: **{args.judge_version}**\n")
     md.append(f"- Tests (latest runs): **{len(run_rows)}**\n")
