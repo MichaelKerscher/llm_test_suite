@@ -5,53 +5,53 @@
 
 ## Mean scores by context level (snapshot)
 ### L0 (n=30)
-- mean runtime: 6.249233333333334
-- mean R/H/S/D/K: 3.8333333333333335/4.0/3.933333333333333/4.066666666666666/2.6333333333333333
-- mean overall (avg R/H/S/D/K): 3.6933333333333334
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.17
+- mean runtime: 6.427966666666666
+- mean R/H/S/D/K: 3.8333333333333335/3.9/3.966666666666667/4.166666666666667/2.6666666666666665
+- mean overall (avg R/H/S/D/K): 3.7066666666666666
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.13
 ### L2 (n=30)
-- mean runtime: 8.836266666666667
-- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.933333333333334/5.0/4.633333333333334
-- mean overall (avg R/H/S/D/K): 4.8933333333333335
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.23, hallucination_suspected=0.03
+- mean runtime: 8.722166666666668
+- mean R/H/S/D/K: 4.9/4.766666666666667/4.733333333333333/5.0/4.666666666666667
+- mean overall (avg R/H/S/D/K): 4.8133333333333335
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.27, hallucination_suspected=0.00
 ### L2B (n=30)
-- mean runtime: 9.127233333333333
-- mean R/H/S/D/K: 4.9/4.933333333333334/4.933333333333334/4.966666666666667/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.9399999999999995
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.63, hallucination_suspected=0.00
+- mean runtime: 8.880066666666666
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.9/5.0/5.0
+- mean overall (avg R/H/S/D/K): 4.96
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.53, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
-- mean runtime: 6.249233333333334
-- mean R/H/S/D/K: 3.8333333333333335/4.0/3.933333333333333/4.066666666666666/2.6333333333333333
-- mean overall (avg R/H/S/D/K): 3.6933333333333334
+- mean runtime: 6.427966666666666
+- mean R/H/S/D/K: 3.8333333333333335/3.9/3.966666666666667/4.166666666666667/2.6666666666666665
+- mean overall (avg R/H/S/D/K): 3.7066666666666666
 ### S1 (n=30)
-- mean runtime: 8.836266666666667
-- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.933333333333334/5.0/4.633333333333334
-- mean overall (avg R/H/S/D/K): 4.8933333333333335
+- mean runtime: 8.722166666666668
+- mean R/H/S/D/K: 4.9/4.766666666666667/4.733333333333333/5.0/4.666666666666667
+- mean overall (avg R/H/S/D/K): 4.8133333333333335
 ### S2 (n=30)
-- mean runtime: 9.127233333333333
-- mean R/H/S/D/K: 4.9/4.933333333333334/4.933333333333334/4.966666666666667/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.9399999999999995
+- mean runtime: 8.880066666666666
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.9/5.0/5.0
+- mean overall (avg R/H/S/D/K): 4.96
 
 ## Top missing elements (max 20)
-- Kontextnutzung minimal (nur Asset-ID): 4
-- Offline-Workflow (spotty connectivity): 2
-- Offline-Workflow (nicht erwartbar, da kein Signal im Context): 1
-- Wetter-/Sichtbedingungen (nicht im Context vorhanden): 1
-- Spekuliert über Stromausfall ohne Kontext-Signal: 1
-- RSA-Details nicht erwartbar aus minimalem Kontext: 1
-- Keine Nutzung der Asset-ID im Kontext (nur minimal vorhanden): 1
-- Keine Erwähnung des intermittierenden Charakters: 1
-- Spekuliert über Ampel/Straßenlampe ohne Basis: 1
-- Keine Anpassung an fehlende Umgebungsdaten: 1
-- Lokale Speicherung/Synchronisation: 1
-- Konkrete Nutzung der Asset-ID im Workflow: 1
-- Spezifische Fehlerdiagnose bei signal_dark: 1
-- Keine Nutzung der GPS-Koordinaten (nicht im Context): 1
-- Keine Erwähnung von Umgebungsbedingungen (nicht im Context): 1
-- Keine Berücksichtigung von Umweltbedingungen (nicht im Context): 1
-- Keine Priorisierung nach Severity (nicht im Context): 1
-- Offline-Workflow (nicht erwartbar bei L0): 1
-- GPS-Koordinaten (nicht im Context): 1
-- Keine Berücksichtigung von Umgebungsbedingungen: 1
+- Kontextnutzung minimal (nur Asset-ID): 5
+- Keine Anpassung an Umgebungsbedingungen: 2
+- Offline-Workflow (lokale Doku, spätere Sync) nicht explizit erwähnt: 1
+- Offline-Workflow nicht explizit erwähnt trotz connectivity=offline: 1
+- Kontext-Nutzung minimal (nur Asset-ID verfügbar): 1
+- Keine Nutzung der Asset-ID im Kontext: 1
+- Übermäßige Detailtiefe ohne Kontextbasis (RSA, Induktionsschleifen, Radarsensoren): 1
+- Spekulative technische Details (Belastungstest, Spannungsmessung) ohne Hinweis im Kontext: 1
+- Generische Antwort ohne spezifische Priorisierung: 1
+- Offline-Workflow (spotty connectivity): 1
+- Severity-Einschätzung aus Kontext: 1
+- Konkrete GPS-Koordinaten in Doku: 1
+- Severity-Bewusstsein (high nicht erkennbar aus Kontext): 1
+- Wetter-/Sichtbedingungen (nicht im Kontext vorhanden): 1
+- Priorisierung Eskalation bei high severity: 1
+- Offline-Workflow (spotty connectivity + low_battery): 1
+- Offline-Workflow (nicht erwartbar aus minimalem Context): 1
+- Spekulation über 'backward'-Bedeutung ohne Basis: 1
+- Keine Nutzung von Kontext-Signalen (severity, environment): 1
+- Keine Priorisierung nach Verkehrslage/Sichtbedingungen: 1
