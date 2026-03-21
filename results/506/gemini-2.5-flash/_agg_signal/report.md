@@ -5,53 +5,53 @@
 
 ## Mean scores by context level (snapshot)
 ### L0 (n=30)
-- mean runtime: 5.904566666666667
-- mean R/H/S/D/K: 3.8333333333333335/3.966666666666667/4.1/4.233333333333333/2.7333333333333334
-- mean overall (avg R/H/S/D/K): 3.7733333333333334
+- mean runtime: 5.961200000000001
+- mean R/H/S/D/K: 3.9/3.933333333333333/4.266666666666667/4.1/2.7
+- mean overall (avg R/H/S/D/K): 3.7800000000000002
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.10
 ### L2 (n=30)
-- mean runtime: 8.8231
-- mean R/H/S/D/K: 4.966666666666667/4.9/4.966666666666667/4.966666666666667/4.666666666666667
-- mean overall (avg R/H/S/D/K): 4.8933333333333335
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.07, hallucination_suspected=0.00
+- mean runtime: 8.619499999999999
+- mean R/H/S/D/K: 4.966666666666667/4.866666666666666/4.966666666666667/4.933333333333334/4.5
+- mean overall (avg R/H/S/D/K): 4.846666666666667
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.03, hallucination_suspected=0.00
 ### L2B (n=30)
-- mean runtime: 8.9956
-- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.933333333333334/4.933333333333334/5.0
+- mean runtime: 8.212366666666666
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.966666666666667/4.9/5.0
 - mean overall (avg R/H/S/D/K): 4.953333333333333
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.63, hallucination_suspected=0.00
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.57, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
-- mean runtime: 5.904566666666667
-- mean R/H/S/D/K: 3.8333333333333335/3.966666666666667/4.1/4.233333333333333/2.7333333333333334
-- mean overall (avg R/H/S/D/K): 3.7733333333333334
+- mean runtime: 5.961200000000001
+- mean R/H/S/D/K: 3.9/3.933333333333333/4.266666666666667/4.1/2.7
+- mean overall (avg R/H/S/D/K): 3.7800000000000002
 ### S1 (n=30)
-- mean runtime: 8.8231
-- mean R/H/S/D/K: 4.966666666666667/4.9/4.966666666666667/4.966666666666667/4.666666666666667
-- mean overall (avg R/H/S/D/K): 4.8933333333333335
+- mean runtime: 8.619499999999999
+- mean R/H/S/D/K: 4.966666666666667/4.866666666666666/4.966666666666667/4.933333333333334/4.5
+- mean overall (avg R/H/S/D/K): 4.846666666666667
 ### S2 (n=30)
-- mean runtime: 8.9956
-- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.933333333333334/4.933333333333334/5.0
+- mean runtime: 8.212366666666666
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.966666666666667/4.9/5.0
 - mean overall (avg R/H/S/D/K): 4.953333333333333
 
 ## Top missing elements (max 20)
 - Offline-Workflow (spotty connectivity): 2
-- Offline-Workflow explizit (Doku lokal, später sync): 1
+- Kontextnutzung minimal (nur Asset-ID vorhanden): 2
+- Offline-Workflow bei spotty connectivity: 2
 - Offline-Workflow explizit erwähnen: 1
 - Keine GPS-Koordinaten dokumentiert (nicht im Context verfügbar): 1
-- Spekuliert über USV/Notstrom ohne Basis im Context: 1
-- Severity-Einschätzung fehlt (nur minimal context): 1
-- Keine Priorisierung bei Eskalation erkennbar: 1
-- Offline-Workflow (nicht erwartbar, da CONTEXT connectivity nicht offline zeigt): 1
-- GPS-Koordinaten explizit genannt (nur Asset-ID vorhanden): 1
+- Foto-Status nicht erwähnt (nicht im Context verfügbar): 1
+- Severity-Bewusstsein (high) nicht explizit: 1
+- Kreuzung wie unbeschrankt behandeln fehlt: 1
+- Keine Nutzung der Asset-ID im Kontext (nur minimal vorhanden): 1
+- Keine Erwähnung von Hauptverkehrszeit-spezifischen Maßnahmen: 1
 - Kontextnutzung minimal (nur Asset-ID): 1
-- Keine Priorisierung nach Verkehr/Umgebung: 1
-- Generische Antwort ohne Umweltbezug: 1
-- Kontextnutzung (Wetter/Zeit/Verkehr nicht erwähnt, da nicht im CONTEXT): 1
-- Spezifische Trigger für Eskalation könnten klarer sein: 1
-- Severity-Bewusstsein (high nicht erkennbar): 1
-- Umgebungsbedingungen (Nacht/Sturm/poor visibility): 1
-- Foto-Nutzung: 1
-- Foto-Nutzung explizit erwähnen: 1
-- Keine Nutzung von Kontextinformationen (minimaler Kontext): 1
-- Keine Erwähnung von Umgebungsbedingungen (Wetter/Sicht): 1
+- Keine Anpassung an sporadisches Fehlerbild: 1
+- Generische Schritte ohne Priorisierung: 1
+- Keine Nutzung der GPS-Koordinaten aus CONTEXT: 1
+- Keine Erwähnung des photo_available-Flags: 1
+- Offline-Workflow nicht explizit erwähnt trotz spotty connectivity: 1
+- Offline-Workflow (nicht erwartbar bei L0_minimal): 1
+- Offline-Workflow fehlt (device.connectivity=offline → lokale Dokumentation, spätere Sync): 1
+- Keine Nutzung des verfügbaren Kontexts (Asset-ID): 1
+- Spekulative Details ohne Kontextbasis (z.B. Dämmerungsschalter, Bewegungsmelder, Batteriepuffer): 1
