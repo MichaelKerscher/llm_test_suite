@@ -5,19 +5,19 @@
 
 ## Mean scores by context level (snapshot)
 ### L0 (n=60)
-- mean runtime: 5.7332833333333335
-- mean R/H/S/D/K: 3.7/3.816666666666667/3.816666666666667/4.066666666666666/2.8333333333333335
+- mean runtime: 5.748983333333333
+- mean R/H/S/D/K: 3.7/3.8/3.85/4.083333333333333/2.8
 - mean overall (avg R/H/S/D/K): 3.646666666666667
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.10
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.08
 ### L2 (n=60)
-- mean runtime: 8.241966666666666
-- mean R/H/S/D/K: 4.866666666666666/4.7/4.766666666666667/4.916666666666667/4.183333333333334
-- mean overall (avg R/H/S/D/K): 4.6866666666666665
-- flags (rate): safety_first=0.98, escalation_present=1.00, offline_workflow_mentioned=0.13, hallucination_suspected=0.08
+- mean runtime: 8.8496
+- mean R/H/S/D/K: 4.866666666666666/4.716666666666667/4.8/4.9/4.233333333333333
+- mean overall (avg R/H/S/D/K): 4.703333333333333
+- flags (rate): safety_first=0.98, escalation_present=1.00, offline_workflow_mentioned=0.15, hallucination_suspected=0.08
 ### L2B (n=60)
-- mean runtime: 8.750599999999999
-- mean R/H/S/D/K: 4.95/4.883333333333334/4.883333333333334/4.933333333333334/4.983333333333333
-- mean overall (avg R/H/S/D/K): 4.926666666666667
+- mean runtime: 8.737933333333332
+- mean R/H/S/D/K: 4.933333333333334/4.933333333333334/4.9/4.933333333333334/4.983333333333333
+- mean overall (avg R/H/S/D/K): 4.9366666666666665
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.58, hallucination_suspected=0.00
 ### unknown (n=120)
 - mean runtime: 9.17315
@@ -27,17 +27,17 @@
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=60)
-- mean runtime: 5.7332833333333335
-- mean R/H/S/D/K: 3.7/3.816666666666667/3.816666666666667/4.066666666666666/2.8333333333333335
+- mean runtime: 5.748983333333333
+- mean R/H/S/D/K: 3.7/3.8/3.85/4.083333333333333/2.8
 - mean overall (avg R/H/S/D/K): 3.646666666666667
 ### S1 (n=60)
-- mean runtime: 8.241966666666666
-- mean R/H/S/D/K: 4.866666666666666/4.7/4.766666666666667/4.916666666666667/4.183333333333334
-- mean overall (avg R/H/S/D/K): 4.6866666666666665
+- mean runtime: 8.8496
+- mean R/H/S/D/K: 4.866666666666666/4.716666666666667/4.8/4.9/4.233333333333333
+- mean overall (avg R/H/S/D/K): 4.703333333333333
 ### S2 (n=60)
-- mean runtime: 8.750599999999999
-- mean R/H/S/D/K: 4.95/4.883333333333334/4.883333333333334/4.933333333333334/4.983333333333333
-- mean overall (avg R/H/S/D/K): 4.926666666666667
+- mean runtime: 8.737933333333332
+- mean R/H/S/D/K: 4.933333333333334/4.933333333333334/4.9/4.933333333333334/4.983333333333333
+- mean overall (avg R/H/S/D/K): 4.9366666666666665
 ### S2_ABL_NOASSET (n=30)
 - mean runtime: 9.7382
 - mean R/H/S/D/K: 4.866666666666666/4.9/4.866666666666666/4.933333333333334/4.966666666666667
@@ -56,16 +56,12 @@
 - mean overall (avg R/H/S/D/K): 4.8933333333333335
 
 ## Top missing elements (max 20)
-- Offline-Workflow bei spotty connectivity: 6
-- Offline-Workflow bei spotty connectivity nicht explizit erwähnt: 5
+- Offline-Workflow bei spotty connectivity: 7
+- Offline-Workflow bei spotty connectivity nicht explizit erwähnt: 4
 - Kontextnutzung minimal (nur Asset-ID): 3
 - Keine Nutzung der Asset-ID im Kontext: 3
-- Kontextnutzung minimal (nur Asset-ID vorhanden): 3
 - Keine Priorisierung nach Severity (nicht im Context): 2
-- Offline-Workflow (nicht erwartbar bei L0): 2
-- Wetter-/Sichtbedingungen (nicht im Context): 2
-- Offline-Workflow (nicht erwartbar bei L0_minimal): 2
-- Spekuliert leicht über Ampel/Straßenlampe (asset_type=unknown): 2
+- Offline-Workflow (nicht erwartbar, da CONTEXT minimal): 2
 - Klare Stop-Condition für Beobachtungsphase fehlt: 1
 - Offline-Workflow fehlt trotz connectivity=offline: 1
 - Verwechslung device.* mit Asset-Fehlerursache: 1
@@ -76,3 +72,7 @@
 - Offline-Workflow nicht erwähnt trotz spotty connectivity: 1
 - Annahme zu low_battery spekulativ formuliert: 1
 - Offline-Workflow (connectivity=offline, device_state=low_battery): 1
+- Offline-Workflow (connectivity=offline → lokal dokumentieren/später sync): 1
+- Annahme 'Straßenleuchte' ohne Basis: 1
+- Spekulation über Ampel/Bewuchs ohne Signal: 1
+- Offline-Workflow bei spotty connectivity nicht erwähnt: 1
