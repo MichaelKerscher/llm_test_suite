@@ -20,10 +20,10 @@
 - mean overall (avg R/H/S/D/K): 4.746666666666667
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.70, hallucination_suspected=0.00
 ### unknown (n=180)
-- mean runtime: 11.330127777777777
-- mean R/H/S/D/K: 4.877777777777778/4.855555555555555/4.872222222222222/4.95/4.95
-- mean overall (avg R/H/S/D/K): 4.901111111111112
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.45, hallucination_suspected=0.00
+- mean runtime: 10.851944444444444
+- mean R/H/S/D/K: 4.866666666666666/4.833333333333333/4.861111111111111/4.944444444444445/4.944444444444445
+- mean overall (avg R/H/S/D/K): 4.890000000000001
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.47, hallucination_suspected=0.01
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
@@ -31,13 +31,13 @@
 - mean R/H/S/D/K: 3.433333333333333/3.5/3.1/3.8/2.6333333333333333
 - mean overall (avg R/H/S/D/K): 3.2933333333333334
 ### S0_RAW (n=30)
-- mean runtime: 11.817200000000001
-- mean R/H/S/D/K: 4.933333333333334/4.933333333333334/4.966666666666667/4.966666666666667/5.0
-- mean overall (avg R/H/S/D/K): 4.96
+- mean runtime: 10.272833333333333
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.966666666666667/4.966666666666667/4.933333333333334
+- mean overall (avg R/H/S/D/K): 4.953333333333333
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 11.440633333333333
-- mean R/H/S/D/K: 4.866666666666666/4.9/4.966666666666667/5.0/4.833333333333333
-- mean overall (avg R/H/S/D/K): 4.913333333333333
+- mean runtime: 10.1159
+- mean R/H/S/D/K: 4.766666666666667/4.766666666666667/4.9/4.966666666666667/4.866666666666666
+- mean overall (avg R/H/S/D/K): 4.8533333333333335
 ### S1 (n=30)
 - mean runtime: 4.447533333333333
 - mean R/H/S/D/K: 4.633333333333334/4.366666666666666/4.2/4.4/3.566666666666667
@@ -78,9 +78,9 @@
 - Keine Berücksichtigung des intermittent-Charakters: 1
 - Generische Ampel-Erwähnung ohne Kontext-Signal: 1
 - Keine explizite Stop-Condition bei Gefahr: 1
+- Explizite Priorisierung auf Feuchtigkeitsproblematik (bereits im CONTEXT dokumentiert): 1
+- Hinweis auf poor_visibility/fog als aktuelles Sicherheitsrisiko bei Arbeiten: 1
 - Asset-ID/Mast-Nummer explizit erwähnen: 1
 - Ticket-ID/Asset-ID explizit in Dokumentation: 1
 - Asset-ID/OSM-ID explizit im Protokoll erwähnen: 1
 - GPS-Koordinaten für Dokumentation nennen: 1
-- Kontext-Nutzung minimal (nur Asset-ID verwendet): 1
-- Keine Anpassung an fehlende Umgebungs-/Device-Infos: 1
