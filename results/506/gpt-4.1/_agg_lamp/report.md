@@ -1,6 +1,6 @@
-# Aggregation Report (506\gpt-4.1) [lamp]
+# Aggregation Report (506/gpt-4.1) [lamp]
 - judge_version filter: **judge_v1_1**
-- Tests (latest runs): **210**
+- Tests (latest runs): **270**
 - Incidents with any deltas: **30**
 
 ## Mean scores by context level (snapshot)
@@ -19,10 +19,10 @@
 - mean R/H/S/D/K: 4.833333333333333/4.766666666666667/4.366666666666666/4.8/4.966666666666667
 - mean overall (avg R/H/S/D/K): 4.746666666666667
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.70, hallucination_suspected=0.00
-### unknown (n=120)
-- mean runtime: 11.180733333333334
-- mean R/H/S/D/K: 4.866666666666666/4.825/4.825/4.933333333333334/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.883333333333334
+### unknown (n=180)
+- mean runtime: 10.829666666666666
+- mean R/H/S/D/K: 4.888888888888889/4.85/4.866666666666666/4.955555555555556/4.961111111111111
+- mean overall (avg R/H/S/D/K): 4.904444444444445
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.46, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
@@ -30,6 +30,14 @@
 - mean runtime: 3.797433333333333
 - mean R/H/S/D/K: 3.433333333333333/3.5/3.1/3.8/2.6333333333333333
 - mean overall (avg R/H/S/D/K): 3.2933333333333334
+### S0_RAW (n=30)
+- mean runtime: 10.136866666666666
+- mean R/H/S/D/K: 4.9/4.866666666666666/4.966666666666667/5.0/4.966666666666667
+- mean overall (avg R/H/S/D/K): 4.9399999999999995
+### S0_UNSTRUCTURED (n=30)
+- mean runtime: 10.1182
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.933333333333334/5.0/4.933333333333334
+- mean overall (avg R/H/S/D/K): 4.953333333333333
 ### S1 (n=30)
 - mean runtime: 4.447533333333333
 - mean R/H/S/D/K: 4.633333333333334/4.366666666666666/4.2/4.4/3.566666666666667
