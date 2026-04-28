@@ -384,8 +384,9 @@ def _apply_s2_if_strategy(tc: dict, context: dict) -> tuple[dict, dict | None]:
 
     budget_chars = int(os.getenv("S2_BUDGET_CHARS", "3500"))
 
-    source_file = (tc.get("_source_file") or "").lower()
-    is_signal_domain = "signal" in source_file
+    # Domain dispatch: signal assets have traffic_signals/button_operated keys
+    ctx_asset = (context or {}).get("asset") or {}
+    is_signal_domain = "traffic_signals" in ctx_asset or "button_operated" in ctx_asset
     if is_signal_domain:
         s2_out = s2_signal.build_l2b(context or {}, budget=s2_signal.BudgetPolicy(max_chars=budget_chars))
     else:
@@ -396,6 +397,24 @@ def _apply_s2_if_strategy(tc: dict, context: dict) -> tuple[dict, dict | None]:
 
     ctx_selected = {**ctx_selected, "_selection_meta": selection_meta}
     return ctx_selected, selection_meta
+
+
+# ----------------------------
+# Unstructured context helpers
+# ----------------------------
+def _prepare_context_for_injection(context: dict, strategy: str) -> tuple[dict | None, str | None]:
+    """
+    For S0_raw and S0_unstructured strategies, the context_json stores the
+    pre-formatted text under a special key. Extract it for direct text injection.
+    Returns (context_dict_or_None, raw_text_or_None).
+    """
+    if strategy == "S0_raw":
+        text = (context or {}).get("_raw_text")
+        return None, text
+    if strategy == "S0_unstructured":
+        text = (context or {}).get("_unstructured_text")
+        return None, text
+    return context, None
 
 
 # ----------------------------
@@ -423,6 +442,9 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
     # ---- S2 hook ----
     context_for_model, selection_meta = _apply_s2_if_strategy(tc, context)
 
+    # ---- unstructured context hook ----
+    context_for_model, raw_text_override = _prepare_context_for_injection(context_for_model, strategy)
+
     if client_name not in CLIENTS:
         raise ValueError(f"Unbekannter Client: '{client_name}'")
     client = CLIENTS[client_name]
@@ -439,6 +461,7 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
         prompt=prompt,
         model=model,
         context=context_for_model,
+        raw_text_context=raw_text_override,
         image_path=image_path,
         audio_path=audio_path,
         video_path=video_path,
@@ -543,6 +566,7 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
 
         base_context = input_data.get("context") or {}
         context_for_model, selection_meta = _apply_s2_if_strategy(tc, base_context)
+        context_for_model, raw_text_override = _prepare_context_for_injection(context_for_model, strategy)
 
         start = time.perf_counter()
         ans = client.generate(
@@ -550,6 +574,7 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
             prompt=input_data.get("prompt"),
             model=model,
             context=context_for_model,
+            raw_text_context=raw_text_override,
             image_path=input_data.get("image_path"),
             audio_path=input_data.get("audio_path"),
             video_path=input_data.get("video_path"),
