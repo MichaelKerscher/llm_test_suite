@@ -384,9 +384,8 @@ def _apply_s2_if_strategy(tc: dict, context: dict) -> tuple[dict, dict | None]:
 
     budget_chars = int(os.getenv("S2_BUDGET_CHARS", "3500"))
 
-    # Domain dispatch: signal assets have traffic_signals/button_operated keys
-    ctx_asset = (context or {}).get("asset") or {}
-    is_signal_domain = "traffic_signals" in ctx_asset or "button_operated" in ctx_asset
+    source_file = (tc.get("_source_file") or "").lower()
+    is_signal_domain = "signal" in source_file
     if is_signal_domain:
         s2_out = s2_signal.build_l2b(context or {}, budget=s2_signal.BudgetPolicy(max_chars=budget_chars))
     else:
