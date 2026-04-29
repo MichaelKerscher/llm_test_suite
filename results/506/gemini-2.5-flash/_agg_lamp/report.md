@@ -20,10 +20,10 @@
 - mean overall (avg R/H/S/D/K): 4.886666666666667
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.60, hallucination_suspected=0.00
 ### unknown (n=180)
-- mean runtime: 9.533144444444446
-- mean R/H/S/D/K: 4.9/4.888888888888889/4.883333333333334/4.961111111111111/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.92
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.46, hallucination_suspected=0.00
+- mean runtime: 9.34603888888889
+- mean R/H/S/D/K: 4.888888888888889/4.877777777777778/4.877777777777778/4.961111111111111/4.961111111111111
+- mean overall (avg R/H/S/D/K): 4.913333333333333
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.47, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
@@ -31,13 +31,13 @@
 - mean R/H/S/D/K: 3.466666666666667/3.8333333333333335/3.9/4.033333333333333/2.8333333333333335
 - mean overall (avg R/H/S/D/K): 3.6133333333333337
 ### S0_RAW (n=30)
-- mean runtime: 9.935866666666668
-- mean R/H/S/D/K: 4.966666666666667/4.966666666666667/4.966666666666667/4.966666666666667/4.933333333333334
-- mean overall (avg R/H/S/D/K): 4.96
+- mean runtime: 9.2285
+- mean R/H/S/D/K: 5.0/4.966666666666667/4.966666666666667/5.0/5.0
+- mean overall (avg R/H/S/D/K): 4.986666666666666
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 9.990733333333333
-- mean R/H/S/D/K: 4.966666666666667/4.966666666666667/4.966666666666667/5.0/5.0
-- mean overall (avg R/H/S/D/K): 4.98
+- mean runtime: 9.575466666666667
+- mean R/H/S/D/K: 4.866666666666666/4.9/4.933333333333334/4.966666666666667/4.9
+- mean overall (avg R/H/S/D/K): 4.913333333333333
 ### S1 (n=30)
 - mean runtime: 8.964233333333334
 - mean R/H/S/D/K: 4.733333333333333/4.6/4.633333333333334/4.9/3.7333333333333334
