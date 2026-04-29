@@ -20,9 +20,9 @@
 - mean overall (avg R/H/S/D/K): 4.886666666666667
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.60, hallucination_suspected=0.00
 ### unknown (n=180)
-- mean runtime: 9.175872222222221
-- mean R/H/S/D/K: 4.894444444444445/4.861111111111111/4.883333333333334/4.961111111111111/4.955555555555556
-- mean overall (avg R/H/S/D/K): 4.911111111111111
+- mean runtime: 9.299383333333333
+- mean R/H/S/D/K: 4.905555555555556/4.883333333333334/4.888888888888889/4.966666666666667/4.977777777777778
+- mean overall (avg R/H/S/D/K): 4.924444444444444
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.46, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
@@ -31,13 +31,13 @@
 - mean R/H/S/D/K: 3.466666666666667/3.8333333333333335/3.9/4.033333333333333/2.8333333333333335
 - mean overall (avg R/H/S/D/K): 3.6133333333333337
 ### S0_RAW (n=30)
-- mean runtime: 8.482166666666666
-- mean R/H/S/D/K: 4.966666666666667/4.9/4.966666666666667/4.966666666666667/5.0
-- mean overall (avg R/H/S/D/K): 4.96
+- mean runtime: 9.427999999999999
+- mean R/H/S/D/K: 5.0/4.966666666666667/5.0/5.0/5.0
+- mean overall (avg R/H/S/D/K): 4.993333333333334
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 9.3008
-- mean R/H/S/D/K: 4.933333333333334/4.866666666666666/4.966666666666667/5.0/4.866666666666666
-- mean overall (avg R/H/S/D/K): 4.926666666666667
+- mean runtime: 9.096033333333335
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.966666666666667/5.0/5.0
+- mean overall (avg R/H/S/D/K): 4.973333333333333
 ### S1 (n=30)
 - mean runtime: 8.964233333333334
 - mean R/H/S/D/K: 4.733333333333333/4.6/4.633333333333334/4.9/3.7333333333333334
@@ -75,12 +75,12 @@
 - Spezifische Priorisierung bei intermittent fault: 1
 - Beobachtungsdauer/Trigger für intermittierenden Fehler: 1
 - Klarstellung device_state vs. Asset-Fehler: 1
-- Offline-Workflow für spotty connectivity nicht explizit erwähnt: 1
 - Explizite Ticket-ID-Erfassung: 1
 - Zeitstempel-Dokumentation: 1
 - Explizite Stop-Conditions für Abbruch: 1
 - Offline-Workflow (connectivity=offline, device_state=low_battery): 1
 - Keine Offline-Workflow-Erwähnung (aber nicht erwartbar bei minimalem Kontext): 1
 - Offline-Workflow bei spotty connectivity nicht explizit erwähnt: 1
-- Offline-Workflow explizit (bei spotty connectivity): 1
 - Offline-Workflow (connectivity=offline): 1
+- Klare Priorisierung Offline-Dokumentation: 1
+- Asset-ID explizit im Protokoll: 1
