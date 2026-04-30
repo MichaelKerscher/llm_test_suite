@@ -233,9 +233,11 @@ def _norm_test_id(s: str) -> str:
 # ----------------------------
 # Judge prompts
 # ----------------------------
-def _build_judge_prompt_single(tc: dict, assistant_answer: str, expected_elements: str) -> str:
+def _build_judge_prompt_single(tc: dict, assistant_answer: str, expected_elements: str, judge_context: dict | None = None) -> str:
     user_message = tc["input"]["prompt"]
-    context_json = tc["input"].get("context") or {}
+    # Use judge_context if provided (e.g. for S0_raw/S0_unstructured where context_for_model is None)
+    # Fall back to tc["input"]["context"] for all other strategies
+    context_json = judge_context if judge_context is not None else (tc["input"].get("context") or {})
     meta = tc["input"].get("meta") or {}
     asset_type = meta.get("asset_type", "unknown")
     fault_type = meta.get("fault_type", "unknown")
@@ -282,6 +284,11 @@ def _build_judge_prompt_incident(
 ) -> str:
     blocks = []
     for row in generated_answers:
+        row_strategy = row.get("strategy", "")
+        if row_strategy in ("S0_RAW", "S0_UNSTRUCTURED"):
+            judge_ctx = row.get("original_context") or row.get("context_json") or {}
+        else:
+            judge_ctx = row.get("context_json") or {}
         blocks.append(
             f"""
 --- {row["test_id"]} ({row.get("context_level","")}) ---
@@ -289,7 +296,7 @@ USER_MESSAGE:
 {row["user_message"]}
 
 CONTEXT_JSON:
-{_safe_json_dumps(row["context_json"])}
+{_safe_json_dumps(judge_ctx)}
 
 ANSWER:
 {row["answer"]}
@@ -442,6 +449,9 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
 
     strategy = _strategy_of(tc)
 
+    # Save original L2_full context for judge reference BEFORE any transformation
+    original_context = dict(context) if context else {}
+
     # ---- S2 hook ----
     context_for_model, selection_meta = _apply_s2_if_strategy(tc, context)
 
@@ -473,7 +483,9 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
     judge_out = None
     if has_judge:
         expected_elements = (input_data.get("meta") or {}).get("expected_elements_short", "")
-        judge_prompt = _build_judge_prompt_single(tc, answer, expected_elements)
+        # For S0_raw/S0_unstructured: pass original L2_full context so judge can evaluate context usage correctly
+        judge_context = original_context if strategy in ("S0_RAW", "S0_UNSTRUCTURED") else None
+        judge_prompt = _build_judge_prompt_single(tc, answer, expected_elements, judge_context=judge_context)
         judge_out = client.judge(
             prompt=judge_prompt,
             model=judge_model,
@@ -567,6 +579,7 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
         strategy = _strategy_of(tc)
 
         base_context = input_data.get("context") or {}
+        original_context_inc = dict(base_context) if base_context else {}
         context_for_model, selection_meta = _apply_s2_if_strategy(tc, base_context)
         inc_prompt, context_for_model = _resolve_prompt_and_context(
             input_data.get("prompt"), context_for_model, strategy
@@ -590,6 +603,7 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
                 "context_level": (input_data.get("meta") or {}).get("context_level", ""),
                 "user_message": input_data.get("prompt"),
                 "context_json": context_for_model or {},
+                "original_context": original_context_inc,
                 "answer": ans,
                 "model": model,
                 "selection_meta": selection_meta,
