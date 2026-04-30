@@ -20,9 +20,9 @@
 - mean overall (avg R/H/S/D/K): 4.746666666666667
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.70, hallucination_suspected=0.00
 ### unknown (n=180)
-- mean runtime: 10.871016666666666
-- mean R/H/S/D/K: 4.894444444444445/4.861111111111111/4.866666666666666/4.955555555555556/4.961111111111111
-- mean overall (avg R/H/S/D/K): 4.907777777777778
+- mean runtime: 10.491011111111112
+- mean R/H/S/D/K: 4.9/4.861111111111111/4.866666666666666/4.944444444444445/4.955555555555556
+- mean overall (avg R/H/S/D/K): 4.905555555555556
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.46, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
@@ -31,13 +31,13 @@
 - mean R/H/S/D/K: 3.433333333333333/3.5/3.1/3.8/2.6333333333333333
 - mean overall (avg R/H/S/D/K): 3.2933333333333334
 ### S0_RAW (n=30)
-- mean runtime: 10.1379
-- mean R/H/S/D/K: 5.0/4.966666666666667/5.0/5.0/5.0
-- mean overall (avg R/H/S/D/K): 4.993333333333334
+- mean runtime: 9.115499999999999
+- mean R/H/S/D/K: 4.966666666666667/4.966666666666667/4.933333333333334/4.933333333333334/4.966666666666667
+- mean overall (avg R/H/S/D/K): 4.953333333333333
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 10.365266666666667
-- mean R/H/S/D/K: 4.9/4.9/4.9/5.0/4.9
-- mean overall (avg R/H/S/D/K): 4.92
+- mean runtime: 9.107633333333332
+- mean R/H/S/D/K: 4.966666666666667/4.9/4.966666666666667/5.0/4.9
+- mean overall (avg R/H/S/D/K): 4.946666666666667
 ### S1 (n=30)
 - mean runtime: 4.447533333333333
 - mean R/H/S/D/K: 4.633333333333334/4.366666666666666/4.2/4.4/3.566666666666667
@@ -65,15 +65,16 @@
 
 ## Top missing elements (max 20)
 - Offline-Workflow bei spotty connectivity: 3
+- Klare Stop-Condition für Beobachtungsphase: 2
 - Kein expliziter Offline-Workflow trotz connectivity=spotty: 2
 - Keine Nutzung der Asset-ID im Kontext: 2
 - Spezifische Stop-Conditions für Beobachtungsphase: 2
 - Kontextnutzung minimal (nur Asset-ID): 2
-- Klare Stop-Condition für Beobachtungsphase: 1
 - Konkrete Zeitangabe für Wiederholungsprüfung: 1
 - Explizite Stop-Condition für Beobachtungsphase: 1
 - Offline-Workflow (Gerät offline): 1
 - Klarstellung: device_state betrifft Techniker-Gerät, nicht Asset: 1
+- Konkrete Eskalations-Trigger definieren: 1
 - Keine Nutzung der Asset-ID im Workflow: 1
 - Keine Berücksichtigung des intermittent-Charakters: 1
 - Generische Ampel-Erwähnung ohne Kontext-Signal: 1
@@ -83,4 +84,3 @@
 - Asset-ID/OSM-ID explizit im Protokoll erwähnen: 1
 - GPS-Koordinaten für Dokumentation nennen: 1
 - Kontext-Nutzung minimal (nur Asset-ID verwendet): 1
-- Keine Anpassung an fehlende Umgebungs-/Device-Infos: 1
