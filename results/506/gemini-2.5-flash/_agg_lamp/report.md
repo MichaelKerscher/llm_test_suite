@@ -20,10 +20,10 @@
 - mean overall (avg R/H/S/D/K): 4.886666666666667
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.60, hallucination_suspected=0.00
 ### unknown (n=180)
-- mean runtime: 10.44266111111111
-- mean R/H/S/D/K: 4.888888888888889/4.872222222222222/4.877777777777778/4.961111111111111/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.913333333333333
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.47, hallucination_suspected=0.00
+- mean runtime: 9.130044444444444
+- mean R/H/S/D/K: 4.877777777777778/4.861111111111111/4.872222222222222/4.966666666666667/4.961111111111111
+- mean overall (avg R/H/S/D/K): 4.907777777777778
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.45, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
@@ -31,13 +31,13 @@
 - mean R/H/S/D/K: 3.466666666666667/3.8333333333333335/3.9/4.033333333333333/2.8333333333333335
 - mean overall (avg R/H/S/D/K): 3.6133333333333337
 ### S0_RAW (n=30)
-- mean runtime: 14.636566666666665
-- mean R/H/S/D/K: 4.966666666666667/4.966666666666667/4.966666666666667/5.0/5.0
-- mean overall (avg R/H/S/D/K): 4.98
+- mean runtime: 8.654866666666667
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.966666666666667/5.0/5.0
+- mean overall (avg R/H/S/D/K): 4.973333333333333
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 10.747133333333332
-- mean R/H/S/D/K: 4.9/4.866666666666666/4.933333333333334/4.966666666666667/4.933333333333334
-- mean overall (avg R/H/S/D/K): 4.92
+- mean runtime: 8.853133333333334
+- mean R/H/S/D/K: 4.833333333333333/4.833333333333333/4.9/5.0/4.9
+- mean overall (avg R/H/S/D/K): 4.8933333333333335
 ### S1 (n=30)
 - mean runtime: 8.964233333333334
 - mean R/H/S/D/K: 4.733333333333333/4.6/4.633333333333334/4.9/3.7333333333333334
@@ -71,16 +71,16 @@
 - Generische Schritte ohne Priorisierung nach Severity: 1
 - Offline-Workflow nicht explizit erwähnt trotz connectivity=offline: 1
 - Device-Status erwähnt, aber nicht als Workflow-Constraint genutzt: 1
+- Explizite Priorisierung bei erneutem Ausfall: 1
+- Klare Trigger für sofortige Eskalation: 1
 - Kontextnutzung (nur Asset-ID vorhanden, keine Umwelt-/Geräte-Infos genutzt): 1
 - Spezifische Priorisierung bei intermittent fault: 1
 - Beobachtungsdauer/Trigger für intermittierenden Fehler: 1
 - Klarstellung device_state vs. Asset-Fehler: 1
+- Offline-Workflow für spotty connectivity nicht explizit erwähnt: 1
 - Explizite Ticket-ID-Erfassung: 1
 - Zeitstempel-Dokumentation: 1
 - Explizite Stop-Conditions für Abbruch: 1
 - Offline-Workflow (connectivity=offline, device_state=low_battery): 1
 - Keine Offline-Workflow-Erwähnung (aber nicht erwartbar bei minimalem Kontext): 1
 - Offline-Workflow bei spotty connectivity nicht explizit erwähnt: 1
-- Offline-Workflow (connectivity=offline): 1
-- Klare Priorisierung Offline-Dokumentation: 1
-- Asset-ID explizit im Protokoll: 1
