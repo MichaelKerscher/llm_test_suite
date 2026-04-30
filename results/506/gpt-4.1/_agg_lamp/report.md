@@ -20,9 +20,9 @@
 - mean overall (avg R/H/S/D/K): 4.746666666666667
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.70, hallucination_suspected=0.00
 ### unknown (n=180)
-- mean runtime: 10.233144444444443
-- mean R/H/S/D/K: 4.866666666666666/4.85/4.866666666666666/4.95/4.944444444444445
-- mean overall (avg R/H/S/D/K): 4.895555555555556
+- mean runtime: 10.571083333333334
+- mean R/H/S/D/K: 4.894444444444445/4.855555555555555/4.861111111111111/4.938888888888889/4.966666666666667
+- mean overall (avg R/H/S/D/K): 4.903333333333333
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.46, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
@@ -31,13 +31,13 @@
 - mean R/H/S/D/K: 3.433333333333333/3.5/3.1/3.8/2.6333333333333333
 - mean overall (avg R/H/S/D/K): 3.2933333333333334
 ### S0_RAW (n=30)
-- mean runtime: 8.225133333333334
-- mean R/H/S/D/K: 4.933333333333334/4.933333333333334/4.9/4.966666666666667/4.933333333333334
+- mean runtime: 9.023566666666666
+- mean R/H/S/D/K: 4.966666666666667/4.9/4.933333333333334/4.9/4.966666666666667
 - mean overall (avg R/H/S/D/K): 4.933333333333334
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 8.4508
-- mean R/H/S/D/K: 4.8/4.866666666666666/5.0/5.0/4.866666666666666
-- mean overall (avg R/H/S/D/K): 4.906666666666666
+- mean runtime: 9.68
+- mean R/H/S/D/K: 4.933333333333334/4.933333333333334/4.933333333333334/5.0/4.966666666666667
+- mean overall (avg R/H/S/D/K): 4.953333333333333
 ### S1 (n=30)
 - mean runtime: 4.447533333333333
 - mean R/H/S/D/K: 4.633333333333334/4.366666666666666/4.2/4.4/3.566666666666667
@@ -74,7 +74,6 @@
 - Explizite Stop-Condition für Beobachtungsphase: 1
 - Offline-Workflow (Gerät offline): 1
 - Klarstellung: device_state betrifft Techniker-Gerät, nicht Asset: 1
-- Klare Stop-Condition für Beobachtungsphase fehlt: 1
 - Keine Nutzung der Asset-ID im Workflow: 1
 - Keine Berücksichtigung des intermittent-Charakters: 1
 - Generische Ampel-Erwähnung ohne Kontext-Signal: 1
@@ -84,3 +83,4 @@
 - Asset-ID/OSM-ID explizit im Protokoll erwähnen: 1
 - GPS-Koordinaten für Dokumentation nennen: 1
 - Kontext-Nutzung minimal (nur Asset-ID verwendet): 1
+- Keine Anpassung an fehlende Umgebungs-/Device-Infos: 1
