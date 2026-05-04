@@ -20,10 +20,10 @@
 - mean overall (avg R/H/S/D/K): 4.924137931034483
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.59, hallucination_suspected=0.00
 ### unknown (n=180)
-- mean runtime: 9.215972222222222
-- mean R/H/S/D/K: 4.872222222222222/4.866666666666666/4.861111111111111/4.95/4.972222222222222
-- mean overall (avg R/H/S/D/K): 4.904444444444445
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.45, hallucination_suspected=0.00
+- mean runtime: 9.280149999999999
+- mean R/H/S/D/K: 4.888888888888889/4.888888888888889/4.883333333333334/4.966666666666667/4.955555555555556
+- mean overall (avg R/H/S/D/K): 4.916666666666667
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.46, hallucination_suspected=0.01
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
@@ -31,13 +31,13 @@
 - mean R/H/S/D/K: 3.533333333333333/3.6666666666666665/3.6/4.0/2.9
 - mean overall (avg R/H/S/D/K): 3.54
 ### S0_RAW (n=30)
-- mean runtime: 8.9832
-- mean R/H/S/D/K: 4.9/4.866666666666666/4.9/4.9/5.0
-- mean overall (avg R/H/S/D/K): 4.913333333333333
+- mean runtime: 9.145266666666666
+- mean R/H/S/D/K: 5.0/4.966666666666667/4.966666666666667/5.0/4.933333333333334
+- mean overall (avg R/H/S/D/K): 4.973333333333333
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 9.620033333333334
-- mean R/H/S/D/K: 4.933333333333334/4.9/4.9/5.0/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.9399999999999995
+- mean runtime: 9.843033333333333
+- mean R/H/S/D/K: 4.933333333333334/4.933333333333334/4.966666666666667/5.0/4.933333333333334
+- mean overall (avg R/H/S/D/K): 4.953333333333333
 ### S1 (n=30)
 - mean runtime: 8.620433333333333
 - mean R/H/S/D/K: 4.8/4.6/4.733333333333333/4.833333333333333/3.8666666666666667
@@ -67,9 +67,9 @@
 - Offline-Workflow bei spotty connectivity: 5
 - Offline-Workflow bei spotty connectivity nicht explizit erwähnt: 3
 - Keine Nutzung der Asset-ID im Kontext: 3
-- Klare Stop-Condition für Beobachtungsphase fehlt: 2
 - Kontextnutzung minimal (nur Asset-ID): 2
 - Keine Priorisierung nach Severity (nicht im Context): 2
+- Klare Stop-Condition für Beobachtungsphase fehlt: 1
 - Offline-Workflow fehlt trotz connectivity=offline: 1
 - Verwechslung device.* mit Asset-Fehlerursache: 1
 - Keine Nutzung von Umgebungs-/Foto-Kontext (nicht vorhanden): 1
@@ -78,9 +78,9 @@
 - Keine Anpassung an Umgebung/Zeit/Konnektivität: 1
 - Offline-Workflow nicht erwähnt trotz spotty connectivity: 1
 - Annahme zu low_battery spekulativ formuliert: 1
-- Explizite Stop-Conditions für Abbruch bei Gefahr: 1
-- Konkrete Offline-Workflow-Anweisung (z.B. lokale Speicherung): 1
+- Offline-Workflow nicht erwähnt (spotty connectivity im Context): 1
 - Offline-Workflow (connectivity=offline, device_state=low_battery): 1
 - Offline-Workflow (connectivity=offline → lokal dokumentieren/später sync): 1
-- Offline-Workflow explizit (device.connectivity=offline im Context): 1
 - Annahme 'Straßenleuchte' ohne Basis: 1
+- Spekulation über Ampel/Bewuchs ohne Signal: 1
+- Offline-Workflow bei spotty connectivity nicht erwähnt: 1
