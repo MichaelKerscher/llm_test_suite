@@ -20,10 +20,10 @@
 - mean overall (avg R/H/S/D/K): 4.886666666666667
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.60, hallucination_suspected=0.00
 ### unknown (n=180)
-- mean runtime: 9.062166666666666
-- mean R/H/S/D/K: 4.888888888888889/4.883333333333334/4.872222222222222/4.966666666666667/4.95
-- mean overall (avg R/H/S/D/K): 4.912222222222223
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.47, hallucination_suspected=0.01
+- mean runtime: 9.257744444444445
+- mean R/H/S/D/K: 4.9/4.866666666666666/4.883333333333334/4.955555555555556/4.966666666666667
+- mean overall (avg R/H/S/D/K): 4.914444444444444
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.45, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
@@ -31,13 +31,13 @@
 - mean R/H/S/D/K: 3.466666666666667/3.8333333333333335/3.9/4.033333333333333/2.8333333333333335
 - mean overall (avg R/H/S/D/K): 3.6133333333333337
 ### S0_RAW (n=30)
-- mean runtime: 8.3652
-- mean R/H/S/D/K: 4.966666666666667/4.966666666666667/4.9/5.0/4.933333333333334
-- mean overall (avg R/H/S/D/K): 4.953333333333333
+- mean runtime: 9.234566666666666
+- mean R/H/S/D/K: 4.966666666666667/4.9/4.966666666666667/4.933333333333334/4.966666666666667
+- mean overall (avg R/H/S/D/K): 4.946666666666667
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 8.735533333333333
-- mean R/H/S/D/K: 4.9/4.933333333333334/4.966666666666667/5.0/4.9
-- mean overall (avg R/H/S/D/K): 4.9399999999999995
+- mean runtime: 9.039633333333335
+- mean R/H/S/D/K: 4.966666666666667/4.9/4.966666666666667/5.0/4.966666666666667
+- mean overall (avg R/H/S/D/K): 4.96
 ### S1 (n=30)
 - mean runtime: 8.964233333333334
 - mean R/H/S/D/K: 4.733333333333333/4.6/4.633333333333334/4.9/3.7333333333333334
@@ -71,12 +71,12 @@
 - Generische Schritte ohne Priorisierung nach Severity: 1
 - Offline-Workflow nicht explizit erwähnt trotz connectivity=offline: 1
 - Device-Status erwähnt, aber nicht als Workflow-Constraint genutzt: 1
-- Klare Stop-Condition für Beobachtungsdauer: 1
-- Explizite Trigger für sofortige Eskalation bei Wiederauftreten: 1
 - Kontextnutzung (nur Asset-ID vorhanden, keine Umwelt-/Geräte-Infos genutzt): 1
 - Spezifische Priorisierung bei intermittent fault: 1
 - Beobachtungsdauer/Trigger für intermittierenden Fehler: 1
 - Klarstellung device_state vs. Asset-Fehler: 1
+- Explizite OSM-ID/Asset-ID im Protokoll: 1
+- GPS-Koordinaten in Dokumentation: 1
 - Explizite Ticket-ID-Erfassung: 1
 - Zeitstempel-Dokumentation: 1
 - Explizite Stop-Conditions für Abbruch: 1
