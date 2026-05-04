@@ -20,10 +20,10 @@
 - mean overall (avg R/H/S/D/K): 4.924137931034483
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.59, hallucination_suspected=0.00
 ### unknown (n=180)
-- mean runtime: 9.163994444444445
-- mean R/H/S/D/K: 4.877777777777778/4.888888888888889/4.888888888888889/4.95/4.961111111111111
-- mean overall (avg R/H/S/D/K): 4.913333333333333
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.46, hallucination_suspected=0.01
+- mean runtime: 9.246583333333334
+- mean R/H/S/D/K: 4.866666666666666/4.866666666666666/4.888888888888889/4.961111111111111/4.955555555555556
+- mean overall (avg R/H/S/D/K): 4.907777777777778
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.47, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
@@ -31,13 +31,13 @@
 - mean R/H/S/D/K: 3.533333333333333/3.6666666666666665/3.6/4.0/2.9
 - mean overall (avg R/H/S/D/K): 3.54
 ### S0_RAW (n=30)
-- mean runtime: 8.701266666666667
-- mean R/H/S/D/K: 4.966666666666667/4.966666666666667/4.966666666666667/4.933333333333334/5.0
-- mean overall (avg R/H/S/D/K): 4.966666666666667
+- mean runtime: 9.386033333333334
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/5.0/4.966666666666667/5.0
+- mean overall (avg R/H/S/D/K): 4.973333333333333
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 9.5901
-- mean R/H/S/D/K: 4.9/4.933333333333334/5.0/4.966666666666667/4.9
-- mean overall (avg R/H/S/D/K): 4.9399999999999995
+- mean runtime: 9.400866666666667
+- mean R/H/S/D/K: 4.833333333333333/4.833333333333333/4.966666666666667/5.0/4.866666666666666
+- mean overall (avg R/H/S/D/K): 4.9
 ### S1 (n=30)
 - mean runtime: 8.620433333333333
 - mean R/H/S/D/K: 4.8/4.6/4.733333333333333/4.833333333333333/3.8666666666666667
@@ -65,7 +65,7 @@
 
 ## Top missing elements (max 20)
 - Offline-Workflow bei spotty connectivity: 5
-- Offline-Workflow bei spotty connectivity nicht explizit erwähnt: 3
+- Offline-Workflow bei spotty connectivity nicht explizit erwähnt: 4
 - Keine Nutzung der Asset-ID im Kontext: 3
 - Kontextnutzung minimal (nur Asset-ID): 2
 - Keine Priorisierung nach Severity (nicht im Context): 2
@@ -78,9 +78,9 @@
 - Keine Anpassung an Umgebung/Zeit/Konnektivität: 1
 - Offline-Workflow nicht erwähnt trotz spotty connectivity: 1
 - Annahme zu low_battery spekulativ formuliert: 1
-- Offline-Workflow für spotty connectivity: 1
-- Explizite Erwähnung low_battery des Melders: 1
+- Explizite Eskalationskriterien bei severity=mittel: 1
+- Ticket-ID-Referenz für Nachverfolgung: 1
+- Offline-Workflow (spotty connectivity nicht adressiert): 1
 - Offline-Workflow (connectivity=offline, device_state=low_battery): 1
 - Offline-Workflow (connectivity=offline → lokal dokumentieren/später sync): 1
 - Annahme 'Straßenleuchte' ohne Basis: 1
-- Spekulation über Ampel/Bewuchs ohne Signal: 1
