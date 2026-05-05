@@ -1,55 +1,96 @@
 [
   {
     "test_id": "INC-LAMP-0010-TC1",
-    "scores": {"R":3,"H":3,"S":3,"D":3,"K":2},
+    "scores": {
+      "R": 3,
+      "H": 3,
+      "S": 3,
+      "D": 4,
+      "K": 2
+    },
     "flags": {
       "safety_first": true,
       "escalation_present": true,
       "offline_workflow_mentioned": false,
       "hallucination_suspected": false
     },
-    "missing_elements": ["Offline-Workflow nicht erwähnt (kein Signal im CONTEXT)","Kontextnutzung minimal (nur Asset-ID)"],
-    "short_justification": "Generische, strukturierte Antwort mit Safety-first und Eskalation. Kontext (nur Asset-ID) wird kaum genutzt, keine Halluzinationen, aber auch keine spezifischen Hinweise auf Umgebung/Wetter/Konnektivität (da nicht im CONTEXT)."
+    "missing_elements": [
+      "Severity-driven prioritization unclear",
+      "No explicit stop-conditions",
+      "Context minimal, but answer assumes high-risk scenario without signal"
+    ],
+    "short_justification": "Antwort ist strukturiert und sicherheitsorientiert, aber bei minimalem Context (nur asset_osm) spekuliert sie über Verkehr/Wetter/Dringlichkeit ohne Basis. Dokumentation gut, aber K=2 wegen Überinterpretation des Kontexts."
   },
   {
     "test_id": "INC-LAMP-0010-TC4",
-    "scores": {"R":4,"H":4,"S":4,"D":4,"K":4},
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 4,
+      "K": 4
+    },
     "flags": {
       "safety_first": true,
       "escalation_present": true,
       "offline_workflow_mentioned": true,
       "hallucination_suspected": false
     },
-    "missing_elements": [],
-    "short_justification": "Sehr gute Nutzung des _raw_text: Verkehr, Wetter, Foto, Konnektivität (instabil → Offline-Workflow erwähnt). Safety-first klar, Eskalation passend zu severity=high, Dokumentation detailliert."
+    "missing_elements": [
+      "Stop-conditions could be sharper"
+    ],
+    "short_justification": "Sehr gute Nutzung des raw_text: Severity, Wetter, Verkehr, instabile Konnektivität werden korrekt verarbeitet. Safety first, klare Schritte, Offline-Workflow erwähnt. Dokumentation und Eskalation passend zu high severity."
   },
   {
     "test_id": "INC-LAMP-0010-TC5",
-    "scores": {"R":4,"H":4,"S":4,"D":4,"K":4},
-    "flags": {
-      "safety_first": true,
-      "escalation_present": true,
-      "offline_workflow_mentioned": true,
-      "hallucination_suspected": false
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 4,
+      "K": 3
     },
-    "missing_elements": [],
-    "short_justification": "Gute Nutzung des _unstructured_text: Wetter, Verkehr, Foto, spotty connectivity → Offline-Workflow erwähnt. Safety-first, Eskalation mit Priorität, Dokumentation inkl. GPS. Keine Halluzinationen."
-  },
-  {
-    "test_id": "INC-LAMP-0010-TC2",
-    "scores": {"R":5,"H":5,"S":5,"D":5,"K":4},
     "flags": {
       "safety_first": true,
       "escalation_present": true,
       "offline_workflow_mentioned": false,
       "hallucination_suspected": false
     },
-    "missing_elements": ["Offline-Workflow nicht explizit (spotty connectivity erwähnt, aber kein Offline-Speicher-Hinweis)"],
-    "short_justification": "Exzellente Nutzung des strukturierten CONTEXT: Wetter, Verkehr, Foto, severity=high, spotty connectivity. Safety-first, klare Schritte, Eskalation priorisiert, Dokumentation vollständig. Offline-Workflow fehlt trotz spotty."
+    "missing_elements": [
+      "Offline-Workflow nicht explizit (spotty connectivity im Context)",
+      "Unklare Interpretation von 'ok' im Context"
+    ],
+    "short_justification": "Gute Struktur, Safety first, Eskalation klar. Kontext (spotty connectivity, high severity, rain, dusk) wird genutzt. K=3, da spotty connectivity nicht zu Offline-Workflow führt und 'ok' als irrelevant abgetan wird (konservativ, aber vertretbar)."
+  },
+  {
+    "test_id": "INC-LAMP-0010-TC2",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 4,
+      "K": 4
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Offline-Workflow nicht explizit trotz spotty connectivity"
+    ],
+    "short_justification": "Exzellente Antwort: Safety first prominent, klare Schrittfolge, Eskalation passend zu high severity + poor visibility + high traffic. Kontext (dusk, rain, spotty) gut genutzt. K=4 statt 5, da spotty connectivity zwar erwähnt, aber kein Offline-Workflow empfohlen."
   },
   {
     "test_id": "INC-LAMP-0010-TC3",
-    "scores": {"R":5,"H":5,"S":5,"D":5,"K":5},
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
     "flags": {
       "safety_first": true,
       "escalation_present": true,
@@ -57,6 +98,6 @@
       "hallucination_suspected": false
     },
     "missing_elements": [],
-    "short_justification": "Perfekte Nutzung des CONTEXT inkl. extras.context_notes: Offline-Workflow explizit erwähnt (spotty → lokal speichern), Safety-first, Eskalation passend zu severity/traffic, Dokumentation vollständig, keine Halluzinationen."
+    "short_justification": "Nahezu perfekt: Safety first, klare Struktur, Eskalation passend zu high severity. Offline-Workflow explizit wegen spotty connectivity. Kontext (extras.context_notes, device, environment) vollständig und korrekt genutzt. Dokumentation detailliert."
   }
 ]
