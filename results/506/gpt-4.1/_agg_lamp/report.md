@@ -5,47 +5,47 @@
 
 ## Mean scores by context level (snapshot)
 ### L0 (n=30)
-- mean runtime: 3.797433333333333
-- mean R/H/S/D/K: 3.433333333333333/3.5/3.1/3.8/2.6333333333333333
-- mean overall (avg R/H/S/D/K): 3.2933333333333334
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.07
+- mean runtime: 9.289233333333334
+- mean R/H/S/D/K: 3.6/3.7/3.7666666666666666/4.033333333333333/2.466666666666667
+- mean overall (avg R/H/S/D/K): 3.5133333333333336
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.10
 ### L2 (n=30)
-- mean runtime: 4.447533333333333
-- mean R/H/S/D/K: 4.633333333333334/4.366666666666666/4.2/4.4/3.566666666666667
-- mean overall (avg R/H/S/D/K): 4.233333333333333
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.07, hallucination_suspected=0.10
+- mean runtime: 12.170766666666667
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.833333333333333/4.966666666666667/4.5
+- mean overall (avg R/H/S/D/K): 4.84
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.10, hallucination_suspected=0.00
 ### L2B (n=30)
-- mean runtime: 4.139466666666666
-- mean R/H/S/D/K: 4.833333333333333/4.766666666666667/4.366666666666666/4.8/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.746666666666667
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.70, hallucination_suspected=0.00
+- mean runtime: 11.985866666666668
+- mean R/H/S/D/K: 5.0/5.0/5.0/5.0/5.0
+- mean overall (avg R/H/S/D/K): 5.0
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.60, hallucination_suspected=0.00
 ### unknown (n=180)
-- mean runtime: 10.475877777777777
-- mean R/H/S/D/K: 4.894444444444445/4.861111111111111/4.866666666666666/4.955555555555556/4.977777777777778
-- mean overall (avg R/H/S/D/K): 4.911111111111111
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.46, hallucination_suspected=0.00
+- mean runtime: 11.213227777777778
+- mean R/H/S/D/K: 4.761111111111111/4.722222222222222/4.777777777777778/4.85/4.677777777777778
+- mean overall (avg R/H/S/D/K): 4.757777777777777
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.40, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
-- mean runtime: 3.797433333333333
-- mean R/H/S/D/K: 3.433333333333333/3.5/3.1/3.8/2.6333333333333333
-- mean overall (avg R/H/S/D/K): 3.2933333333333334
+- mean runtime: 9.289233333333334
+- mean R/H/S/D/K: 3.6/3.7/3.7666666666666666/4.033333333333333/2.466666666666667
+- mean overall (avg R/H/S/D/K): 3.5133333333333336
 ### S0_RAW (n=30)
-- mean runtime: 9.138533333333333
-- mean R/H/S/D/K: 4.966666666666667/4.966666666666667/4.966666666666667/5.0/5.0
-- mean overall (avg R/H/S/D/K): 4.98
+- mean runtime: 11.2287
+- mean R/H/S/D/K: 4.766666666666667/4.7/4.766666666666667/4.8/4.5
+- mean overall (avg R/H/S/D/K): 4.706666666666666
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 8.9938
-- mean R/H/S/D/K: 4.933333333333334/4.9/4.933333333333334/5.0/5.0
-- mean overall (avg R/H/S/D/K): 4.953333333333333
+- mean runtime: 11.327733333333333
+- mean R/H/S/D/K: 4.333333333333333/4.333333333333333/4.6/4.566666666666666/3.7
+- mean overall (avg R/H/S/D/K): 4.306666666666667
 ### S1 (n=30)
-- mean runtime: 4.447533333333333
-- mean R/H/S/D/K: 4.633333333333334/4.366666666666666/4.2/4.4/3.566666666666667
-- mean overall (avg R/H/S/D/K): 4.233333333333333
+- mean runtime: 12.170766666666667
+- mean R/H/S/D/K: 4.966666666666667/4.933333333333334/4.833333333333333/4.966666666666667/4.5
+- mean overall (avg R/H/S/D/K): 4.84
 ### S2 (n=30)
-- mean runtime: 4.139466666666666
-- mean R/H/S/D/K: 4.833333333333333/4.766666666666667/4.366666666666666/4.8/4.966666666666667
-- mean overall (avg R/H/S/D/K): 4.746666666666667
+- mean runtime: 11.985866666666668
+- mean R/H/S/D/K: 5.0/5.0/5.0/5.0/5.0
+- mean overall (avg R/H/S/D/K): 5.0
 ### S2_ABL_NOASSET (n=30)
 - mean runtime: 10.9962
 - mean R/H/S/D/K: 4.9/4.933333333333334/4.933333333333334/4.9/4.966666666666667
@@ -64,23 +64,23 @@
 - mean overall (avg R/H/S/D/K): 4.92
 
 ## Top missing elements (max 20)
-- Offline-Workflow bei spotty connectivity: 3
-- Kein expliziter Offline-Workflow trotz connectivity=spotty: 2
-- Keine Nutzung der Asset-ID im Kontext: 2
+- Offline-Workflow (nicht erwartbar, da CONTEXT kein connectivity-Signal enthält): 4
+- Kontextnutzung minimal (nur Asset-ID): 3
+- Keine Nutzung der Asset-ID im Kontext: 3
+- Offline-Workflow explizit (spotty connectivity vorhanden, aber nicht klar adressiert): 2
+- offline_workflow: 2
+- Keine Nutzung des Kontexts (nur Asset-ID vorhanden): 2
 - Spezifische Stop-Conditions für Beobachtungsphase: 2
-- Kontextnutzung minimal (nur Asset-ID): 2
+- Offline-Workflow nicht erwähnt trotz 'spotty' connectivity: 2
+- Offline-Workflow nicht erwähnt (spotty connectivity im CONTEXT): 2
 - Klare Stop-Condition für Beobachtungsphase: 1
 - Konkrete Zeitangabe für Wiederholungsprüfung: 1
 - Explizite Stop-Condition für Beobachtungsphase: 1
-- Offline-Workflow (Gerät offline): 1
-- Klarstellung: device_state betrifft Techniker-Gerät, nicht Asset: 1
-- Keine Nutzung der Asset-ID im Workflow: 1
-- Keine Berücksichtigung des intermittent-Charakters: 1
-- Generische Ampel-Erwähnung ohne Kontext-Signal: 1
-- Keine explizite Stop-Condition bei Gefahr: 1
-- Asset-ID/Mast-Nummer explizit erwähnen: 1
-- Ticket-ID/Asset-ID explizit in Dokumentation: 1
-- Asset-ID/OSM-ID explizit im Protokoll erwähnen: 1
-- GPS-Koordinaten für Dokumentation nennen: 1
-- Kontext-Nutzung minimal (nur Asset-ID verwendet): 1
-- Keine Anpassung an fehlende Umgebungs-/Device-Infos: 1
+- Offline-Workflow (Gerät offline nicht erwähnt): 1
+- Safety-first nicht explizit Schritt 1 (erst nach Gerätehinweis): 1
+- Eskalation könnte klarer priorisiert sein: 1
+- Offline-Workflow nicht erwähnt (Gerät offline): 1
+- Kontextnutzung teils spekulativ (low_battery als Lampen-Problem interpretiert): 1
+- Kontextnutzung (Standort/Foto): 1
+- Feuchtigkeitsflecken-Fokus: 1
+- Nebel/Sicht-Risiko: 1
