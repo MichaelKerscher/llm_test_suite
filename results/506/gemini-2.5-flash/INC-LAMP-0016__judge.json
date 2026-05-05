@@ -1,30 +1,18 @@
 [
   {
     "test_id": "INC-LAMP-0016-TC1",
-    "scores": {"R":4,"H":4,"S":3,"D":4,"K":2},
+    "scores": {"R":4,"H":4,"S":4,"D":4,"K":3},
     "flags": {
       "safety_first": true,
       "escalation_present": true,
       "offline_workflow_mentioned": false,
       "hallucination_suspected": false
     },
-    "missing_elements": ["Offline-Workflow (nicht erwartbar, da connectivity nicht im CONTEXT)", "Gerätezustand (nicht erwartbar)"],
-    "short_justification": "Sehr strukturierte, praxisnahe Antwort mit klarer Priorisierung (Absicherung zuerst). Dokumentation und Eskalation gut. Keine Halluzinationen, aber Kontext minimal (nur OSM-ID), daher K=2 (keine Nutzung von Umwelt/Geräte-Infos, die nicht vorhanden waren)."
+    "missing_elements": ["Offline-Workflow nicht erwähnt (aber CONTEXT zeigt keine connectivity-Probleme, daher kein Fehler)", "Gerätezustand (low_battery/spotty) nicht im CONTEXT, daher nicht erwartbar"],
+    "short_justification": "Sehr strukturierte Antwort mit klarer Priorisierung (Safety first, Schrittfolge 1-5). Eskalation und Dokumentation gut. Kontext minimal (nur asset_osm), daher keine Erwartung an Offline-Workflow oder Geräte-Hinweise. Keine Halluzinationen. R=4 (klar fallbezogen), H=4 (klare Schritte, Stop-Conditions implizit), S=4 (Safety zuerst, Eskalation klar), D=4 (Checkliste vorhanden), K=3 (Kontext minimal genutzt, aber korrekt)."
   },
   {
     "test_id": "INC-LAMP-0016-TC4",
-    "scores": {"R":5,"H":5,"S":5,"D":5,"K":5},
-    "flags": {
-      "safety_first": true,
-      "escalation_present": true,
-      "offline_workflow_mentioned": true,
-      "hallucination_suspected": false
-    },
-    "missing_elements": [],
-    "short_justification": "Exzellente Antwort: Safety-first klar, strukturiert (1-2-3-4-5), nutzt alle Kontext-Signale (Regen, Dämmerung, Wasserlaufspuren, instabile Konnektivität, schwache Batterie) explizit und integriert Offline-Workflow. Eskalation mit klarer Begründung (Feuchtigkeitseintritt). Keine Halluzinationen."
-  },
-  {
-    "test_id": "INC-LAMP-0016-TC5",
     "scores": {"R":4,"H":4,"S":4,"D":4,"K":4},
     "flags": {
       "safety_first": true,
@@ -32,20 +20,32 @@
       "offline_workflow_mentioned": false,
       "hallucination_suspected": false
     },
-    "missing_elements": ["Offline-Workflow (erwartbar wegen spotty connectivity)"],
-    "short_justification": "Sehr gute Antwort: Safety-first, strukturiert, nutzt Kontext (Wasserlaufspuren, Regen, poor_visibility, low_battery, spotty). Eskalation klar. Offline-Workflow fehlt trotz spotty connectivity (K=4 statt 5). Keine Halluzinationen."
+    "missing_elements": ["Offline-Workflow nicht explizit genannt (CONTEXT zeigt 'instabil', aber kein 'offline' → nicht zwingend erwartbar)", "Gerätezustand (low_battery/spotty) wird erwähnt, aber kein klarer Offline-Workflow-Schritt"],
+    "short_justification": "Sehr gute Antwort: Safety first, klare 5-Schritte-Struktur, nutzt CONTEXT sichtbar (Wasserlaufspuren, Dämmerung/Regen, Gerätezustand). Eskalation klar. Dokumentation umfassend. Offline-Workflow wird angedeutet ('externe Stromversorgung/Ersatzgerät'), aber nicht explizit als Offline-Dokumentations-Workflow formuliert. Kein harter Fehler, da 'instabil' nicht 'offline' ist. K=4 (sehr gute Kontextnutzung, keine Halluzinationen)."
   },
   {
-    "test_id": "INC-LAMP-0016-TC2",
-    "scores": {"R":5,"H":5,"S":5,"D":5,"K":5},
+    "test_id": "INC-LAMP-0016-TC5",
+    "scores": {"R":4,"H":4,"S":4,"D":4,"K":3},
     "flags": {
       "safety_first": true,
       "escalation_present": true,
       "offline_workflow_mentioned": false,
       "hallucination_suspected": false
     },
-    "missing_elements": ["Offline-Workflow (erwartbar wegen spotty connectivity)"],
-    "short_justification": "Exzellente Antwort: Safety-first, sehr strukturiert (1-5), nutzt alle Kontext-Signale (Dämmerung, Regen, poor_visibility, Wasserlaufspuren, low_battery, spotty connectivity, severity high). Eskalation klar mit Priorität. Rückfragen am Ende zeigen Reflexion. Offline-Workflow fehlt, aber Gesamtqualität sehr hoch."
+    "missing_elements": ["Offline-Workflow nicht erwähnt (CONTEXT zeigt 'spotty', aber kein expliziter Offline-Workflow-Schritt)", "Unstructured CONTEXT erschwert Parsing, aber Modell nutzt Infos gut"],
+    "short_justification": "Strukturierte Antwort mit klarer 5-Schritte-Logik. Safety first, Eskalation vorhanden. Nutzt CONTEXT-Elemente (Wasserlaufspuren, Dämmerung/Regen, low_battery, spotty). Dokumentation umfassend. Offline-Workflow nicht explizit, obwohl 'spotty' im CONTEXT steht – aber nicht als harter Fehler, da 'spotty' nicht 'offline' ist. K=3 (gute Nutzung, aber unstructured CONTEXT könnte besser integriert sein)."
+  },
+  {
+    "test_id": "INC-LAMP-0016-TC2",
+    "scores": {"R":5,"H":5,"S":5,"D":5,"K":4},
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": ["Offline-Workflow nicht explizit (CONTEXT zeigt 'spotty', aber kein klarer Offline-Schritt formuliert)"],
+    "short_justification": "Exzellente Antwort: Safety first, klare 5-Schritte-Struktur, nutzt CONTEXT umfassend (Wasserlaufspuren, Dämmerung/Regen, Gerätezustand low_battery/spotty, severity=high). Eskalation differenziert (Sicherheitsrisiken, unklare Ursache, Gerätedefekt). Dokumentation sehr detailliert. Offline-Workflow nicht explizit genannt, aber 'spotty' ist kein 'offline' → kein harter Fehler. K=4 (sehr gute Kontextnutzung, keine Halluzinationen)."
   },
   {
     "test_id": "INC-LAMP-0016-TC3",
@@ -57,6 +57,6 @@
       "hallucination_suspected": false
     },
     "missing_elements": [],
-    "short_justification": "Perfekte Antwort: Safety-first, klar strukturiert (1-5), nutzt alle Kontext-Signale (Dämmerung, Regen, poor_visibility, Wasserlaufspuren, spotty connectivity, low_battery, severity high). Offline-Workflow explizit integriert (Schritt 4). Eskalation mit klarer Begründung. Keine Halluzinationen."
+    "short_justification": "Perfekte Antwort: Safety first, klare 5-Schritte-Struktur, nutzt CONTEXT vollständig (Wasserlaufspuren, Dämmerung/Regen, Gerätezustand, severity=high). Offline-Workflow explizit genannt ('lokal speichern, später synchronisieren'). Eskalation differenziert. Dokumentation umfassend. Keine Halluzinationen. Alle erwartbaren Elemente erfüllt. R=5, H=5, S=5, D=5, K=5."
   }
 ]
