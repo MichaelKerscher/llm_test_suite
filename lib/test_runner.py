@@ -303,7 +303,7 @@ ANSWER:
 """
         )
 
-    return f"""Du bekommst mehrere Antworten zum selben Incident, jeweils mit unterschiedlicher Kontextstrategie (S0/S1/S2).
+    return f"""Du bekommst mehrere Antworten zum selben Incident, jeweils mit unterschiedlicher Kontextstrategie (S0, S0_RAW, S0_UNSTRUCTURED, S1, S2).
 
 Bewerte JEDEN Block separat nach derselben Rubrik.
 Gib ausschließlich ein gültiges JSON-Array zurück (eine Bewertung pro Block) im Schema:
@@ -541,7 +541,10 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
     if not testcases:
         return
 
-    testcases = sorted(testcases, key=lambda x: x.get("test_id", ""))
+    _strategy_order = {"S0": 1, "S0_RAW": 2, "S0_UNSTRUCTURED": 3, "S1": 4, "S2": 5}
+    testcases = sorted(testcases, key=lambda x: _strategy_order.get(
+        str(((x.get("input") or {}).get("meta") or {}).get("strategy") or "").strip().upper(), 99
+    ))
 
     client_name = _normalize_client_name(testcases[0].get("client", "506"))
     if client_name not in CLIENTS:
