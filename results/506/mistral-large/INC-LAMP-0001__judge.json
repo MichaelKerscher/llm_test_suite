@@ -2,9 +2,9 @@
   {
     "test_id": "INC-LAMP-0001-TC1",
     "scores": {
-      "R": 3,
-      "H": 3,
-      "S": 2,
+      "R": 4,
+      "H": 4,
+      "S": 3,
       "D": 4,
       "K": 3
     },
@@ -15,28 +15,66 @@
       "hallucination_suspected": false
     },
     "missing_elements": [],
-    "short_justification": "Antwort ist strukturiert und fallbezogen, aber bei severity=low und sporadischem Fehler ist die Absicherung überbetont. Dokumentation gut, Kontext minimal genutzt (nur Asset-ID)."
+    "short_justification": "Strukturierte, fallbezogene Antwort mit klarer Schrittfolge. Sicherheit als Schritt 1, Eskalation vorhanden. Kontext (Asset-ID) genutzt, aber keine Offline-Workflow-Erwähnung (nicht erwartbar bei minimalem Kontext). Dokumentation detailliert."
   },
   {
-    "test_id": "INC-LAMP-0001-TC2",
+    "test_id": "INC-LAMP-0001-TC4",
     "scores": {
       "R": 4,
       "H": 4,
       "S": 3,
-      "D": 4,
-      "K": 2
+      "D": 5,
+      "K": 5
     },
     "flags": {
-      "safety_first": false,
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Kontextnutzung: offline/low_battery → explizite Offline-Workflow-Anweisung, Standort/Foto/Schweregrad integriert. Sicherheit priorisiert, Dokumentation sehr detailliert, Eskalation passend zu severity=low."
+  },
+  {
+    "test_id": "INC-LAMP-0001-TC5",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 4,
+      "K": 3
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Offline-Workflow nicht erwähnt trotz offline/low_battery im Kontext"
+    ],
+    "short_justification": "Sehr gute Struktur, Sicherheit zuerst, klare Eskalationslogik. Kontext teilweise genutzt (Standort, Foto), aber offline/low_battery nicht in Workflow integriert. Dokumentation stark."
+  },
+  {
+    "test_id": "INC-LAMP-0001-TC2",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 4,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
       "escalation_present": true,
       "offline_workflow_mentioned": false,
       "hallucination_suspected": true
     },
     "missing_elements": [
-      "Offline-Workflow fehlt trotz connectivity=offline",
-      "Verwechslung device.* mit Asset-Fehlerursache"
+      "Offline-Workflow nicht erwähnt trotz offline im Kontext",
+      "Halluzination: 'Smart-Lighting-System' nicht im Kontext"
     ],
-    "short_justification": "Gute Struktur und Kontextnutzung (Standort, traffic_exposure), aber device.offline/low_battery wird fälschlich als Asset-Problem interpretiert (Halluzination). Offline-Workflow fehlt komplett."
+    "short_justification": "Exzellente Struktur, Sicherheit/Verkehr priorisiert, Kontext sehr gut genutzt (Standort, traffic_exposure, device_state). ABER: Annahme 'Smart-Lighting-System' ist Halluzination (nicht im Kontext). Offline-Workflow fehlt. K=5 wegen sonst starker Kontextnutzung, aber hallucination_suspected=true."
   },
   {
     "test_id": "INC-LAMP-0001-TC3",
@@ -54,6 +92,6 @@
       "hallucination_suspected": false
     },
     "missing_elements": [],
-    "short_justification": "Exzellente Antwort: klare Schrittfolge, nutzt Kontext korrekt (Offline-Workflow explizit, traffic_exposure → Absicherung, photo_description integriert), keine Halluzinationen, vollständige Dokumentation."
+    "short_justification": "Nahezu perfekt: Offline-Workflow explizit integriert ('lokal speichern', 'später synchronisieren'), Sicherheit/Verkehr priorisiert, Kontext vollständig genutzt (offline, low_battery, traffic_exposure, photo_available, severity). Dokumentation und Eskalation klar."
   }
 ]
