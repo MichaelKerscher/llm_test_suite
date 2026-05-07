@@ -5,66 +5,66 @@
 
 ## Mean scores by context level (snapshot)
 ### L0 (n=30)
-- mean runtime: 8.469533333333334
-- mean R/H/S/D/K: 3.8333333333333335/3.966666666666667/4.0/4.133333333333334/2.6333333333333333
-- mean overall (avg R/H/S/D/K): 3.7133333333333334
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.13
+- mean runtime: 8.708266666666667
+- mean R/H/S/D/K: 3.933333333333333/4.033333333333333/4.033333333333333/4.233333333333333/2.566666666666667
+- mean overall (avg R/H/S/D/K): 3.76
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.00, hallucination_suspected=0.33
 ### L2 (n=30)
-- mean runtime: 11.704066666666668
-- mean R/H/S/D/K: 4.933333333333334/4.933333333333334/4.833333333333333/4.966666666666667/4.633333333333334
-- mean overall (avg R/H/S/D/K): 4.86
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.20, hallucination_suspected=0.03
+- mean runtime: 11.006766666666666
+- mean R/H/S/D/K: 4.866666666666666/4.866666666666666/4.9/4.933333333333334/4.7
+- mean overall (avg R/H/S/D/K): 4.8533333333333335
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.17, hallucination_suspected=0.00
 ### L2B (n=30)
-- mean runtime: 9.725533333333335
-- mean R/H/S/D/K: 5.0/5.0/4.866666666666666/4.933333333333334/5.0
-- mean overall (avg R/H/S/D/K): 4.96
+- mean runtime: 10.2169
+- mean R/H/S/D/K: 4.966666666666667/4.966666666666667/4.933333333333334/5.0/5.0
+- mean overall (avg R/H/S/D/K): 4.973333333333333
 - flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.53, hallucination_suspected=0.00
 ### unknown (n=60)
-- mean runtime: 11.238783333333334
-- mean R/H/S/D/K: 4.666666666666667/4.716666666666667/4.766666666666667/4.766666666666667/4.416666666666667
-- mean overall (avg R/H/S/D/K): 4.666666666666667
-- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.25, hallucination_suspected=0.00
+- mean runtime: 11.2594
+- mean R/H/S/D/K: 4.633333333333334/4.633333333333334/4.8/4.716666666666667/4.3
+- mean overall (avg R/H/S/D/K): 4.616666666666666
+- flags (rate): safety_first=1.00, escalation_present=1.00, offline_workflow_mentioned=0.20, hallucination_suspected=0.00
 
 ## Mean scores by strategy (snapshot)
 ### S0 (n=30)
-- mean runtime: 8.469533333333334
-- mean R/H/S/D/K: 3.8333333333333335/3.966666666666667/4.0/4.133333333333334/2.6333333333333333
-- mean overall (avg R/H/S/D/K): 3.7133333333333334
+- mean runtime: 8.708266666666667
+- mean R/H/S/D/K: 3.933333333333333/4.033333333333333/4.033333333333333/4.233333333333333/2.566666666666667
+- mean overall (avg R/H/S/D/K): 3.76
 ### S0_RAW (n=30)
-- mean runtime: 10.9467
-- mean R/H/S/D/K: 4.9/4.9/4.833333333333333/4.966666666666667/4.8
-- mean overall (avg R/H/S/D/K): 4.88
+- mean runtime: 11.305466666666666
+- mean R/H/S/D/K: 4.866666666666666/4.866666666666666/4.9/4.933333333333334/4.666666666666667
+- mean overall (avg R/H/S/D/K): 4.846666666666667
 ### S0_UNSTRUCTURED (n=30)
-- mean runtime: 11.530866666666666
-- mean R/H/S/D/K: 4.433333333333334/4.533333333333333/4.7/4.566666666666666/4.033333333333333
-- mean overall (avg R/H/S/D/K): 4.453333333333333
+- mean runtime: 11.213333333333333
+- mean R/H/S/D/K: 4.4/4.4/4.7/4.5/3.933333333333333
+- mean overall (avg R/H/S/D/K): 4.386666666666667
 ### S1 (n=30)
-- mean runtime: 11.704066666666668
-- mean R/H/S/D/K: 4.933333333333334/4.933333333333334/4.833333333333333/4.966666666666667/4.633333333333334
-- mean overall (avg R/H/S/D/K): 4.86
+- mean runtime: 11.006766666666666
+- mean R/H/S/D/K: 4.866666666666666/4.866666666666666/4.9/4.933333333333334/4.7
+- mean overall (avg R/H/S/D/K): 4.8533333333333335
 ### S2 (n=30)
-- mean runtime: 9.725533333333335
-- mean R/H/S/D/K: 5.0/5.0/4.866666666666666/4.933333333333334/5.0
-- mean overall (avg R/H/S/D/K): 4.96
+- mean runtime: 10.2169
+- mean R/H/S/D/K: 4.966666666666667/4.966666666666667/4.933333333333334/5.0/5.0
+- mean overall (avg R/H/S/D/K): 4.973333333333333
 
 ## Top missing elements (max 20)
-- Offline-Workflow nicht explizit erwähnt: 2
-- Offline-Workflow (nicht erwartbar, da CONTEXT minimal): 2
-- Offline-Workflow nicht explizit (spotty connectivity vorhanden): 2
-- Offline-Workflow (nicht erwartbar, da connectivity nicht im Context): 2
-- Offline-Workflow nicht explizit erwähnt (obwohl offline im Context): 2
-- Explizite Erwähnung Offline-Workflow bei spotty connectivity: 2
-- Offline-Workflow nicht adressiert: 1
-- Fehlinterpretation device-Status: 1
-- Offline-Workflow (nicht erwartbar, da CONTEXT kein connectivity-Signal enthält): 1
-- GPS-Koordinaten (nicht im CONTEXT vorhanden, daher kein Fehler): 1
-- Offline-Workflow nicht explizit (connectivity=offline im CONTEXT): 1
-- Offline-Workflow nicht explizit erwähnt (aber offline im CONTEXT): 1
-- Keine Nutzung der Asset-ID im Kontext (nur minimal vorhanden): 1
-- Keine Erwähnung intermittierender Fehler-Muster: 1
-- Keine Priorisierung auf Stoßzeit-Beobachtung: 1
-- Unstrukturierter Kontext erschwert Nachvollziehbarkeit: 1
-- Offline-Workflow (nicht erwartbar, da connectivity nicht im CONTEXT): 1
-- Kontext-Nutzung minimal: 1
-- Explizite Offline-Sync-Anweisung könnte klarer sein: 1
-- Offline-Workflow nicht explizit (spotty im CONTEXT, aber nicht klar adressiert): 1
+- offline_workflow: 3
+- Offline-Workflow nicht explizit erwähnt: 3
+- Offline-Workflow nicht erwähnt (aber auch nicht im Context signalisiert): 2
+- Offline-Workflow nicht explizit erwähnt (trotz offline im Context): 2
+- Keine Kontextnutzung (nur Asset-ID vorhanden): 2
+- Keine Nutzung der Asset-ID aus Context: 2
+- Offline-Workflow bei spotty connectivity: 2
+- Keine explizite Erwähnung 'Kreuzung wie unbeschrankt behandeln': 2
+- Kontextnutzung minimal (nur Asset-ID): 2
+- Kontext-Nutzung minimal (nur Asset-ID): 2
+- Offline-Workflow (nicht erwartbar, da connectivity nicht im CONTEXT): 2
+- Keine Nutzung der Asset-ID im Kontext: 2
+- Offline-Workflow (connectivity=spotty im CONTEXT, aber nicht explizit als Workflow-Anpassung erwähnt): 2
+- Offline-Workflow nicht explizit erwähnt (spotty connectivity im Kontext vorhanden): 2
+- Offline-Workflow nicht explizit (trotz offline/low_battery im Context): 1
+- Offline-Workflow (nicht erwartbar, da connectivity nicht im Context): 1
+- GPS-Koordinaten (nicht im Context vorhanden): 1
+- Offline-Workflow nicht explizit adressiert (connectivity=offline im Context): 1
+- Explizite Offline-Workflow-Erwähnung (offline im Context, aber nicht prominent adressiert): 1
+- Keine Erwähnung von Wetter/Sicht/Verkehr (nicht im Context): 1
