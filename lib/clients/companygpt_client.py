@@ -70,7 +70,10 @@ def append_context_to_prompt(prompt: str, context: dict | None) -> str:
         return prompt
 
     try:
-        ctx_str = json.dumps(context, ensure_ascii=False, sort_keys=True, indent=2)
+        # sort_keys=False: preserve the dimension order produced by the
+        # S2 context policy (stable_serialize_context). Alphabetising here
+        # would discard the priority ordering the policy establishes.
+        ctx_str = json.dumps(context, ensure_ascii=False, sort_keys=False, indent=2)
     except Exception:
         ctx_str = str(context)
 

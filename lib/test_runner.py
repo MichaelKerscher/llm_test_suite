@@ -32,6 +32,20 @@ def _result_dir_for_client(client_name: str, model: str = "") -> str:
 def _safe_json_dumps(obj) -> str:
     return json.dumps(obj, ensure_ascii=False)
 
+def _final_prompt_for_log(client, prompt: str, context: dict | None) -> str:
+    """
+    Reconstructs the prompt as the client actually composes it, so that the
+    log contains the string sent to the model rather than the pre-injection
+    user message. Falls back to the bare prompt if a client does not expose
+    context injection.
+    """
+    fn = getattr(client, "append_context_to_prompt", None)
+    if callable(fn):
+        try:
+            return fn(prompt, context)
+        except Exception:
+            return prompt
+    return prompt
 
 # ----------------------------
 # Judge JSON robustness helpers
@@ -353,6 +367,7 @@ def _s2_meta_to_request_params(selection_meta: dict | None) -> dict:
         return {
             "s2_selector_version": None,
             "s2_guardrails_version": None,
+            "s2_trigger_signals": None,
             "s2_budget_chars": None,
             "s2_used_chars": None,
             "s2_selected_fields": None,
@@ -364,6 +379,9 @@ def _s2_meta_to_request_params(selection_meta: dict | None) -> dict:
     return {
         "s2_selector_version": selection_meta.get("selector_version"),
         "s2_guardrails_version": selection_meta.get("guardrails_version"),
+        # B2: triggers are no longer visible in the transmitted context, so
+        # they must be persisted here to keep each S2 record self-describing.
+        "s2_trigger_signals": selection_meta.get("trigger_signals"),
         "s2_budget_chars": bp.get("max"),
         "s2_used_chars": bp.get("used"),
         "s2_selected_fields": selection_meta.get("selected_fields"),
@@ -402,13 +420,11 @@ def _apply_s2_if_strategy(tc: dict, context: dict) -> tuple[dict, dict | None]:
     ctx_selected = s2_out.get("context") or {}
     selection_meta = s2_out.get("selection_meta") or {}
 
-    ctx_selected = {**ctx_selected, "_selection_meta": selection_meta}
+    # B2: the selection metadata is an audit artefact and is NOT transmitted
+    # to the model. It is persisted via _s2_meta_to_request_params().
     return ctx_selected, selection_meta
 
 
-# ----------------------------
-# Unstructured context helpers
-# ----------------------------
 # ----------------------------
 # Unstructured context helpers
 # ----------------------------
@@ -462,6 +478,10 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
         raise ValueError(f"Unbekannter Client: '{client_name}'")
     client = CLIENTS[client_name]
 
+    # Reconstruct the prompt as the client composes it, so the log holds the
+    # string actually sent to the model (including the [CONTEXT_JSON] block).
+    final_prompt = _final_prompt_for_log(client, prompt, context_for_model)
+
     has_judge = enable_judge and hasattr(client, "judge")
     judge_model = os.getenv("TESTSUITE_JUDGE_MODEL", model)
     judge_temp = float(os.getenv("TESTSUITE_JUDGE_TEMPERATURE", "0.0"))
@@ -498,15 +518,14 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
 
     result_dir = _result_dir_for_client(client_name, model)
 
-    s2_params = (
-        _s2_meta_to_request_params(selection_meta)
-        if strategy == "S2"
-        else _s2_meta_to_request_params(None)
-    )
+    # Ablation variants also pass through the policy, so their audit trail
+    # must be persisted as well.
+    is_s2_variant = strategy == "S2" or strategy.startswith("S2_ABL_")
+    s2_params = _s2_meta_to_request_params(selection_meta if is_s2_variant else None)
 
     log_response(
         test_id=test_id,
-        prompt=prompt,
+        prompt=final_prompt,
         response_text=answer,
         model=model,
         client=client_name,
@@ -519,6 +538,8 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
             "run_mode": "testcase",
             "assistant_source_of_truth": True,
             "context_strategy": strategy or "UNKNOWN",
+            # Kept separate from `prompt`, which now carries the composed form.
+            "user_message": input_data.get("prompt"),
             "judge_version": judge_version if has_judge else None,
             "judge_model": judge_model if has_judge else None,
             "judge_temperature": judge_temp if has_judge else None,
@@ -588,6 +609,9 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
             input_data.get("prompt"), context_for_model, strategy
         )
 
+        # Composed form, captured before dispatch so the log can hold it.
+        final_prompt = _final_prompt_for_log(client, inc_prompt, context_for_model)
+
         start = time.perf_counter()
         ans = client.generate(
             input_type=input_data.get("type", "text"),
@@ -605,6 +629,7 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
                 "test_id": test_id,
                 "context_level": (input_data.get("meta") or {}).get("context_level", ""),
                 "user_message": input_data.get("prompt"),
+                "final_prompt": final_prompt,
                 "context_json": context_for_model or {},
                 "original_context": original_context_inc,
                 "answer": ans,
@@ -696,15 +721,14 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
                 }
             )
 
-        s2_params = (
-            _s2_meta_to_request_params(selection_meta)
-            if strategy == "S2"
-            else _s2_meta_to_request_params(None)
-        )
+        # Ablation variants also pass through the policy, so their audit trail
+        # must be persisted as well.
+        is_s2_variant = strategy == "S2" or strategy.startswith("S2_ABL_")
+        s2_params = _s2_meta_to_request_params(selection_meta if is_s2_variant else None)
 
         log_response(
             test_id=test_id,
-            prompt=input_data.get("prompt"),
+            prompt=row.get("final_prompt") or input_data.get("prompt"),
             response_text=row["answer"],
             model=model,
             client=client_name,
@@ -718,6 +742,8 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
                 "incident_id": incident_id,
                 "assistant_source_of_truth": True,
                 "context_strategy": strategy or "UNKNOWN",
+                # Kept separate from `prompt`, which now carries the composed form.
+                "user_message": input_data.get("prompt"),
                 "judge_version": judge_version if has_judge else None,
                 "judge_model": judge_model if has_judge else None,
                 "judge_temperature": judge_temp if has_judge else None,
