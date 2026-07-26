@@ -1,0 +1,195 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0003-TC3",
+  "timestamp": "2026-07-26T13:49:14",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe leuchtet gar nicht mehr. Meldung kam über Bürgerhinweis.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-21T22:47:36+01:00\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4427359783\",\n    \"latitude\": 47.877481,\n    \"longitude\": 12.1049944,\n    \"name\": \"Westerndorf St. Peter, Schlößlstraße\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T22:47:36+01:00",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n4427359783",
+        "latitude": 47.877481,
+        "longitude": 12.1049944,
+        "name": "Westerndorf St. Peter, Schlößlstraße",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0003",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Lampe leuchtet gar nicht mehr. Meldung kam über Bürgerhinweis.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 920,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Verstanden. Eine Straßenlampe in Westerndorf St. Peter, Schlößlstraße, leuchtet laut Bürgerhinweis gar nicht mehr. Es ist Nacht, die Sicht ist schlecht, und Ihr Gerät hat einen niedrigen Akkustand bei fleckiger Konnektivität.\n\nHier ist Ihre Schritt-für-Schritt-Checkliste für den Einsatz vor Ort:\n\n**Priorität: Sicherheit und Verkehrssicherung**\n\n1.  **Absicherung der Einsatzstelle:**\n    *   Sichern Sie den Arbeitsbereich um die defekte Straßenlampe gemäß den Vorschriften ab (z.B. Warnweste tragen, Warnblinklicht am Fahrzeug, ggf. Warndreieck/Leitkegel aufstellen).\n    *   Beachten Sie die geringe Sicht bei Nacht und den niedrigen Akkustand Ihres Geräts für die Beleuchtung. Nutzen Sie ggf. eine zusätzliche Taschenlampe.\n\n2.  **Sichtprüfung (Erste Einschätzung):**\n    *   Prüfen Sie, ob die Lampe physisch beschädigt ist (z.B. Glasbruch, herunterhängende Teile, Vandalismus).\n    *   Gibt es offensichtliche Beschädigungen am Mast oder der Zuleitung im sichtbaren Bereich?\n    *   Sind in der Nähe andere Lampen ausgefallen oder leuchten sie normal? Dies kann auf einen lokalen oder übergeordneten Fehler hindeuten.\n\n3.  **Diagnose und Beobachtung:**\n    *   **Leuchtmittel:** Ist das Leuchtmittel sichtbar defekt (z.B. schwarze Verfärbung, Glühfaden gerissen)?\n    *   **Sicherung/Schutzschalter:** Prüfen Sie, falls zugänglich und sicher, ob eine Sicherung ausgelöst hat oder ein Schutzschalter gefallen ist.\n    *   **Anschlusskasten:** Ist der Anschlusskasten am Mast intakt und geschlossen? Gibt es Anzeichen von Feuchtigkeitseintritt?\n    *   **Umgebung:** Gibt es in der unmittelbaren Umgebung Bauarbeiten, Erdarbeiten oder andere Aktivitäten, die eine Beschädigung der Zuleitung verursacht haben könnten?\n    *   **Gerät (App/Smartphone):** Da die Konnektivität fleckig ist und der Akku niedrig, vermeiden Sie unnötige Online-Abfragen. Nutzen Sie die Offline-Funktionen Ihrer App.\n\n4.  **Dokumentation (Offline-fähig):**\n    *   **Fotos:** Machen Sie aussagekräftige Fotos vom Schaden, der Lampe und der Umgebung. Speichern Sie diese lokal auf Ihrem Gerät.\n    *   **Notizen:** Halten Sie alle Beobachtungen und durchgeführten Schritte detailliert fest (z.B. Art des Schadens, vermutete Ursache, Zustand der Umgebung, Uhrzeit).\n    *   **Status:** Dokumentieren Sie den aktuellen Status der Lampe als \"ausgefallen\" und die vermutete Fehlerursache.\n    *   **Synchronisation:** Sobald Sie wieder eine stabile Verbindung haben, synchronisieren Sie alle gesammelten Daten und Fotos.\n\n5.  **Eskalation und nächste Schritte:**\n    *   **Sofortige Gefahr:** Besteht eine unmittelbare Gefahr für die Verkehrssicherheit oder Personen (z.B. offene Kabel, umsturzgefährdeter Mast)? Wenn ja, sichern Sie den Bereich großräumiger ab und leiten Sie umgehend die notwendigen Maßnahmen zur Gefahrenbeseitigung ein (z.B. Absperrung, Notdienst informieren).\n    *   **Reparatur:** Basierend auf Ihrer Diagnose:\n        *   Wenn es sich um einen einfachen Leuchtmittelwechsel handelt und Sie das passende Material dabei haben, führen Sie die Reparatur durch.\n        *   Bei komplexeren Fehlern (z.B. Kabelbruch, Vorschaltgerät defekt, Mastschaden) oder fehlendem Material: Melden Sie den Bedarf an ein spezialisiertes Team oder die Werkstatt.\n    *   **Meldung:** Erstellen Sie einen detaillierten Einsatzbericht in Ihrem System, sobald die Dokumentation abgeschlossen und synchronisiert ist.\n\n**Wichtiger Hinweis:** Aufgrund der schlechten Sicht bei Nacht und der potenziellen Gefahren durch eine defekte Lampe, gehen Sie stets mit höchster Vorsicht vor. Ihre eigene Sicherheit hat oberste Priorität.",
+    "tokens_estimate_words": 452
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0003-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Nahezu perfekte Antwort: nutzt Vollkontext inkl. context_notes optimal. Expliziter Offline-Workflow (lokal speichern, später synchronisieren) bei spotty connectivity. Safety first, klare Priorisierung, vollständige Dokumentation, differenzierte Eskalation. Keine Halluzinationen, alle erwartbaren Elemente erfüllt."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 8.832
+  },
+  "error": {}
+}
