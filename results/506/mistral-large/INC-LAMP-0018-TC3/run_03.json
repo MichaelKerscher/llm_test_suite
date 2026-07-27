@@ -1,0 +1,182 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0018-TC3",
+  "timestamp": "2026-07-27T08:07:51",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Hinweis auf Steuerungsproblem: Segment fällt zeitgleich aus.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"control_box_issue\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-20T18:31:50+01:00\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n12520351647\",\n    \"latitude\": 47.8502243,\n    \"longitude\": 12.1179478\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"fog\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"medium\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "control_box_issue",
+        "severity": "medium",
+        "reported_at": "2026-01-20T18:31:50+01:00",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n12520351647",
+        "latitude": 47.8502243,
+        "longitude": 12.1179478
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "fog",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0018",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Hinweis auf Steuerungsproblem: Segment fällt zeitgleich aus.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "control_box_issue",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "fog",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 677,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein gleichzeitiger Ausfall eines Segments deutet stark auf ein zentrales Steuerungsproblem hin. Angesichts der schlechten Sichtverhältnisse (Nacht, Nebel) ist besondere Vorsicht geboten.\n\nHier ist die Schritt-für-Schritt-Checkliste für das Vorgehen vor Ort:\n\n**1. Absicherung (Priorität: Sicherheit und Verkehrssicherung)**\n*   **Fahrzeug:** Warnblinklicht einschalten, Fahrzeug sicher und sichtbar abstellen.\n*   **Persönliche Schutzausrüstung:** Warnweste tragen.\n*   **Arbeitsbereich:** Warndreieck und/oder Warnleuchten großräumig aufstellen, um den Arbeitsbereich abzusichern. Bei Nebel und schlechter Sicht ist dies besonders wichtig, um andere Verkehrsteilnehmer frühzeitig zu warnen.\n*   **Verkehrsbeobachtung:** Die aktuelle Verkehrssituation genau beobachten. Bei starker Verkehrsgefährdung durch den Ausfall (z.B. Ampelausfall an Kreuzung) umgehend die Polizei oder Verkehrsregelung anfordern.\n\n**2. Sichtprüfung (Erste Einschätzung der Schadensursache)**\n*   **Betroffenes Segment:** Den gesamten betroffenen Bereich des Segments abschreiten/abfahren, um das Ausmaß des Ausfalls zu bestätigen.\n*   **Steuerungskasten:** Den zugehörigen Steuerungskasten lokalisieren und auf offensichtliche Schäden prüfen:\n    *   Offene Türen oder Beschädigungen (Vandalismus, Unfall).\n    *   Rauchentwicklung oder Brandspuren.\n    *   Wassereintritt oder starke Korrosion.\n    *   Ungewöhnliche Gerüche (z.B. verschmorte Elektronik).\n*   **Kabel und Anschlüsse:** Sichtprüfung der Zuführungskabel und Abgänge am Steuerungskasten auf Beschädigungen.\n*   **Leuchten/Ampeln:** Prüfen, ob alle Leuchten/Ampeln im Segment betroffen sind oder ob es Ausnahmen gibt.\n\n**3. Diagnose/Beobachtung (Eingrenzung des Problems)**\n*   **Steuerungskasten öffnen:** Wenn autorisiert und sicher, den Steuerungskasten öffnen.\n*   **Sicherungen/Schutzschalter:** Prüfen, ob Sicherungen ausgelöst oder Leitungsschutzschalter gefallen sind.\n*   **Statusanzeigen:** LEDs, Displays oder andere Statusanzeigen am Steuergerät auf Fehlermeldungen oder ungewöhnliche Zustände prüfen.\n*   **Spannungsversorgung:** Falls ein geeignetes Messgerät vorhanden und die Messung autorisiert ist, die Eingangsspannung und die Spannung nach den Hauptsicherungen messen.\n*   **Log-Dateien:** Falls das Steuergerät über eine Schnittstelle verfügt, versuchen, eventuelle Fehlermeldungen oder Log-Einträge auszulesen, die den Zeitpunkt des Ausfalls bestätigen oder eine Ursache nennen.\n*   **Testschaltung:** Falls möglich und sicher, eine Testschaltung oder einen Reset des Steuergeräts versuchen, um eine temporäre Wiederherstellung zu prüfen.\n\n**4. Dokumentation (Grundlage für weitere Schritte)**\n*   **Zeitstempel:** Genaue Uhrzeit und Datum der Feststellungen.\n*   **Fotos:** Aussagekräftige Fotos der Situation (Gesamtansicht des Ausfalls, Detailbilder des Steuerungskastens, ausgelöste Sicherungen, Fehlermeldungen).\n*   **Beschreibung:** Detaillierte Beschreibung der Symptome, des Ausfallmusters und der durchgeführten Maßnahmen.\n*   **Umgebung:** Bestätigung der Wetter- und Sichtverhältnisse (Nacht, Nebel, schlechte Sicht).\n*   **Asset-Daten:** Genaue Position des Steuerungskastens und des betroffenen Segments (z.B. OSM-ID, GPS-Koordinaten).\n*   **Geräteinformationen:** Seriennummern und Typenbezeichnungen relevanter Komponenten im Steuerungskasten.\n\n**5. Eskalation (Einleitung weiterer Maßnahmen)**\n*   **Gefahr im Verzug:** Bei unmittelbarer Gefahr (z.B. Stromschlaggefahr, unkontrollierbarer Verkehr) sofort die Leitstelle/Notdienst informieren und den Bereich weiträumig absperren.\n*   **Komplexe Fehler:** Wenn der Fehler nicht vor Ort behoben werden kann (z.B. defekte Hauptplatine, Kabelfehler im Erdreich, fehlende Ersatzteile), umgehend die zuständige Fachabteilung oder den Spezialisten informieren und die gesammelten Dokumentationen übermitteln.\n*   **Status-Update:** Regelmäßige Kommunikation mit der Leitstelle/Einsatzleitung über den Fortschritt und die nächsten Schritte.",
+    "tokens_estimate_words": 436
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0018-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort mit präziser Kontextnutzung (Nacht, Nebel, poor_visibility, medium severity, control_box_issue, Asset-Daten). Safety-first, strukturiert, umfassende Dokumentation, klare Eskalationslogik inkl. 'Gefahr im Verzug'."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 14.601
+  },
+  "error": {}
+}

@@ -1,0 +1,196 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0030-TC3",
+  "timestamp": "2026-07-27T07:48:54",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-18T10:05:03+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerungsaufnahme: Laterne aktuell an. Mast mit leichten Verschmutzungen. Keine strukturellen Schäden erkennbar.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n11833818322\",\n    \"latitude\": 47.8537208,\n    \"longitude\": 12.136073\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"medium\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-18T10:05:03+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerungsaufnahme: Laterne aktuell an. Mast mit leichten Verschmutzungen. Keine strukturellen Schäden erkennbar.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n11833818322",
+        "latitude": 47.8537208,
+        "longitude": 12.136073
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0030",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "intermittent",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1136,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein sporadischer Fehler erfordert eine sorgfältige Vorgehensweise. Da die Lampe aktuell wieder leuchtet, liegt der Fokus auf Beobachtung und Dokumentation für die weitere Fehleranalyse.\n\n**Schritt-für-Schritt-Checkliste:**\n\n1.  **Absicherung:**\n    *   **Persönliche Sicherheit:** PSA (Persönliche Schutzausrüstung) anlegen.\n    *   **Verkehrssicherung:** Arbeitsbereich absichern (Warndreieck, Warnleuchten), insbesondere bei Dämmerung und schlechter Sicht sowie mittlerer Verkehrsbelastung.\n    *   **Gefahrenprüfung:** Umgebung auf unmittelbare Gefahren (z.B. lose Kabel, beschädigte Masten) prüfen.\n\n2.  **Sichtprüfung:**\n    *   **Mast & Leuchte:** Optische Kontrolle des Mastes und der Leuchte auf Beschädigungen, Korrosion, Vandalismus oder lose Teile. Die Dämmerungsaufnahme zeigt leichte Verschmutzungen, aber keine strukturellen Schäden am Mast.\n    *   **Verkabelung:** Sichtprüfung der externen Verkabelung und Anschlüsse auf Beschädigungen oder Lockerungen.\n    *   **Leuchtmittel/Optik:** Zustand des Leuchtmittels und der Abdeckung prüfen (Risse, Verschmutzungen).\n    *   **Sensorik:** Zustand des Dämmerungsschalters/Lichtsensors prüfen (Verschmutzung, Beschädigung, Ausrichtung).\n\n3.  **Diagnose/Beobachtung:**\n    *   **Funktionstest:** Bestätigen, dass die Lampe aktuell leuchtet.\n    *   **Verhalten:** Auf Flackern, Dimmen, ungewöhnliche Geräusche oder Gerüche achten.\n    *   **Umwelteinflüsse:** Berücksichtigen, dass der Fehler bei Dämmerung und schlechter Sicht gemeldet wurde. Könnte ein Dämmerungsschalter oder ein externer Faktor (z.B. Spannungsschwankungen) die Ursache sein?\n    *   **Messungen (falls sicher möglich):** Wenn die Lampe wieder ausfällt oder ein Verdacht besteht, Spannung und Strom am Leuchtenkopf messen (nur durch qualifiziertes Personal).\n\n4.  **Dokumentation:**\n    *   **Offline-Workflow:** Aufgrund der \"spotty\" Konnektivität alle Beobachtungen, Messwerte und Fotos lokal auf dem Gerät speichern.\n    *   **Fehlerbeschreibung:** Genaue Beschreibung des Vorfalls (Lampe war aus, jetzt wieder an), Zeitpunkt der Beobachtung.\n    *   **Asset-Daten:** Asset-ID (n11833818322), genaue GPS-Koordinaten (47.8537208, 12.136073).\n    *   **Fotos:** Zusätzliche Fotos vom aktuellen Zustand der Leuchte und des Umfelds anfertigen, falls die vorhandene Dämmerungsaufnahme nicht ausreicht.\n    *   **Umgebungsbedingungen:** Wetter (klar), Tageszeit (Dämmerung), Sichtverhältnisse (schlecht), Verkehrsaufkommen (mittel) notieren.\n    *   **Maßnahmen:** Alle durchgeführten Schritte und Feststellungen dokumentieren.\n\n5.  **Eskalation:**\n    *   **Synchronisation:** Sobald wieder eine stabile Verbindung besteht, alle gesammelten Daten synchronisieren.\n    *   **Weiterleitung:** Wenn keine eindeutige Ursache gefunden wurde, aber der sporadische Fehler weiterhin besteht oder vermutet wird, den Fall an die Fachabteilung oder einen spezialisierten Techniker zur weiteren Analyse und ggf. zum Austausch von Komponenten (z.B. Vorschaltgerät, Dämmerungsschalter) weiterleiten.\n    *   **Beobachtungsauftrag:** Ggf. einen Beobachtungsauftrag für die Leuchte einstellen, um weitere Ausfälle zu protokollieren.",
+    "tokens_estimate_words": 339
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0030-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 4,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Nahezu perfekt: Sicherheit zuerst, klare Schrittfolge, expliziter Offline-Workflow (lokal speichern, später synchronisieren) aufgrund spotty connectivity. Nutzt Kontext vollständig (GPS, Umgebung, extras-Hinweise). Dokumentation exzellent. Keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.696
+  },
+  "error": {}
+}

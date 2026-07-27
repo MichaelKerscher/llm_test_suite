@@ -1,0 +1,196 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0023-TC3",
+  "timestamp": "2026-07-27T09:55:13",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-15T08:16:43+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Tagsicht bei Sturm: Laterne dunkel, Mast leicht schräg. Leitungsverbindung am Mastarm sichtbar beschädigt/abgerissen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n13293397459\",\n    \"latitude\": 47.8589872,\n    \"longitude\": 12.1320286\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"day\",\n    \"weather\": \"storm\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-15T08:16:43+01:00",
+        "photo_available": true,
+        "photo_description": "Tagsicht bei Sturm: Laterne dunkel, Mast leicht schräg. Leitungsverbindung am Mastarm sichtbar beschädigt/abgerissen.",
+        "reporter": "dispatch"
+      },
+      "asset": {
+        "asset_osm": "n13293397459",
+        "latitude": 47.8589872,
+        "longitude": 12.1320286
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "day",
+        "weather": "storm",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0023",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "storm",
+      "poor_visibility": true,
+      "time_of_day": "day",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1130,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt bei Sturm mit einem leicht schrägen Mast und abgerissener Leitungsverbindung erfordert sofortiges und umsichtiges Handeln. Sicherheit hat hier oberste Priorität.\n\n**Schritt-für-Schritt-Checkliste:**\n\n1.  **Absicherung der Gefahrenstelle:**\n    *   **Priorität:** Unverzügliche Sicherung des Bereichs aufgrund des schrägen Mastes, der abgerissenen Leitung und des Sturms bei hohem Verkehrsaufkommen.\n    *   **Maßnahmen:**\n        *   Warnblinkanlage einschalten, Warnweste anlegen.\n        *   Gefahrenbereich großräumig mit Warndreieck/Blitzleuchte und Absperrband absichern.\n        *   Bei Bedarf und unklarer Statik des Mastes oder Gefahr durch herabhängende Leitungen: Polizei oder Feuerwehr zur Unterstützung bei der Absperrung und Verkehrslenkung anfordern.\n        *   Sicherstellen, dass niemand den Gefahrenbereich betritt oder berührt.\n\n2.  **Sichtprüfung und Schadensaufnahme:**\n    *   **Bestätigung:** Prüfen, ob die Laterne tatsächlich dunkel ist und der Mast wie beschrieben leicht schräg steht.\n    *   **Leitung:** Den Zustand der Leitungsverbindung am Mastarm genau begutachten – ist sie nur abgerissen oder gibt es freiliegende Kabelenden?\n    *   **Mast und Fundament:** Den Mast auf weitere strukturelle Schäden, Risse oder Verformungen untersuchen. Das Fundament auf Unterspülungen oder Beschädigungen prüfen.\n    *   **Umfeld:** Auf weitere sturmbedingte Schäden in der Umgebung (herabfallende Äste, andere beschädigte Infrastruktur) achten.\n\n3.  **Diagnose/Beobachtung (unter Sicherheitsaspekten):**\n    *   **Stabilität:** Die Stabilität des Mastes aus sicherer Entfernung beobachten. Gibt es Anzeichen für ein weiteres Kippen?\n    *   **Elektrische Gefahr:** Keinesfalls versuchen, die Leitung oder den Mast zu berühren oder elektrische Messungen durchzuführen, solange die Gefahr eines Stromschlags besteht.\n    *   **Funktion:** Prüfen, ob benachbarte Leuchten ebenfalls betroffen sind oder flackern.\n\n4.  **Dokumentation (Offline-Workflow beachten):**\n    *   **Fotos:** Umfassende Fotos der Gesamtsituation, des schrägen Mastes, der abgerissenen Leitungsverbindung und der getroffenen Absperrmaßnahmen machen.\n    *   **Details:** Genaue Uhrzeit, Datum, Wetterbedingungen (Sturm, schlechte Sicht), genaue Position (Koordinaten, Straßennamen, Hausnummern), Art und Umfang des Schadens (Laterne dunkel, Mastneigung, Leitungsabriss) festhalten.\n    *   **Offline:** Da die Konnektivität offline ist, alle Daten und Fotos lokal auf dem Gerät speichern und sicherstellen, dass sie später synchronisiert werden können.\n\n5.  **Eskalation:**\n    *   **Dringlichkeit:** Aufgrund der hohen Schwere, des Sturms, des schrägen Mastes und der beschädigten Leitung ist eine sofortige Eskalation zwingend erforderlich.\n    *   **Meldung:** Unverzüglich die Leitstelle/Einsatzzentrale informieren. Alle gesammelten Informationen (Absicherung, Sichtprüfung, Fotos) übermitteln.\n    *   **Anforderung:** Ein spezialisiertes Team für die statische Prüfung des Mastes und die Reparatur der elektrischen Anlage anfordern. Gegebenenfalls auch einen Notdienst zur sofortigen Stromabschaltung des betroffenen Abschnitts.\n    *   **Verkehrssicherung:** Bei Bedarf die zuständige Behörde für Verkehrssicherung (z.B. Straßenmeisterei) informieren, um dauerhafte Absperrungen oder Verkehrsumleitungen zu veranlassen.",
+    "tokens_estimate_words": 378
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0023-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Perfekte Antwort: nutzt alle Kontextinformationen inkl. extras-Hinweise optimal, expliziter Offline-Workflow (lokal speichern/später synchronisieren), klare Safety-first-Struktur, detaillierte Eskalation passend zu severity=high und Sturm/hoher Verkehr."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 13.474
+  },
+  "error": {}
+}

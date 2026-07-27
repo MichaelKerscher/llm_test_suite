@@ -1,0 +1,182 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0014-TC3",
+  "timestamp": "2026-07-27T08:37:03",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-21T11:45:31+01:00\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4939032525\",\n    \"latitude\": 47.8553091,\n    \"longitude\": 12.1230035\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"day\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"normal_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T11:45:31+01:00",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n4939032525",
+        "latitude": 47.8553091,
+        "longitude": 12.1230035
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "day",
+        "weather": "clear",
+        "lighting_condition": "normal_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0014",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "clear",
+      "poor_visibility": false,
+      "time_of_day": "day",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 663,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die Meldung über die ausgefallene Straßenlampe wurde zur Kenntnis genommen. Hier ist die Schritt-für-Schritt-Checkliste für das Vorgehen vor Ort, mit Priorität auf Sicherheit und Verkehrssicherung:\n\n**Vorgehensweise bei Lampenausfall (Routinekontrolle)**\n\n**1. Absicherung der Arbeitsstelle**\n*   **Verkehrssicherung:** Da die Lampe tagsüber ausgefallen ist und die Verkehrsexposition gering ist, ist die Dringlichkeit für eine sofortige, umfassende Absicherung reduziert. Dennoch:\n    *   Fahrzeug sicher abstellen (Warnblinkanlage, ggf. Warnleuchte).\n    *   Arbeitsbereich mit Warnkegeln oder Faltsignalen kennzeichnen, falls Arbeiten im Verkehrsraum notwendig sind.\n    *   Persönliche Schutzausrüstung (PSA) tragen (Warnkleidung, Sicherheitsschuhe).\n*   **Eigensicherung:** Auf den umgebenden Verkehr und Passanten achten.\n\n**2. Sichtprüfung (Erste Einschätzung)**\n*   **Lampe/Leuchtenkopf:**\n    *   Ist der Leuchtenkopf physisch beschädigt (Glasbruch, Gehäuseschäden)?\n    *   Sind Kabel sichtbar beschädigt oder abgerissen?\n    *   Gibt es Anzeichen von Vandalismus oder Unfallschäden?\n    *   Ist die Lampe verschmutzt oder zugewachsen?\n*   **Mast:**\n    *   Ist der Mast stabil? Gibt es sichtbare Korrosion, Risse oder Anfahrtschäden?\n    *   Ist die Masttür geschlossen und unbeschädigt?\n*   **Umgebung:**\n    *   Gibt es in der Nähe andere ausgefallene Lampen? (Hinweis auf übergeordneten Fehler wie Sicherungsausfall im Verteilerkasten).\n    *   Gibt es sichtbare Bauarbeiten oder Erdbewegungen in der Umgebung, die eine Kabelbeschädigung verursacht haben könnten?\n\n**3. Diagnose/Beobachtung**\n*   **Stromversorgung:**\n    *   Masttür öffnen (Vorsicht, Spannung!).\n    *   Sicherung im Mast prüfen (ausgelöst? defekt?).\n    *   Spannung an der Leuchte messen (falls möglich und sicher).\n    *   Ist der Fehlerstromschutzschalter (FI) ausgelöst?\n*   **Leuchtmittel/Betriebsgerät:**\n    *   Welcher Lampentyp ist verbaut? (LED, Natriumdampf, etc.)\n    *   Ist das Leuchtmittel sichtbar defekt (z.B. Glühfaden gerissen, LED-Modul dunkel)?\n    *   Gibt es Anzeichen für ein defektes Betriebsgerät (Vorschaltgerät, Treiber)?\n*   **Steuerung:**\n    *   Ist die Lampe Teil einer Gruppe? Funktionieren andere Lampen in der Gruppe?\n    *   Gibt es eine separate Steuerung (z.B. Dämmerungsschalter, Zeitschaltuhr) im Mast, die defekt sein könnte?\n\n**4. Dokumentation (mit Techniker-Gerät)**\n*   **Fotos:**\n    *   Gesamtansicht der Lampe und des Mastes.\n    *   Detailfotos von Schäden (Leuchtenkopf, Mast, Kabel, Sicherung).\n    *   Fotos des geöffneten Mastes (Sicherung, Verkabelung).\n*   **Fehlerbeschreibung:**\n    *   Genaue Beschreibung des festgestellten Fehlers und der durchgeführten Prüfungen.\n    *   Angabe der vermuteten Fehlerursache (z.B. \"Sicherung ausgelöst\", \"Leuchtmittel defekt\", \"keine Spannung am Mast\").\n*   **Maßnahmen:**\n    *   Dokumentation der vor Ort getroffenen Maßnahmen (z.B. \"Sicherung ersetzt\", \"Leuchtmittel getauscht\", \"keine Reparatur möglich, da Kabelbruch\").\n*   **Standort:**\n    *   Bestätigung der Koordinaten (47.8553091, 12.1230035) und der Asset-ID (n4939032525).\n\n**5. Eskalation**\n*   **Reparatur vor Ort möglich:**\n    *   Wenn der Fehler einfach behoben werden kann (z.B. Sicherung tauschen, Leuchtmittel wechseln), Reparatur durchführen und Funktion prüfen.\n    *   Abschluss der Dokumentation.\n*   **Reparatur vor Ort nicht möglich/komplexer Fehler:**\n    *   Wenn Spezialwerkzeug, Ersatzteile oder weitere Fachkräfte benötigt werden (z.B. bei Kabelbruch, Mastschaden, defektem Betriebsgerät, das nicht vorrätig ist).\n    *   Meldung an die zuständige Fachabteilung/Disposition mit detaillierter Fehlerbeschreibung und benötigten Ressourcen.\n    *   Ggf. temporäre Absicherung der Gefahrenstelle bis zur endgültigen Reparatur.\n    *   Hinweis auf die Dringlichkeit, insbesondere wenn die Lampe in einem sicherheitsrelevanten Bereich steht (auch wenn die Verkehrsexposition aktuell gering ist, kann sich dies ändern).",
+    "tokens_estimate_words": 464
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0014-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellent: Nutzt Kontext inkl. extras-Hinweise optimal. Differenziert Absicherung nach Traffic/Time. Klare Struktur, Safety first, vollständige Dokumentation mit Geräte-Kontext, angemessene Eskalation. Keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.103
+  },
+  "error": {}
+}

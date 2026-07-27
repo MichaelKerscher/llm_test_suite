@@ -1,0 +1,207 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0002-TC3",
+  "timestamp": "2026-07-27T08:23:39",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Zeitweiser Ausfall gemeldet; aktuell normal. Bitte kontrollieren.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-18T14:56:09+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Straßenlaterne im Nebel aufgenommen; Leuchtmittel aktiv, jedoch Mast mit leichten Feuchtigkeitsflecken. Schaltbox äußerlich in Ordnung.\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n1987093602\",\n    \"latitude\": 47.8369218,\n    \"longitude\": 12.116307,\n    \"name\": \"Rosenheim, Heilig Blut\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"fog\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"medium\",\n    \"noise_level\": \"high\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-18T14:56:09+01:00",
+        "photo_available": true,
+        "photo_description": "Straßenlaterne im Nebel aufgenommen; Leuchtmittel aktiv, jedoch Mast mit leichten Feuchtigkeitsflecken. Schaltbox äußerlich in Ordnung.",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n1987093602",
+        "latitude": 47.8369218,
+        "longitude": 12.116307,
+        "name": "Rosenheim, Heilig Blut",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "fog",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0002",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Zeitweiser Ausfall gemeldet; aktuell normal. Bitte kontrollieren.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "intermittent",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "fog",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1026,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Verstanden. Hier ist die Schritt-für-Schritt-Checkliste für die Kontrolle der Straßenlaterne in Rosenheim, Heilig Blut, unter Berücksichtigung des zeitweisen Ausfalls und der aktuellen Situation:\n\n**Checkliste für Außendienstmitarbeiter: Zeitweiser Ausfall Straßenlaterne**\n\n**1. Absicherung (Priorität: Sicherheit & Verkehrssicherung)**\n*   **Persönliche Schutzausrüstung:** Warnweste und geeignete Arbeitskleidung tragen.\n*   **Verkehrssicherung:** Da \"traffic_exposure\" als \"medium\" und \"noise_level\" als \"high\" eingestuft sind, ist eine sorgfältige Absicherung der Arbeitsstelle unerlässlich. Ggf. Warnblinklicht am Fahrzeug einschalten, Warndreieck/Leitkegel aufstellen, um den Arbeitsbereich zu kennzeichnen und sich selbst sowie andere Verkehrsteilnehmer zu schützen.\n\n**2. Sichtprüfung (Aktueller Zustand & Auffälligkeiten)**\n*   **Gesamtzustand:** Den Mast, die Leuchte und den zugehörigen Schaltkasten auf äußere Beschädigungen, Vandalismus oder ungewöhnliche Neigungen prüfen.\n*   **Feuchtigkeitsflecken:** Die gemeldeten \"leichten Feuchtigkeitsflecken\" am Mast genau untersuchen. Auf Spuren von Wassereintritt, Korrosion oder undichte Stellen achten.\n*   **Kabel & Anschlüsse:** Sichtbare Kabel auf Beschädigungen, Quetschungen oder lose Verbindungen prüfen.\n*   **Leuchtmittel:** Obwohl aktuell aktiv, auf Flackern, ungleichmäßiges Licht oder ungewöhnliche Geräusche achten.\n*   **Schaltbox:** Trotz der Meldung \"äußerlich in Ordnung\" die Schaltbox auf festen Verschluss, Dichtigkeit und Anzeichen von Feuchtigkeit oder Insektenbefall prüfen.\n\n**3. Diagnose/Beobachtung (Ursachenforschung bei Intermittenz)**\n*   **Langzeitbeobachtung:** Da der Ausfall zeitweise ist, die Leuchte über einen längeren Zeitraum beobachten, um ein erneutes Auftreten des Fehlers zu provozieren oder zu erkennen.\n*   **Umwelteinflüsse:** Die aktuelle Wetterlage (\"fog\") und die \"poor_visibility\" in Kombination mit den Feuchtigkeitsflecken könnten auf einen Zusammenhang mit Feuchtigkeit hindeuten. Auf Veränderungen im Verhalten der Leuchte bei wechselnden Witterungsbedingungen achten.\n*   **Schaltvorgänge:** Wenn möglich, den Schaltvorgang (z.B. bei Dämmerung oder über die Steuerung) beobachten, um festzustellen, ob der Fehler beim Ein- oder Ausschalten auftritt.\n*   **Messungen (falls Ausrüstung vorhanden):** Bei Verdacht auf elektrische Probleme (z.B. Flackern) Spannung und Strom am Leuchtmittel oder im Schaltkasten messen.\n\n**4. Dokumentation (Lückenlose Erfassung)**\n*   **Detaillierte Beschreibung:** Alle Beobachtungen, durchgeführten Prüfungen und festgestellten Auffälligkeiten präzise dokumentieren.\n*   **Fotos:** Zusätzliche Fotos aus verschiedenen Perspektiven anfertigen, insbesondere von den Feuchtigkeitsflecken, dem Schaltkasten und eventuellen neuen Auffälligkeiten.\n*   **Standortbestätigung:** Die Asset-Daten (asset_osm: n1987093602, Rosenheim, Heilig Blut) und die genaue Position bestätigen.\n*   **Maßnahmen:** Notieren, welche Maßnahmen ergriffen wurden (z.B. Sichtprüfung, Beobachtung, kleinere Korrekturen).\n\n**5. Eskalation (Nächste Schritte)**\n*   **Keine sofortige Lösung:** Wenn die Ursache des zeitweisen Ausfalls nicht eindeutig identifiziert oder behoben werden kann, den Vorfall mit allen gesammelten Informationen an die zuständige Fachabteilung oder einen Elektriker eskalieren.\n*   **Sicherheitsrisiko:** Bei Feststellung eines unmittelbaren Sicherheitsrisikos (z.B. offene Kabel, stark beschädigter Mast) sofortige Maßnahmen zur Gefahrenabwehr einleiten und die weitere Nutzung des Assets untersagen, bis eine Reparatur erfolgt ist.\n*   **Wiederkehrender Fehler:** Wenn der Fehler nach der Kontrolle erneut auftritt, ist eine tiefergehende Analyse durch spezialisiertes Personal erforderlich.",
+    "tokens_estimate_words": 422
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0002-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort mit korrekter Interpretation der extras-Hinweise: nutzt Kontext präzise (Nebel, Verkehr, Feuchtigkeitsflecken), klare 5-Schritt-Struktur mit Safety-first, umfassende Diagnose für Intermittenz, vollständige Dokumentation und differenzierte Eskalation. Keine Fehlinterpretation von device.* als Asset-Fehler."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.152
+  },
+  "error": {}
+}

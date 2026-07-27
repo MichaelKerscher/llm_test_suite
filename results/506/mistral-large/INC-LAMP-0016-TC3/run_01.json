@@ -1,0 +1,196 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0016-TC3",
+  "timestamp": "2026-07-27T07:01:32",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-17T13:48:16+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerung/Regen: Laterne aktuell an, Foto kurz nach gemeldetem Ausfall. Mast mit Wasserlaufspuren, Schaltbox geschlossen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n13293470414\",\n    \"latitude\": 47.8570666,\n    \"longitude\": 12.1309433\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"rain\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "high",
+        "reported_at": "2026-01-17T13:48:16+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerung/Regen: Laterne aktuell an, Foto kurz nach gemeldetem Ausfall. Mast mit Wasserlaufspuren, Schaltbox geschlossen.",
+        "reporter": "dispatch"
+      },
+      "asset": {
+        "asset_osm": "n13293470414",
+        "latitude": 47.8570666,
+        "longitude": 12.1309433
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "rain",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0016",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "intermittent",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "rain",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1146,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein sporadischer Fehler, bei dem die Lampe kurzzeitig ausfällt und dann wieder funktioniert, erfordert eine sorgfältige Untersuchung. Die gemeldeten Wasserlaufspuren am Mast sind ein wichtiger Hinweis.\n\nHier ist die Schritt-für-Schritt-Checkliste für Ihr Vorgehen vor Ort:\n\n**1. Absicherung**\n*   **Persönliche Sicherheit:** Tragen Sie stets Ihre persönliche Schutzausrüstung (PSA).\n*   **Verkehrssicherung:** Da Dämmerung, Regen und schlechte Sicht herrschen, sichern Sie den Arbeitsbereich gemäß den Vorschriften ab (z.B. Warnblinkanlage, Warnleuchten, Warndreieck), auch wenn der Verkehr aktuell gering ist. Sorgen Sie für ausreichende Beleuchtung Ihres Arbeitsbereichs.\n*   **Gefahrenbereich:** Halten Sie ausreichend Abstand zum Mast und zur Schaltbox, bis eine erste Einschätzung erfolgt ist.\n\n**2. Sichtprüfung (Außen)**\n*   **Gesamtzustand:** Prüfen Sie den Mast auf sichtbare Beschädigungen, Korrosion oder Verformungen.\n*   **Wasserlaufspuren:** Untersuchen Sie die gemeldeten Wasserlaufspuren am Mast genau. Woher kommen sie? Gibt es Anzeichen für Wassereintritt in den Mast oder die Leuchte?\n*   **Schaltbox/Revisionsöffnung:** Prüfen Sie die Schaltbox auf äußere Unversehrtheit. Ist sie fest verschlossen? Gibt es Anzeichen für Feuchtigkeitseintritt (Kondenswasser, Rostspuren)? **Wichtig:** Öffnen Sie die Schaltbox nur, wenn Sie dazu berechtigt und ausgerüstet sind, und nur nach spannungsfreier Schaltung, falls erforderlich.\n*   **Kabel/Anschlüsse:** Suchen Sie nach sichtbaren Beschädigungen an Kabeln oder Zuleitungen im zugänglichen Bereich.\n*   **Leuchtenkopf:** Prüfen Sie den Leuchtenkopf auf Beschädigungen, Risse im Glas oder fehlende Abdeckungen, die Wassereintritt ermöglichen könnten.\n\n**3. Diagnose/Beobachtung (bei aktuell funktionierender Lampe)**\n*   **Fehlerbild reproduzieren:** Versuchen Sie, den Fehler zu reproduzieren. Klopfen Sie vorsichtig an den Mast oder die Leuchte (nicht an spannungsführende Teile!), um lose Kontakte zu identifizieren.\n*   **Umgebungsbedingungen:** Beachten Sie die aktuellen Wetterbedingungen (Regen) und wie diese den Fehler beeinflussen könnten (Feuchtigkeitseintritt).\n*   **Schaltvorgänge:** Beobachten Sie die Lampe über einen längeren Zeitraum, wenn möglich, um weitere Ausfälle zu dokumentieren.\n*   **Messungen (falls möglich und sicher):** Wenn Sie dazu autorisiert und ausgerüstet sind, führen Sie spannungsfreie Widerstandsmessungen durch, um Isolationsfehler oder lose Verbindungen zu identifizieren. **Achtung:** Bei Nässe ist besondere Vorsicht geboten.\n\n**4. Dokumentation (Offline-fähig)**\n*   **Gerätezustand beachten:** Ihr Gerät hat schlechte Konnektivität und niedrigen Akkustand. Nutzen Sie die Offline-Funktionen Ihrer App.\n*   **Fotos:** Machen Sie detaillierte Fotos von allen Auffälligkeiten: Wasserlaufspuren, Zustand der Schaltbox, Leuchtenkopf, Mast. Das bereits vorhandene Foto ist ein guter Ausgangspunkt.\n*   **Beschreibung:** Beschreiben Sie präzise Ihre Beobachtungen:\n    *   Was haben Sie gesehen?\n    *   Welche Maßnahmen haben Sie ergriffen?\n    *   Konnten Sie den Fehler reproduzieren?\n    *   Gibt es Hinweise auf die Ursache (z.B. Feuchtigkeit, lose Kontakte)?\n*   **Synchronisation:** Stellen Sie sicher, dass alle Daten und Fotos lokal gespeichert werden und synchronisieren Sie diese, sobald eine stabile Verbindung und ausreichende Akkuladung verfügbar sind.\n\n**5. Eskalation**\n*   **Bei Gefahr im Verzug:** Wenn Sie eine unmittelbare Gefahr (z.B. offene Kabel, starker Wassereintritt in die Schaltbox, Mastbruchgefahr) feststellen, sichern Sie den Bereich weiträumig ab und informieren Sie umgehend die Leitstelle/den Bereitschaftsdienst zur sofortigen Behebung.\n*   **Bei unklarer Ursache/nicht behebbar:** Wenn Sie die Ursache des sporadischen Fehlers nicht eindeutig identifizieren oder beheben können, dokumentieren Sie alles detailliert und leiten Sie den Fall an den zuständigen Fachexperten oder die nächste Eskalationsstufe weiter, idealerweise mit dem Hinweis auf die vermutete Feuchtigkeitsproblematik.",
+    "tokens_estimate_words": 494
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0016-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Perfekte Antwort: Safety-first explizit, strukturierte Schritte, nutzt Kontext vollständig (Wasserlaufspuren, Dämmerung/Regen, spotty connectivity/low_battery), Offline-Workflow klar adressiert ('Offline-fähig', lokale Speicherung, Synchronisation), umfassende Dokumentation, klare Eskalation."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.783
+  },
+  "error": {}
+}

@@ -1,0 +1,208 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0001-TC3",
+  "timestamp": "2026-07-27T07:17:24",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"low\",\n    \"reported_at\": \"2026-01-21T09:11:43+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Leuchtmittel optisch intakt, Mastfuß ohne sichtbare Schäden; Schaltbox geschlossen. Kein akuter Handlungsbedarf erkennbar.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n5718630492\",\n    \"latitude\": 47.8511562,\n    \"longitude\": 12.1186059,\n    \"name\": \"Rosenheim, Bahnhof\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"day\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"normal_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "low",
+        "reported_at": "2026-01-21T09:11:43+01:00",
+        "photo_available": true,
+        "photo_description": "Leuchtmittel optisch intakt, Mastfuß ohne sichtbare Schäden; Schaltbox geschlossen. Kein akuter Handlungsbedarf erkennbar.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n5718630492",
+        "latitude": 47.8511562,
+        "longitude": 12.1186059,
+        "name": "Rosenheim, Bahnhof",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "day",
+        "weather": "clear",
+        "lighting_condition": "normal_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0001",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "low",
+      "fault_type": "intermittent",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "clear",
+      "poor_visibility": false,
+      "time_of_day": "day",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1199,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein sporadischer Fehler an einer Straßenlampe erfordert eine systematische Vorgehensweise. Hier ist eine Schritt-für-Schritt-Checkliste für den Außendienst, unter Berücksichtigung der Sicherheit und der vorliegenden Informationen:\n\n**Standort:** Rosenheim, Bahnhof (n5718630492)\n**Fehlerbild:** Lampe war aus, ist jetzt wieder an (sporadisch).\n**Zusatzinfo:** Leuchtmittel optisch intakt, Mastfuß ohne sichtbare Schäden, Schaltbox geschlossen. Hohe Verkehrsbelastung. Techniker-Gerät ist offline und hat niedrigen Akkustand.\n\n---\n\n### **Schritt-für-Schritt-Checkliste bei sporadischem Lampenausfall**\n\n1.  **Absicherung (Priorität: Sicherheit & Verkehrssicherung)**\n    *   **Persönliche Schutzausrüstung (PSA):** Vollständig anlegen (Warnkleidung, Sicherheitsschuhe etc.).\n    *   **Verkehrssicherung:** Aufgrund der hohen Verkehrsbelastung am Bahnhof Rosenheim ist eine umfassende Absicherung der Arbeitsstelle zwingend erforderlich. Warnbake, Warndreieck, Blitzleuchte gemäß StVO aufstellen.\n    *   **Gefahrenbereich:** Sicherstellen, dass keine Passanten oder Fahrzeuge gefährdet werden.\n\n2.  **Sichtprüfung (Umfassende Begutachtung vor Ort)**\n    *   **Gesamtanlage:** Überprüfen Sie die gesamte Leuchte, den Mast und den Mastfuß auf äußerliche Beschädigungen, Vandalismus oder Anfahrtschäden. (Die vorliegende Foto-Beschreibung \"Leuchtmittel optisch intakt, Mastfuß ohne sichtbare Schäden; Schaltbox geschlossen\" dient als Vorabinfo, ersetzt aber nicht die eigene Prüfung).\n    *   **Leuchtmittel/Optik:** Prüfen Sie das Leuchtmittel auf sichtbare Defekte (Verfärbungen, Bruch) und die Abdeckung auf Risse oder Verschmutzungen.\n    *   **Schaltbox/Verkabelung:** Wenn sicher zugänglich, prüfen Sie die Schaltbox auf äußere Unversehrtheit. Achten Sie auf lose Kabel, Korrosion oder Feuchtigkeitseintritt im sichtbaren Bereich.\n    *   **Umgebungseinflüsse:** Gibt es Bäume oder andere Objekte, die die Leuchte verdecken oder mechanisch beeinflussen könnten?\n\n3.  **Diagnose/Beobachtung (Fehlersuche bei intermittierendem Verhalten)**\n    *   **Beobachtung des Schaltverhaltens:** Bleiben Sie vor Ort und beobachten Sie die Leuchte über einen längeren Zeitraum (z.B. 15-30 Minuten). Schaltet sie sich wieder aus? Flackert sie? Dimmt sie unregelmäßig?\n    *   **Schaltuhr/Dämmerungsschalter:** Prüfen Sie, ob die Schaltuhr oder der Dämmerungsschalter korrekt funktioniert und keine offensichtlichen Defekte aufweist.\n    *   **Spannungsprüfung (falls sicher möglich):** Wenn die Lampe erneut ausfällt und der Zugang sicher ist, messen Sie die Spannung an der Leuchte oder im Schaltkasten, um eine Unterbrechung der Stromversorgung auszuschließen.\n    *   **Wärmeentwicklung:** Achten Sie auf ungewöhnliche Wärmeentwicklung an der Leuchte oder im Schaltkasten.\n    *   **Mögliche Ursachen:** Denken Sie an lose Kontakte, defekte Vorschaltgeräte/Treiber, Überhitzung, oder einen fehlerhaften Dämmerungsschalter als mögliche Ursachen für sporadische Ausfälle.\n\n4.  **Dokumentation (Offline-fähig und detailliert)**\n    *   **Offline-Workflow:** Da Ihr Techniker-Gerät offline ist, dokumentieren Sie alle Beobachtungen, durchgeführten Prüfungen und eventuelle Maßnahmen detailliert und lokal auf Ihrem Gerät.\n    *   **Fotos:** Machen Sie aktuelle Fotos von der Leuchte, dem Mast, der Schaltbox und der Umgebung, insbesondere wenn Sie neue Auffälligkeiten feststellen.\n    *   **Zustand des Geräts:** Beachten Sie den niedrigen Akkustand Ihres Geräts (`device_state: low_battery`) und planen Sie entsprechend.\n    *   **Bericht:** Erfassen Sie den genauen Zeitpunkt des Ausfalls (falls erneut beobachtet), die Dauer und alle weiteren relevanten Details.\n\n5.  **Eskalation (Nächste Schritte bei unklarer Ursache oder persistierendem Fehler)**\n    *   **Synchronisation:** Sobald Ihr Gerät wieder online ist, synchronisieren Sie alle gesammelten Daten und Fotos.\n    *   **Fachabteilung informieren:** Wenn der Fehler weiterhin sporadisch auftritt und keine eindeutige Ursache gefunden werden konnte, informieren Sie die zuständige Fachabteilung für eine tiefergehende Analyse oder den Austausch von Komponenten (z.B. Vorschaltgerät, Dämmerungsschalter).\n    *   **Wiederkehrende Prüfung:** Ggf. eine erneute Prüfung zu einem späteren Zeitpunkt oder unter anderen Bedingungen (z.B. nachts) ansetzen.\n    *   **Priorisierung:** Auch wenn der Fehler aktuell nicht akut ist, sollte die Ursache für den sporadischen Ausfall gefunden werden, um zukünftige, dauerhafte Ausfälle zu verhindern.",
+    "tokens_estimate_words": 517
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0001-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Perfekt: nutzt CONTEXT inkl. extras.context_notes optimal (Offline-Workflow, device.* = Techniker-Gerät, nicht Asset), Safety first, strukturiert, umsetzbar, keine Halluzinationen, explizite Synchronisation nach Online-Rückkehr. Alle Dimensionen erfüllt."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.054
+  },
+  "error": {}
+}

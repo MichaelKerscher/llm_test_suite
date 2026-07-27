@@ -1,0 +1,208 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0029-TC3",
+  "timestamp": "2026-07-27T08:53:57",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 15 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-15T12:53:33+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme: Laterne dunkel, Pang/Cafe-Bereich unbeleuchtet. Mast ohne erkennbare Beschädigung, Schaltbox geschlossen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n9223569763\",\n    \"latitude\": 47.8238909,\n    \"longitude\": 12.0889764,\n    \"name\": \"Pang, Cafe Neu\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"medium\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-15T12:53:33+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme: Laterne dunkel, Pang/Cafe-Bereich unbeleuchtet. Mast ohne erkennbare Beschädigung, Schaltbox geschlossen.",
+        "reporter": "dispatch"
+      },
+      "asset": {
+        "asset_osm": "n9223569763",
+        "latitude": 47.8238909,
+        "longitude": 12.0889764,
+        "name": "Pang, Cafe Neu",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0029",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Straßenlampe ist dunkel seit etwa 15 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1182,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die dunkle Straßenlampe im Bereich \"Pang, Cafe Neu\" seit 15 Minuten, besonders bei Nacht und schlechter Sicht, erfordert sofortiges Handeln. Die Sicherheit hat oberste Priorität.\n\nHier ist die Schritt-für-Schritt-Checkliste für den Außendienst:\n\n**1. Absicherung der Einsatzstelle**\n*   **Gefahrenbereich sichern:** Unverzüglich Warnblinklicht einschalten, Warnweste anlegen und den Bereich um die dunkle Laterne mit Warndreieck/Blitzleuchte absichern, um Passanten und Verkehrsteilnehmer zu schützen.\n*   **Verkehrssicherung prüfen:** Bei mittlerem Verkehrsaufkommen und schlechter Sicht ist besondere Vorsicht geboten. Prüfen, ob zusätzliche Absperrmaßnahmen (z.B. Pylonen) notwendig sind, um den Arbeitsbereich zu kennzeichnen.\n\n**2. Sichtprüfung (ohne direkten Kontakt zur Anlage)**\n*   **Umgebung prüfen:** Gibt es offensichtliche Beschädigungen in der Nähe der Laterne (z.B. umgefahrene Poller, Baufahrzeuge, die Kabel beschädigt haben könnten)?\n*   **Mast und Leuchtenkopf:** Der Mast ist laut Foto ohne erkennbare Beschädigung. Dennoch auf sichtbare Schäden am Mast, am Leuchtenkopf oder an der Verkabelung (z.B. herabhängende Kabel, Glasbruch) achten.\n*   **Schaltkasten/Anschluss:** Die Schaltbox ist laut Foto geschlossen. Prüfen, ob der Schaltkasten in der Nähe der Laterne (falls vorhanden) äußerlich unversehrt ist und keine Anzeichen von Manipulation oder Beschädigung aufweist.\n*   **Weitere Leuchten:** Sind benachbarte Straßenlampen ebenfalls dunkel oder nur diese eine? Dies kann auf einen lokalen Fehler oder eine größere Störung hinweisen.\n\n**3. Diagnose/Beobachtung**\n*   **Einschaltversuch (falls sicher möglich):** Wenn ein zugänglicher Schalter oder Sicherungsautomat für die einzelne Laterne vorhanden und sicher erreichbar ist, kann ein Wiedereinschaltversuch unternommen werden. **Achtung:** Nur durchführen, wenn keine sichtbaren Schäden auf einen Kurzschluss hindeuten.\n*   **Geräusche/Gerüche:** Auf ungewöhnliche Geräusche (z.B. Brummen, Knistern) oder Gerüche (z.B. Brandgeruch) achten.\n*   **Wärmeentwicklung:** Vorsichtig prüfen, ob am Mast oder Schaltkasten eine ungewöhnliche Wärmeentwicklung feststellbar ist (ohne direkten Kontakt).\n*   **Fehlerursachen eingrenzen:**\n    *   **Leuchtmitteldefekt:** Häufigste Ursache.\n    *   **Sicherung ausgelöst:** Im Schaltkasten oder der Unterverteilung.\n    *   **Kabelbruch/Kurzschluss:** Im Erdreich oder im Mast.\n    *   **Steuerungsproblem:** Bei mehreren ausgefallenen Leuchten.\n\n**4. Dokumentation (Offline-Workflow beachten!)**\n*   **Fotos:** Weitere Fotos aus verschiedenen Perspektiven machen, die den aktuellen Zustand der Laterne und des Umfelds dokumentieren. Das vorhandene Foto zeigt die Dunkelheit, weitere Details sind hilfreich.\n*   **Details erfassen:**\n    *   Genaue Uhrzeit des Eintreffens und der Feststellungen.\n    *   Beschreibung der Absicherungsmaßnahmen.\n    *   Alle Beobachtungen aus der Sichtprüfung und Diagnose.\n    *   Versuchte Maßnahmen (z.B. Wiedereinschalten) und deren Ergebnis.\n    *   Bestätigung, dass nur diese eine Laterne betroffen ist (oder mehrere).\n*   **Offline-Speicherung:** Da die Geräte-Konnektivität offline ist, sicherstellen, dass alle Daten und Fotos lokal auf dem Gerät gespeichert werden und später synchronisiert werden können.\n\n**5. Eskalation**\n*   **Priorität:** Aufgrund der Unsicherheit im Bereich \"Pang/Cafe Neu\" und der schlechten Sicht hat dieser Ausfall hohe Priorität.\n*   **Meldung:** Sobald die Absicherung erfolgt und eine erste Einschätzung vorliegt, die Leitstelle/Disposition über den aktuellen Status informieren.\n*   **Anforderung von Unterstützung:**\n    *   Bei komplexen Fehlern (z.B. Kabelbruch, Schaltkasten defekt) oder wenn die Ursache nicht sofort behoben werden kann, ein spezialisiertes Team anfordern.\n    *   Bei Gefahr im Verzug (z.B. offene Kabel, starker Brandgeruch) sofort die Feuerwehr oder den Netzbetreiber informieren.\n*   **Provisorische Maßnahmen:** Falls eine sofortige Reparatur nicht möglich ist, prüfen, ob provisorische Beleuchtung (z.B. mobile Lichtmasten) zur Wiederherstellung der Sicherheit im Bereich erforderlich ist und dies der Leitstelle melden.",
+    "tokens_estimate_words": 500
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0029-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Perfekte Antwort: nutzt alle Kontextinformationen inklusive extras-Hinweise präzise, integriert Offline-Workflow explizit (lokale Speicherung, Synchronisation), Safety-First klar, Eskalation differenziert, Dokumentation systematisch. Keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.665
+  },
+  "error": {}
+}

@@ -1,0 +1,207 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0025-TC3",
+  "timestamp": "2026-07-27T09:57:28",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 20 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-16T20:06:14+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme: Laterne dunkel, Gewerbegebiet ohne Beleuchtung. Mast intakt, Schaltbox geschlossen. Kein sichtbarer Vandalismus.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4465173757\",\n    \"latitude\": 47.8409877,\n    \"longitude\": 12.1236173,\n    \"name\": \"Rosenheim, Isarstraße/Gewerbegebiet\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-16T20:06:14+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme: Laterne dunkel, Gewerbegebiet ohne Beleuchtung. Mast intakt, Schaltbox geschlossen. Kein sichtbarer Vandalismus.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n4465173757",
+        "latitude": 47.8409877,
+        "longitude": 12.1236173,
+        "name": "Rosenheim, Isarstraße/Gewerbegebiet",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0025",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Straßenlampe ist dunkel seit etwa 20 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1034,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die dunkle Straßenlampe in der Isarstraße/Gewerbegebiet in Rosenheim erfordert schnelles Handeln, da der Bereich als unsicher wahrgenommen wird und die Sicht schlecht ist. Hier ist die Schritt-für-Schritt-Checkliste für das Vorgehen vor Ort:\n\n**Checkliste: Ausfall Straßenlampe (Isarstraße/Gewerbegebiet, Rosenheim)**\n\n1.  **Absicherung (Priorität: Sicherheit)**\n    *   **Verkehrssicherung:** Unverzüglich die Einsatzstelle gemäß den Vorschriften absichern (Warnblinkanlage, Warnleuchten, Warndreieck/Leitkegel).\n    *   **Persönliche Schutzausrüstung (PSA):** Sicherstellen, dass die vollständige PSA (Warnkleidung, Helm, Sicherheitsschuhe) getragen wird.\n    *   **Gefahrenbereich:** Den Bereich um die dunkle Lampe großräumig absperren, um Passanten und Verkehr zu schützen.\n\n2.  **Sichtprüfung (Erste Einschätzung)**\n    *   **Lampe/Leuchte:** Optische Prüfung der Leuchte auf sichtbare Beschädigungen (Glasbruch, lose Teile, Korrosion).\n    *   **Mast:** Überprüfung des Mastes auf Stabilität, Beschädigungen oder Anfahrspuren (laut Vorabinfo ist der Mast intakt).\n    *   **Schaltkasten/Anschluss:** Sichtkontrolle des Schaltkastens am Mastfuß oder in der Nähe. Ist er geschlossen und unbeschädigt (laut Vorabinfo ist die Schaltbox geschlossen)? Gibt es Anzeichen von Vandalismus oder Manipulation?\n    *   **Umgebung:** Gibt es in der direkten Umgebung weitere dunkle Lampen oder Anzeichen eines größeren Stromausfalls? (Die Lampe ist seit 20 Minuten dunkel, was auf einen lokalen Fehler hindeutet).\n    *   **Kabel:** Sind sichtbare Kabel beschädigt oder freigelegt?\n\n3.  **Diagnose/Beobachtung (Fehlerursache eingrenzen)**\n    *   **Leuchtmittel:** Ist das Leuchtmittel defekt (z.B. Glühfaden gerissen, dunkle Verfärbung)?\n    *   **Vorschaltgerät/Treiber:** Sind Geräusche oder Gerüche (z.B. Brandgeruch) aus der Leuchte oder dem Schaltkasten wahrnehmbar, die auf ein defektes Vorschaltgerät hindeuten könnten?\n    *   **Sicherung:** Überprüfung der Sicherung im Schaltkasten (falls zugänglich und autorisiert).\n    *   **Schaltuhr/Steuerung:** Ist die Lampe möglicherweise nur falsch geschaltet oder gibt es ein Problem mit der Steuerung? (Unwahrscheinlich bei 20 Minuten Ausfall, aber zu prüfen).\n    *   **Spannungsmessung:** Falls möglich und sicher, eine Spannungsmessung an der Leuchte oder im Schaltkasten durchführen, um die Stromversorgung zu prüfen.\n\n4.  **Dokumentation (Lückenlose Erfassung)**\n    *   **Fotos:** Mehrere Fotos der Situation aufnehmen (Gesamtansicht, Detailaufnahmen der Lampe, des Mastes, des Schaltkastens, eventueller Beschädigungen). Beachten Sie den niedrigen Akkustand des Geräts und priorisieren Sie wichtige Aufnahmen.\n    *   **Beschreibung:** Genaue Beschreibung der Feststellungen: Was wurde gesehen, gehört, gemessen? Welche Maßnahmen wurden ergriffen?\n    *   **Zeitstempel:** Exakte Uhrzeit der Ankunft, der Feststellungen und der ergriffenen Maßnahmen notieren.\n    *   **GPS-Daten:** Sicherstellen, dass die GPS-Koordinaten des Standorts erfasst werden.\n    *   **Status:** Den aktuellen Status der Lampe und des Vorfalls im System aktualisieren.\n\n5.  **Eskalation (Nächste Schritte einleiten)**\n    *   **Sofortige Reparatur:** Falls der Fehler einfach zu beheben ist (z.B. Leuchtmittelwechsel, Sicherung tauschen) und die Sicherheit gewährleistet ist, Reparatur vornehmen.\n    *   **Fachpersonal anfordern:** Wenn der Fehler nicht vor Ort behoben werden kann (z.B. komplexer elektrischer Defekt, beschädigte Kabel, defektes Vorschaltgerät, Mastschaden), umgehend spezialisiertes Fachpersonal (Elektriker, Tiefbau) anfordern.\n    *   **Verkehrsbehörde/Polizei:** Bei anhaltender Gefährdung des Verkehrs oder der öffentlichen Sicherheit die zuständige Verkehrsbehörde oder Polizei informieren.\n    *   **Meldung an Leitstelle:** Alle Schritte und die Eskalation an die zuständige Leitstelle oder den Vorgesetzten melden.\n\n**Wichtiger Hinweis:** Die Konnektivität und der niedrige Akkustand Ihres Geräts beeinflussen Ihr Vorgehen bei der Dokumentation. Stellen Sie sicher, dass alle wichtigen Informationen erfasst werden, auch wenn dies offline geschehen muss.",
+    "tokens_estimate_words": 477
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0025-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Herausragende Antwort: nutzt vollständigen Kontext inkl. extras/context_notes korrekt (unterscheidet Techniker-Gerät von Asset), priorisiert Safety explizit, strukturiert umsetzbar, vollständige Dokumentation mit Hinweis auf low_battery-Workflow. Keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 13.539
+  },
+  "error": {}
+}
