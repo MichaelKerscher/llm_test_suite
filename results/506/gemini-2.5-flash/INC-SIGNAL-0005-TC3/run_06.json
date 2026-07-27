@@ -1,0 +1,180 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0005-TC3",
+  "timestamp": "2026-07-27T16:30:30",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet. (Hauptverkehrszeit / hoher Verkehr).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-18T00:42:54+01:00\",\n    \"reporter\": \"patrol\",\n    \"photo_available\": false\n  },\n  \"asset\": {\n    \"asset_osm\": \"n35664946\",\n    \"longitude\": 12.1102703,\n    \"latitude\": 47.8539754\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"normal_visibility\",\n    \"time_of_day\": \"rush_hour\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\",\n    \"weather\": \"clear\"\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-18T00:42:54+01:00",
+        "reporter": "patrol",
+        "photo_available": false
+      },
+      "asset": {
+        "asset_osm": "n35664946",
+        "longitude": 12.1102703,
+        "latitude": 47.8539754
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "normal_visibility",
+        "time_of_day": "rush_hour",
+        "traffic_exposure": "high",
+        "noise_level": "high",
+        "weather": "clear"
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0005",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet. (Hauptverkehrszeit / hoher Verkehr).",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": false,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": true,
+      "high_severity": false,
+      "photo_description": false,
+      "offline": false,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": false,
+      "rush_hour": true,
+      "night": false,
+      "bad_weather": false,
+      "high_traffic": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 455,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P1",
+        "reason": "high-traffic-env"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P2",
+        "reason": "photo-flag"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P3",
+        "reason": "context-weather"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die gemeldete Ampel hat wiederholte Ausfälle, funktioniert aber aktuell. Dies tritt während der Hauptverkehrszeit bei hohem Verkehrsaufkommen auf.\n\n**Priorität:** Sicherheit und Aufrechterhaltung des Verkehrsflusses.\n\n**Schritt-für-Schritt-Checkliste für den Außendienst:**\n\n1.  **Absicherung der Einsatzstelle:**\n    *   **Verkehrssicherung:** Unverzüglich Maßnahmen zur Verkehrssicherung einleiten (Warnblinkanlage, Warnweste, Warndreieck/Leitkegel). Bei Bedarf Polizei oder Verkehrsregelung anfordern, insbesondere da es sich um Hauptverkehrszeit und hohes Verkehrsaufkommen handelt.\n    *   **Eigenschutz:** Persönliche Schutzausrüstung (PSA) tragen.\n\n2.  **Sichtprüfung (ohne Eingriff):**\n    *   **Umgebung:** Gibt es offensichtliche externe Einflüsse (z.B. Unfallschäden, Bauarbeiten, Vandalismus, lose Kabel, Wasseransammlungen)?\n    *   **Ampelanlage:** Sind alle Signalgeber intakt? Gibt es sichtbare Beschädigungen an Masten, Kabeln oder dem Steuergerät?\n    *   **Stromversorgung:** Sind die Zuleitungen unbeschädigt?\n\n3.  **Diagnose/Beobachtung (ohne Eingriff):**\n    *   **Fehlerbild:** Beobachten Sie die Ampel über einen längeren Zeitraum (mind. 15-30 Minuten, wenn möglich), um das intermittierende Verhalten zu erfassen.\n        *   Welche Signalbilder sind betroffen?\n        *   Wie lange dauert ein Ausfall?\n        *   Gibt es Muster (z.B. bei bestimmten Phasenwechseln, nach einer bestimmten Zeit)?\n    *   **Gerätestatus:** Das Gerät ist laut System online und der Gerätezustand ist \"ok\". Dies deutet auf einen komplexeren, nicht permanenten Fehler hin.\n    *   **Umwelteinflüsse:** Gibt es zum Zeitpunkt des Ausfalls besondere Umwelteinflüsse (z.B. starke Vibrationen durch Verkehr, Sonneneinstrahlung auf Sensoren)? (Aktuell: klares Wetter, normale Sicht).\n\n4.  **Dokumentation:**\n    *   **Zeitpunkt und Dauer:** Genaue Uhrzeiten der beobachteten Ausfälle und deren Dauer.\n    *   **Fehlerbeschreibung:** Detaillierte Beschreibung des Fehlerbildes (welche Signale, welche Richtung, wie oft).\n    *   **Fotos/Videos:** Falls möglich, Fotos oder kurze Videos von der Ampelanlage während eines Ausfalls oder von Auffälligkeiten machen.\n    *   **Umgebungsbedingungen:** Notieren Sie die aktuellen Verkehrs- und Wetterbedingungen.\n    *   **Maßnahmen:** Dokumentieren Sie alle getroffenen Absicherungs- und Beobachtungsmaßnahmen.\n\n5.  **Eskalation:**\n    *   **Meldung:** Umgehende Meldung an die zuständige Leitstelle/Fachabteilung mit allen gesammelten Informationen.\n    *   **Empfehlung:** Aufgrund der intermittierenden Natur und des hohen Verkehrsaufkommens ist eine detaillierte Fehleranalyse durch spezialisiertes Personal (Elektriker/Techniker) erforderlich. Eine temporäre Verkehrsregelung oder die Überwachung durch die Polizei während der Hauptverkehrszeit könnte bis zur Behebung notwendig sein.\n    *   **Nächste Schritte:** Abwarten der Anweisungen der Leitstelle bezüglich weiterer Maßnahmen oder der Entsendung eines Technikers.",
+    "tokens_estimate_words": 326
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0005-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Hervorragende Antwort: klare Priorisierung (Sicherheit zuerst), nutzt alle Kontextdaten (intermittent, Stoßzeit, hoher Verkehr, online), konkrete Beobachtungsdauer (15-30 Min), detaillierte Dokumentation und angemessene Eskalation mit Empfehlung für Fachpersonal."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 8.1
+  },
+  "error": {}
+}
