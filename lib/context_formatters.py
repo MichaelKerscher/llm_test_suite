@@ -79,10 +79,16 @@ def format_raw(ctx: dict, domain: str = "lamp") -> str:
         lon = asset.get("longitude", "")
         direction = asset.get("traffic_signals:direction", "")
         btn = asset.get("button_operated")
-        btn_str = "mit Anforderungstaster" if btn else "ohne Anforderungstaster"
+        if btn is None:
+            btn_str = "Anforderungstaster unbekannt"
+        else:
+            btn_str = "mit Anforderungstaster" if btn else "ohne Anforderungstaster"
+
+        direction = asset.get("traffic_signals:direction")
+        dir_str = f", Richtung: {direction}" if direction else ""
         parts.append(
-            f"Die Lichtsignalanlage (OSM-ID: {osm}, Koordinaten: {lat}, {lon}, "
-            f"Richtung: {direction}) ist {btn_str}."
+            f"Die Lichtsignalanlage (OSM-ID: {osm}, Koordinaten: {lat}, {lon}"
+            f"{dir_str}) ist {btn_str}."
         )
 
     # Incident

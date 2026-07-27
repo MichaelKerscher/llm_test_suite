@@ -1,12 +1,27 @@
 # lib/context_policy_signal.py
-# Context Selection Policy for Signal (traffic light) domain
-# Parallel to context_policy_s2.py (LAMP domain)
-# selector_version: signal-s2-v1
-# guardrails_version: signal-guard-v1
+# Context Selection Policy for the SIGNAL (traffic light) domain.
+#
+# Parallel to context_policy_s2.py (LAMP domain): the two modules share the
+# same five-stage pipeline and the same selection-metadata contract, and
+# differ only in what is domain-specific -- trigger conditions, tier
+# assignments, and guardrail texts.
+#
+#   selector_version:   signal-s2-v2
+#   guardrails_version: signal-guard-v1
+#
+# Changes over signal-s2-v1:
+#   * selection metadata uses the same key names as the LAMP policy
+#     (trigger_signals, path, prio), so that the logger and the aggregation
+#     scripts read both domains through one code path
+#   * fields absent from the input are no longer reported as dropped;
+#     dropped_fields now contains budget exclusions only
+#   * an explicit dimension ordering stage was added, mirroring
+#     stable_serialize_context() in the LAMP policy
 
 from __future__ import annotations
+
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 # ---------------------------------------------------------------------------
@@ -21,13 +36,12 @@ class BudgetPolicy:
 
 
 # ---------------------------------------------------------------------------
-# Trigger extraction
+# Stage 2 -- Trigger extraction
 # ---------------------------------------------------------------------------
 def extract_triggers(ctx: dict) -> dict:
     inc = ctx.get("incident") or {}
     dev = ctx.get("device") or {}
     env = ctx.get("environment") or {}
-    asset = ctx.get("asset") or {}
 
     fault = inc.get("fault_type", "")
     severity = inc.get("severity", "")
@@ -63,36 +77,31 @@ def extract_triggers(ctx: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Priority field definitions
+# Stages 3 and 4 -- Guardrail injection and deterministic selection plan
 # ---------------------------------------------------------------------------
-P1_FIELDS = []   # filled by deterministic_selection_plan
-P2_FIELDS = []
-P3_FIELDS = []
-
-
 def deterministic_selection_plan(ctx: dict, triggers: dict) -> dict:
     """
-    Returns a plan dict with p1/p2/p3 field lists and guardrail_notes.
-    Priority logic for Signal domain:
-      P1 – must-have for this fault/context
-      P2 – highly useful
-      P3 – nice-to-have / compressible
+    Returns a plan with p1/p2/p3 field lists and the guardrail notes.
+
+    Priority logic for the SIGNAL domain:
+      P1 -- must-have for this fault and situation
+      P2 -- highly useful
+      P3 -- nice-to-have, first to be dropped under budget pressure
     """
     p1, p2, p3 = [], [], []
     guardrail_notes = []
 
-    inc  = ctx.get("incident") or {}
-    dev  = ctx.get("device") or {}
-    env  = ctx.get("environment") or {}
-    asset = ctx.get("asset") or {}
+    inc = ctx.get("incident") or {}
+    dev = ctx.get("device") or {}
 
     # --- ASSET ---
-    # GPS always P2 for signal (location needed for dispatch/escalation)
-    p2.append({"field": "asset.asset_osm",   "reason": "asset-id"})
-    p2.append({"field": "asset.longitude",   "reason": "gps"})
-    p2.append({"field": "asset.latitude",    "reason": "gps"})
+    # Location is P2 for signals: dispatch and escalation need it, but the
+    # operational context of the fault determines urgency more than identity.
+    p2.append({"field": "asset.asset_osm", "reason": "asset-id"})
+    p2.append({"field": "asset.longitude", "reason": "gps"})
+    p2.append({"field": "asset.latitude",  "reason": "gps"})
 
-    # --- INCIDENT (P1 core) ---
+    # --- INCIDENT ---
     p1.append({"field": "incident.fault_type",  "reason": "fault-classification"})
     p1.append({"field": "incident.severity",    "reason": "severity-routing"})
     p1.append({"field": "incident.reported_at", "reason": "timestamp"})
@@ -104,7 +113,7 @@ def deterministic_selection_plan(ctx: dict, triggers: dict) -> dict:
         p2.append({"field": "incident.photo_available", "reason": "photo-flag"})
 
     # --- ENVIRONMENT ---
-    # Visibility and time_of_day are critical for signal faults
+    # Visibility and time of day are decisive for signal faults.
     p1.append({"field": "environment.visibility",       "reason": "safety-visibility"})
     p1.append({"field": "environment.time_of_day",      "reason": "operational-context"})
     p1.append({"field": "environment.traffic_exposure", "reason": "safety-traffic"})
@@ -121,8 +130,8 @@ def deterministic_selection_plan(ctx: dict, triggers: dict) -> dict:
 
     # --- DEVICE ---
     if triggers["offline"] or triggers["spotty"] or triggers["low_battery"]:
-        p1.append({"field": "device.connectivity",  "reason": "offline-workflow"})
-        p1.append({"field": "device.device_state",  "reason": "device-constraint"})
+        p1.append({"field": "device.connectivity", "reason": "offline-workflow"})
+        p1.append({"field": "device.device_state", "reason": "device-constraint"})
         guardrail_notes.append(
             "HINWEIS: device.connectivity="
             + str(dev.get("connectivity", ""))
@@ -136,7 +145,7 @@ def deterministic_selection_plan(ctx: dict, triggers: dict) -> dict:
         p2.append({"field": "device.connectivity", "reason": "device-status"})
         p2.append({"field": "device.device_state", "reason": "device-status"})
 
-    # --- SAFETY-CRITICAL escalation hint ---
+    # --- SAFETY-CRITICAL escalation ---
     if triggers["safety_critical"]:
         guardrail_notes.append(
             "SICHERHEITSHINWEIS: fault_type="
@@ -157,7 +166,7 @@ def deterministic_selection_plan(ctx: dict, triggers: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Field extractor (nested dot-notation)
+# Field access helpers (dotted paths)
 # ---------------------------------------------------------------------------
 def _get_nested(ctx: dict, field_path: str):
     parts = field_path.split(".")
@@ -178,8 +187,31 @@ def _set_nested(target: dict, field_path: str, value):
 
 
 # ---------------------------------------------------------------------------
-# Build L2B
+# Stage 5b -- Stable dimension ordering
 # ---------------------------------------------------------------------------
+def stable_serialize_context(context_partial: dict) -> dict:
+    """
+    Emits the dimensions in a fixed order, mirroring the corresponding stage
+    of the LAMP policy. Without this the ordering would depend on the order
+    in which fields happen to be added, which is an implementation detail
+    rather than a design decision.
+    """
+    ordered: dict = {}
+    for k in ("incident", "asset", "device", "environment", "_guardrail_notes"):
+        if k in context_partial:
+            ordered[k] = context_partial[k]
+    for k in sorted(set(context_partial.keys()) - set(ordered.keys())):
+        ordered[k] = context_partial[k]
+    return ordered
+
+
+# ---------------------------------------------------------------------------
+# Public: Build L2B
+# ---------------------------------------------------------------------------
+SELECTOR_VERSION = "signal-s2-v2"
+GUARDRAILS_VERSION = "signal-guard-v1"
+
+
 def build_l2b(ctx: dict, budget: BudgetPolicy | None = None) -> dict:
     if budget is None:
         budget = BudgetPolicy()
@@ -188,51 +220,56 @@ def build_l2b(ctx: dict, budget: BudgetPolicy | None = None) -> dict:
     plan = deterministic_selection_plan(ctx, triggers)
 
     selected_ctx: dict = {}
-    selected_fields = []
-    dropped_fields = []
-    compressed_fields = []
+    selected_fields: list[dict] = []
+    dropped_fields: list[dict] = []
+    compressed_fields: list[dict] = []
 
-    def _try_add(field_entry: dict, priority: str) -> bool:
+    def _try_add(field_entry: dict, prio: str) -> str:
+        """
+        Returns 'added', 'absent', or 'budget_exceeded'. The distinction
+        matters: a field that is not present in the input was never a
+        candidate, whereas a field excluded by the budget was.
+        """
         fp = field_entry["field"]
         val = _get_nested(ctx, fp)
         if val is None:
-            return False
+            return "absent"
+
         candidate = dict(selected_ctx)
         _set_nested(candidate, fp, val)
-        used = len(json.dumps(candidate, ensure_ascii=False))
-        if budget.fits(used):
-            _set_nested(selected_ctx, fp, val)
-            selected_fields.append({"field": fp, "priority": priority,
-                                     "reason": field_entry.get("reason", "")})
-            return True
-        return False
+        if not budget.fits(len(json.dumps(candidate, ensure_ascii=False))):
+            return "budget_exceeded"
 
-    # P1 always included
-    for fe in plan["p1"]:
-        if not _try_add(fe, "P1"):
-            dropped_fields.append(fe["field"])
+        _set_nested(selected_ctx, fp, val)
+        selected_fields.append({
+            "path": fp,
+            "prio": prio,
+            "reason": field_entry.get("reason", ""),
+        })
+        return "added"
 
-    # P2 if budget allows
-    for fe in plan["p2"]:
-        if not _try_add(fe, "P2"):
-            dropped_fields.append(fe["field"])
+    for prio_key, prio in (("p1", "P1"), ("p2", "P2"), ("p3", "P3")):
+        for fe in plan[prio_key]:
+            if _try_add(fe, prio) == "budget_exceeded":
+                dropped_fields.append({
+                    "path": fe["field"],
+                    "reason": "budget_exceeded",
+                    "prio": prio,
+                })
 
-    # P3 if budget allows
-    for fe in plan["p3"]:
-        if not _try_add(fe, "P3"):
-            dropped_fields.append(fe["field"])
-
-    # Guardrail notes as top-level key
+    # Guardrails are emitted as a top-level key rather than under extras,
+    # reflecting that they carry escalation guidance rather than annotation.
     if plan["guardrail_notes"]:
         selected_ctx["_guardrail_notes"] = plan["guardrail_notes"]
 
+    selected_ctx = stable_serialize_context(selected_ctx)
     used_chars = len(json.dumps(selected_ctx, ensure_ascii=False))
 
     selection_meta = {
-        "selector_version": "signal-s2-v1",
-        "guardrails_version": "signal-guard-v1",
-        "triggers": triggers,
-        "budget_policy": {"max": budget.max_chars, "used": used_chars},
+        "selector_version": SELECTOR_VERSION,
+        "guardrails_version": GUARDRAILS_VERSION,
+        "trigger_signals": triggers,
+        "budget_policy": {"metric": "chars", "max": budget.max_chars, "used": used_chars},
         "selected_fields": selected_fields,
         "dropped_fields": dropped_fields,
         "compressed_fields": compressed_fields,
