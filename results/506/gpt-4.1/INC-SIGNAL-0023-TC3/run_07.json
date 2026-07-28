@@ -1,0 +1,184 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0023-TC3",
+  "timestamp": "2026-07-28T10:58:39",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Ampel scheint auf Rot zu „hängen“. Kein Umschalten beobachtet.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"signal_stuck\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-21T20:54:52+01:00\",\n    \"reporter\": \"dispatch\",\n    \"photo_description\": \"Dauerhaft rote Phase erkennbar, kein Phasenwechsel sichtbar. Staubildung an Kreuzung.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n35664971\",\n    \"longitude\": 12.1171619,\n    \"latitude\": 47.8520758\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"normal_visibility\",\n    \"time_of_day\": \"day\",\n    \"traffic_exposure\": \"medium\",\n    \"weather\": \"clear\",\n    \"noise_level\": \"medium\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\",\n    \"SICHERHEITSHINWEIS: fault_type=signal_stuck / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "signal_stuck",
+        "severity": "high",
+        "reported_at": "2026-01-21T20:54:52+01:00",
+        "reporter": "dispatch",
+        "photo_description": "Dauerhaft rote Phase erkennbar, kein Phasenwechsel sichtbar. Staubildung an Kreuzung."
+      },
+      "asset": {
+        "asset_osm": "n35664971",
+        "longitude": 12.1171619,
+        "latitude": 47.8520758
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "normal_visibility",
+        "time_of_day": "day",
+        "traffic_exposure": "medium",
+        "weather": "clear",
+        "noise_level": "medium"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.",
+        "SICHERHEITSHINWEIS: fault_type=signal_stuck / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0023",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampel scheint auf Rot zu „hängen“. Kein Umschalten beobachtet.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": true,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": false,
+      "spotty": true,
+      "low_battery": false,
+      "poor_visibility": false,
+      "rush_hour": false,
+      "night": false,
+      "bad_weather": false,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 995,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P3",
+        "reason": "context-weather"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die Ampel an der Position Längengrad 12.1171619, Breitengrad 47.8520758 (Asset-ID n35664971) scheint dauerhaft auf Rot zu stehen, was zu Staubildung führt. Dies ist ein kritischer Fehler mit hoher Priorität, der sofortiges Handeln erfordert.\n\nBitte gehen Sie wie folgt vor:\n\n**Schritt-für-Schritt-Checkliste:**\n\n1.  **Absicherung (Priorität: Sicherheit)**\n    *   **Unverzüglich** die Kreuzung absichern, um weitere Gefahren und Unfälle zu vermeiden.\n    *   Verkehrsleitende Maßnahmen ergreifen: Warnblinkanlage des Einsatzfahrzeugs einschalten, Warndreieck aufstellen, Warnleuchten platzieren.\n    *   Die Kreuzung ist wie eine unbeschrankte Kreuzung zu behandeln. Weisen Sie Verkehrsteilnehmer auf die \"Rechts vor Links\"-Regel hin, falls dies sicher möglich ist.\n    *   Bei Bedarf Verkehrsposten einsetzen oder anfordern.\n\n2.  **Sichtprüfung**\n    *   Bestätigen Sie die dauerhaft rote Phase an allen Signalgebern der betroffenen Ampelanlage.\n    *   Überprüfen Sie, ob andere Phasen (Grün, Gelb) oder Fußgängerampeln ebenfalls betroffen sind oder gar nicht leuchten.\n    *   Suchen Sie nach offensichtlichen Beschädigungen an der Ampel (z.B. Kabelrisse, defekte Leuchtmittel, Vandalismus, Unfallspuren).\n    *   Prüfen Sie den Schaltkasten auf sichtbare Auffälligkeiten (offene Türen, Beschädigungen).\n\n3.  **Diagnose/Beobachtung**\n    *   Beobachten Sie den Verkehrsfluss und die Staubildung genau.\n    *   Versuchen Sie, die Ursache des Fehlers einzugrenzen. Ist es ein einzelner Signalgeber oder die gesamte Anlage?\n    *   Falls sicher und möglich, prüfen Sie, ob eine manuelle Umschaltung am Schaltkasten eine Reaktion zeigt.\n\n4.  **Dokumentation**\n    *   Dokumentieren Sie den Vorfall umfassend: Datum, genaue Uhrzeit, Standort (Längengrad 12.1171619, Breitengrad 47.8520758, Asset-ID n35664971).\n    *   Beschreiben Sie die genaue Fehlerbeobachtung (\"Dauerhaft rote Phase, kein Phasenwechsel sichtbar, Staubildung an Kreuzung\").\n    *   Halten Sie alle ergriffenen Absicherungsmaßnahmen fest.\n    *   Machen Sie Fotos oder Videos des aktuellen Zustands.\n    *   **Wichtig**: Da die Konnektivität vor Ort \"spotty\" ist, speichern Sie alle Dokumentationen lokal auf Ihrem Gerät und synchronisieren Sie diese, sobald eine stabile Verbindung verfügbar ist.\n\n5.  **Eskalation**\n    *   Melden Sie den Vorfall **sofort** an die Leitstelle/Einsatzleitung.\n    *   Geben Sie eine präzise Fehlerbeschreibung und informieren Sie über die bereits eingeleiteten Absicherungsmaßnahmen.\n    *   Fordern Sie bei Bedarf weitere Unterstützung an, z.B. durch die Verkehrspolizei zur Verkehrsregelung oder spezialisierte Techniker zur Fehlerbehebung.",
+    "tokens_estimate_words": 321
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0023-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Perfekte Antwort: Safety-first, klare Struktur, exzellente Dokumentation, nutzt Guardrail-Hinweise optimal (Offline-Workflow explizit: 'lokal speichern, später synchronisieren'). Alle Kontext-Elemente korrekt integriert."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.683
+  },
+  "error": {}
+}

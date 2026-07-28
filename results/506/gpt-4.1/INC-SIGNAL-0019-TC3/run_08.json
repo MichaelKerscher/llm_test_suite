@@ -1,0 +1,184 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0019-TC3",
+  "timestamp": "2026-07-28T11:27:26",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Ampelphasen passen nicht zum Verkehr; Rückstau/Beinahe-Situationen. (Richtung: backward; Hauptverkehrszeit / hoher Verkehr).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"timing_issue\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-19T02:05:35+01:00\",\n    \"reporter\": \"patrol\",\n    \"photo_description\": \"Stark verkürzte Grünphase erkennbar, Fußgänger überqueren bei Rot. Sicherheitskritisch.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n6896979362\",\n    \"longitude\": 12.0934822,\n    \"latitude\": 47.8492581\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"rush_hour\",\n    \"traffic_exposure\": \"high\",\n    \"weather\": \"rain\",\n    \"noise_level\": \"medium\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\",\n    \"SICHERHEITSHINWEIS: fault_type=timing_issue / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "timing_issue",
+        "severity": "high",
+        "reported_at": "2026-01-19T02:05:35+01:00",
+        "reporter": "patrol",
+        "photo_description": "Stark verkürzte Grünphase erkennbar, Fußgänger überqueren bei Rot. Sicherheitskritisch."
+      },
+      "asset": {
+        "asset_osm": "n6896979362",
+        "longitude": 12.0934822,
+        "latitude": 47.8492581
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "rush_hour",
+        "traffic_exposure": "high",
+        "weather": "rain",
+        "noise_level": "medium"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.",
+        "SICHERHEITSHINWEIS: fault_type=timing_issue / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0019",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampelphasen passen nicht zum Verkehr; Rückstau/Beinahe-Situationen. (Richtung: backward; Hauptverkehrszeit / hoher Verkehr).",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": true,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": false,
+      "spotty": true,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": true,
+      "night": false,
+      "bad_weather": true,
+      "high_traffic": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 998,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P1",
+        "reason": "high-traffic-env"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die Situation ist kritisch, besonders aufgrund der hohen Schwere, der Hauptverkehrszeit, schlechter Sicht und Regen. Die Sicherheit aller Verkehrsteilnehmer hat oberste Priorität.\n\nHier ist die Checkliste für das Vorgehen vor Ort:\n\n**1. Absicherung (Sofortmaßnahmen)**\n*   **Gefahrenbereich sichern:** Unverzüglich Warnblinklicht am Einsatzfahrzeug einschalten, Warnweste anlegen und Warndreieck/Blitzleuchten aufstellen, um den Gefahrenbereich abzusichern.\n*   **Verkehrsfluss beobachten:** Einschätzen, ob eine manuelle Verkehrsregelung durch die Polizei oder eine sofortige Abschaltung der Ampelanlage (falls sicher möglich und notwendig) erforderlich ist, um akute Gefahren zu vermeiden. Bei \"signal_dark\" (Ampel komplett aus) die Kreuzung wie eine unbeschrankte behandeln und entsprechend absichern.\n*   **Passanten warnen:** Besonders auf Fußgänger achten, die bei Rot die Straße überqueren könnten.\n\n**2. Sichtprüfung (Erste Einschätzung)**\n*   **Ampelköpfe prüfen:** Sind alle Signalgeber intakt und sichtbar? Keine verdeckten oder beschädigten Optiken?\n*   **Kabel und Gehäuse:** Offensichtliche Beschädigungen an Kabeln, Masten oder Steuergeräten?\n*   **Umgebung:** Gibt es Hindernisse (z.B. Baustellen, parkende Fahrzeuge), die Sensoren oder die Sicht auf die Ampel beeinträchtigen könnten?\n\n**3. Diagnose/Beobachtung (Fehleranalyse)**\n*   **Phasenablauf protokollieren:** Mehrere vollständige Ampelzyklen beobachten und die genauen Grün-, Gelb- und Rotzeiten für alle Richtungen (insbesondere die betroffene \"backward\"-Richtung) notieren.\n*   **Verkehrsfluss analysieren:** Wie wirkt sich die verkürzte Grünphase auf den Rückstau aus? Gibt es Konflikte mit anderen Verkehrsströmen oder Fußgängern?\n*   **Sensorik prüfen:** Falls vorhanden, die Funktion von Kontaktschleifen oder Radarsensoren (z.B. durch Überfahren mit dem Fahrzeug) grob überprüfen. Reagiert die Ampel auf den Verkehr?\n*   **Uhrzeit/Programm:** Ist das korrekte Verkehrsprogramm für die Hauptverkehrszeit aktiv?\n\n**4. Dokumentation (Wichtig für die Fehlerbehebung)**\n*   **Fotos/Videos:** Mehrere Aufnahmen der Ampelanlage, des Rückstaus, der verkürzten Grünphase und der Fußgänger (wie in der Beschreibung erwähnt) machen.\n*   **Detaillierte Notizen:**\n    *   Genaue Uhrzeit und Dauer der Beobachtung.\n    *   Exakte Beobachtungen der Phasenlängen und des Verkehrsverhaltens.\n    *   Alle festgestellten Auffälligkeiten.\n    *   Wetterbedingungen (Regen, schlechte Sicht) und deren Einfluss.\n*   **Offline-Workflow beachten:** Da die Konnektivität \"spotty\" ist, alle Daten lokal auf dem Gerät speichern und sicherstellen, dass sie später synchronisiert werden, sobald eine stabile Verbindung verfügbar ist.\n\n**5. Eskalation (Priorität: Hoch)**\n*   **Leitstelle informieren:** Umgehend die Leitstelle über die genaue Situation, die Beobachtungen und die bereits getroffenen Absicherungsmaßnahmen informieren.\n*   **Dringlichkeit betonen:** Die hohe Dringlichkeit aufgrund der Sicherheitsrelevanz, der Hauptverkehrszeit und der Witterungsbedingungen hervorheben.\n*   **Anweisungen abwarten:** Auf Anweisungen der Leitstelle warten bezüglich weiterer Maßnahmen (z.B. Entsendung eines Technikers, manuelle Umschaltung, Abschaltung).\n\n**Annahme:** Es wird davon ausgegangen, dass die Ampelanlage selbst (Steuerung, Signalgeber) physisch intakt ist und es sich primär um ein Software- oder Sensorproblem handelt, das die Phasensteuerung beeinflusst. Sollten bei der Sichtprüfung gravierende physische Schäden festgestellt werden, ist dies sofort der Leitstelle zu melden.",
+    "tokens_estimate_words": 420
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0019-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Perfekte Antwort: nutzt Guardrail-Hinweise explizit (Offline-Workflow bei spotty connectivity, Safety-Hinweis zu timing_issue/high severity), klare Struktur, umfassende Dokumentation, priorisiert Sicherheit konsequent. Keine Halluzinationen, alle Kontext-Elemente integriert."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.367
+  },
+  "error": {}
+}

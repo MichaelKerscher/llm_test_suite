@@ -1,0 +1,183 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0025-TC3",
+  "timestamp": "2026-07-28T11:33:53",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Kurzzeitige Aussetzer/Neustarts vermutet; Verhalten inkonsistent. (Richtung: backward).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-20T05:55:12+01:00\",\n    \"reporter\": \"patrol\",\n    \"photo_available\": false\n  },\n  \"asset\": {\n    \"asset_osm\": \"n6887356461\",\n    \"longitude\": 12.1128477,\n    \"latitude\": 47.8396808\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"low_power_mode\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"night\",\n    \"traffic_exposure\": \"medium\",\n    \"weather\": \"rain\",\n    \"noise_level\": \"high\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=offline und device.device_state=low_power_mode beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-20T05:55:12+01:00",
+        "reporter": "patrol",
+        "photo_available": false
+      },
+      "asset": {
+        "asset_osm": "n6887356461",
+        "longitude": 12.1128477,
+        "latitude": 47.8396808
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "low_power_mode"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "night",
+        "traffic_exposure": "medium",
+        "weather": "rain",
+        "noise_level": "high"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=offline und device.device_state=low_power_mode beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0025",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Kurzzeitige Aussetzer/Neustarts vermutet; Verhalten inkonsistent. (Richtung: backward).",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": false,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": true,
+      "high_severity": false,
+      "photo_description": false,
+      "offline": true,
+      "spotty": false,
+      "low_battery": true,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": true,
+      "bad_weather": true,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 729,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P2",
+        "reason": "photo-flag"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein inkonsistentes Verhalten mit kurzzeitigen Aussetzern/Neustarts erfordert eine sorgfältige Vorgehensweise, insbesondere unter den gegebenen Umgebungsbedingungen (Nacht, Regen, schlechte Sicht, mittleres Verkehrsaufkommen). Die Sicherheit hat oberste Priorität.\n\n**Checkliste für den Vor-Ort-Einsatz:**\n\n1.  **Absicherung der Einsatzstelle:**\n    *   **Unverzüglich:** Warnblinkanlage des Einsatzfahrzeugs einschalten, Warnleuchten aufstellen.\n    *   **Sicherstellen:** Persönliche Schutzausrüstung (PSA) tragen: Warnkleidung (Klasse 3), Sicherheitsschuhe.\n    *   **Verkehrssicherung:** Bei Bedarf Verkehrsleitkegel oder Absperrbänder zur Sicherung des Arbeitsbereichs und zum Schutz der Verkehrsteilnehmer aufstellen. Besondere Vorsicht aufgrund der schlechten Sicht und des Regens.\n\n2.  **Sichtprüfung (ohne Eingriff):**\n    *   **Umfeld:** Auf offensichtliche Gefahrenquellen wie umgestürzte Bäume, lose Kabel oder Beschädigungen durch Dritte achten.\n    *   **Anlage:** Die betroffene Anlage (Straßenlampe/Ampel) auf äußere Beschädigungen, Korrosion, offene Gehäuse oder Wassereintritt prüfen.\n    *   **Leuchtmittel/Signale:** Beobachten, ob die Aussetzer ein bestimmtes Muster zeigen (z.B. nur bestimmte Farben, bestimmte Lampen, oder die gesamte Anlage).\n    *   **Richtung \"backward\":** Klären, ob sich dies auf eine spezifische Fahrtrichtung der Ampelanlage oder eine Rückwärtsbewegung der Störung bezieht. Falls es eine Ampel ist, prüfen, ob die Signale für den rückwärtigen Verkehr betroffen sind oder ob die Störung von der Rückseite der Anlage ausgeht.\n\n3.  **Diagnose/Beobachtung:**\n    *   **Verhaltensmuster:** Versuchen, die Inkonstanz und die Neustarts zu reproduzieren oder ein Muster zu erkennen. Wie lange dauern die Aussetzer? Wie oft treten sie auf?\n    *   **Geräusche/Gerüche:** Auf ungewöhnliche Geräusche (z.B. Summen, Knistern) oder Gerüche (z.B. Brandgeruch) achten.\n    *   **Fehleranzeigen:** Falls vorhanden, Fehlercodes oder Statusanzeigen am Steuergerät oder der Anlage ablesen.\n    *   **Umwelteinflüsse:** Berücksichtigen, ob die Aussetzer mit Windböen, starkem Regen oder anderen externen Faktoren zusammenhängen könnten.\n\n4.  **Dokumentation (Lokal):**\n    *   **Offline-Workflow:** Da das Endgerät offline ist, alle Beobachtungen, durchgeführten Schritte und festgestellten Auffälligkeiten detailliert und präzise lokal festhalten (z.B. auf einem Notizblock oder in einer Offline-App).\n    *   **Fotos:** Falls möglich und sicher, Fotos von der Situation und eventuellen Beschädigungen machen, die später synchronisiert werden können.\n    *   **Standort:** Genaue Positionsdaten (Längen- und Breitengrad) sowie die OSM-ID notieren.\n    *   **Zeitstempel:** Uhrzeit der Beobachtungen und der Aussetzer festhalten.\n\n5.  **Eskalation:**\n    *   **Gefahrenlage:** Bei unmittelbarer Gefahr für den Verkehr oder Personen (z.B. durch komplett ausgefallene Ampel an kritischer Kreuzung, herabhängende Kabel) sofort die Leitstelle informieren und ggf. Polizei/Feuerwehr anfordern.\n    *   **Dringlichkeit:** Aufgrund der mittleren Schwere und der inkonsistenten Natur der Störung ist eine schnelle Behebung wichtig. Nach der lokalen Dokumentation und sobald eine Verbindung verfügbar ist, die Informationen umgehend an die zuständige Fachabteilung oder den Bereitschaftsdienst weiterleiten.\n    *   **Empfehlung:** Eine detaillierte Fehleranalyse und gegebenenfalls der Austausch relevanter Komponenten (Steuerung, Netzteil, Leuchtmittel) ist wahrscheinlich erforderlich.",
+    "tokens_estimate_words": 399
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0025-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Perfekte Antwort: Safety-first, Offline-Workflow explizit ('Offline-Workflow: lokal dokumentieren, später synchronisieren'), Guardrail-Hinweis korrekt verarbeitet, Kontext vollständig genutzt, strukturiert, Eskalation klar, keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.364
+  },
+  "error": {}
+}

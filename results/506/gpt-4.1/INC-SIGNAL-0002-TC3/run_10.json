@@ -1,0 +1,184 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0002-TC3",
+  "timestamp": "2026-07-28T12:14:31",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Signalgeber ohne Funktion; keine Lichtsignale sichtbar. (Hauptverkehrszeit / hoher Verkehr).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"signal_dark\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-16T09:00:51+01:00\",\n    \"reporter\": \"citizen\",\n    \"photo_description\": \"Alle Signalphasen dunkel, keine Lichtausgabe sichtbar. Ampelgehäuse äußerlich intakt. Kreuzung ohne Regelung.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n34576088\",\n    \"longitude\": 12.1354183,\n    \"latitude\": 47.8489887\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"rush_hour\",\n    \"traffic_exposure\": \"high\",\n    \"weather\": \"rain\",\n    \"noise_level\": \"high\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=offline und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\",\n    \"SICHERHEITSHINWEIS: fault_type=signal_dark / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "signal_dark",
+        "severity": "high",
+        "reported_at": "2026-01-16T09:00:51+01:00",
+        "reporter": "citizen",
+        "photo_description": "Alle Signalphasen dunkel, keine Lichtausgabe sichtbar. Ampelgehäuse äußerlich intakt. Kreuzung ohne Regelung."
+      },
+      "asset": {
+        "asset_osm": "n34576088",
+        "longitude": 12.1354183,
+        "latitude": 47.8489887
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "rush_hour",
+        "traffic_exposure": "high",
+        "weather": "rain",
+        "noise_level": "high"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=offline und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.",
+        "SICHERHEITSHINWEIS: fault_type=signal_dark / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0002",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Signalgeber ohne Funktion; keine Lichtsignale sichtbar. (Hauptverkehrszeit / hoher Verkehr).",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": true,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": true,
+      "night": false,
+      "bad_weather": true,
+      "high_traffic": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1017,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P1",
+        "reason": "high-traffic-env"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein Signalgeber ist ohne Funktion und zeigt keine Lichtsignale während der Hauptverkehrszeit bei hohem Verkehrsaufkommen und schlechter Sicht durch Regen. Dies stellt eine akute Gefahr für die Verkehrssicherheit dar.\n\n**Priorität: Sofortige Absicherung und Verkehrssicherung!**\n\nHier ist die Schritt-für-Schritt-Checkliste für das Vorgehen vor Ort:\n\n1.  **Absicherung:**\n    *   **Unverzüglich:** Sichern Sie die Kreuzung großräumig ab. Behandeln Sie die Situation wie eine unbeschrankte Kreuzung.\n    *   **Maßnahmen:** Stellen Sie Warndreiecke und Blitzleuchten auf.\n    *   **Polizei:** Fordern Sie umgehend polizeiliche Unterstützung zur Verkehrsregelung an, um Unfälle zu vermeiden.\n\n2.  **Sichtprüfung:**\n    *   **Signalgeber:** Bestätigen Sie, dass alle Signalphasen dunkel sind und keine Lichtausgabe erfolgt.\n    *   **Gehäuse:** Überprüfen Sie das Ampelgehäuse auf äußerliche Beschädigungen (laut Meldung ist es intakt).\n    *   **Umgebung:** Achten Sie auf herabhängende Kabel, offene Schaltschränke oder andere offensichtliche Defekte in der unmittelbaren Umgebung.\n    *   **Verkehr:** Beobachten Sie den Verkehrsfluss und identifizieren Sie potenzielle Gefahrenpunkte.\n\n3.  **Diagnose/Beobachtung:**\n    *   **Stromversorgung:** Gibt es Anzeichen für einen Stromausfall in der Umgebung (z.B. dunkle Straßenbeleuchtung)?\n    *   **Weitere Ampeln:** Sind andere Signalgeber an dieser oder benachbarten Kreuzungen ebenfalls betroffen?\n    *   **Geräusche:** Hören Sie auf ungewöhnliche Geräusche aus dem Steuerschrank (falls gefahrlos zugänglich).\n    *   **Schaltschrank:** Falls sicher und autorisiert, prüfen Sie den Steuerschrank auf Statusanzeigen oder ausgelöste Sicherungen.\n\n4.  **Dokumentation:**\n    *   **Details:** Erfassen Sie den genauen Zeitpunkt, den Standort (OSM ID: n345576088, Koord: 47.8489887, 12.1354183) und die Umgebungsbedingungen (Regen, schlechte Sicht, Hauptverkehrszeit, hohes Verkehrsaufkommen).\n    *   **Beobachtungen:** Notieren Sie alle Feststellungen der Sichtprüfung und Diagnose.\n    *   **Fotos:** Machen Sie, wenn sicher möglich, Fotos der Situation.\n    *   **Offline-Workflow:** Da Ihr Gerät offline ist, speichern Sie alle Informationen lokal und synchronisieren Sie diese, sobald eine Verbindung verfügbar ist.\n\n5.  **Eskalation:**\n    *   **Leitstelle:** Informieren Sie umgehend die Leitstelle über den Vorfall und alle gesammelten Informationen.\n    *   **Anforderung:** Fordern Sie die sofortige Entsendung eines spezialisierten Technikers an.\n    *   **Anweisungen:** Befolgen Sie alle Anweisungen der Leitstelle. Bleiben Sie vor Ort, bis die Situation entschärft oder abgelöst wird.\n\n**Annahmen:**\n*   Sie sind mit der notwendigen Sicherheitsausrüstung (Warnkleidung, Absicherungsmaterial) ausgestattet.\n*   Sie haben eine Möglichkeit zur Kommunikation mit der Leitstelle, auch wenn Ihr Gerät offline ist (z.B. Mobiltelefon).",
+    "tokens_estimate_words": 339
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0002-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Perfekte Antwort: Safety-first explizit priorisiert, Offline-Workflow klar adressiert ('speichern Sie alle Informationen lokal und synchronisieren Sie diese'), Guardrail-Hinweise integriert, Wetter/Sicht/Verkehr genutzt, strukturiert und umsetzbar."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.288
+  },
+  "error": {}
+}
