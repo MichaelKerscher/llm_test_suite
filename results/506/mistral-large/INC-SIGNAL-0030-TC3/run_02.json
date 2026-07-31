@@ -1,0 +1,180 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0030-TC3",
+  "timestamp": "2026-07-28T22:25:59",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Kurzzeitige Aussetzer/Neustarts vermutet; Verhalten inkonsistent. (Richtung: backward).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-20T04:16:40+01:00\",\n    \"reporter\": \"citizen\",\n    \"photo_available\": false\n  },\n  \"asset\": {\n    \"asset_osm\": \"n12872023045\",\n    \"longitude\": 12.1183214,\n    \"latitude\": 47.8585403\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"normal_visibility\",\n    \"time_of_day\": \"day\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\",\n    \"weather\": \"clear\"\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-20T04:16:40+01:00",
+        "reporter": "citizen",
+        "photo_available": false
+      },
+      "asset": {
+        "asset_osm": "n12872023045",
+        "longitude": 12.1183214,
+        "latitude": 47.8585403
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "normal_visibility",
+        "time_of_day": "day",
+        "traffic_exposure": "high",
+        "noise_level": "high",
+        "weather": "clear"
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0030",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Kurzzeitige Aussetzer/Neustarts vermutet; Verhalten inkonsistent. (Richtung: backward).",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": false,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": true,
+      "high_severity": false,
+      "photo_description": false,
+      "offline": false,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": false,
+      "rush_hour": false,
+      "night": false,
+      "bad_weather": false,
+      "high_traffic": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 453,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P1",
+        "reason": "high-traffic-env"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P2",
+        "reason": "photo-flag"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P3",
+        "reason": "context-weather"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein Bürger meldet kurzzeitige Aussetzer und Neustarts sowie inkonsistentes Verhalten an einer Ampelanlage oder Straßenlampe (Asset-ID: n12872023045, Standort: 47.8585403, 12.1183214). Obwohl der Gerätestatus als \"ok\" gemeldet wird, deutet die Meldung auf ein intermittierendes Problem hin. Aufgrund der hohen Verkehrsbelastung vor Ort ist die Sicherheit oberste Priorität.\n\n**Checkliste für den Außendienst:**\n\n1.  **Absicherung der Einsatzstelle:**\n    *   **Verkehrssicherung:** Unverzüglich geeignete Warnschilder, Warnleuchten und Absperrungen gemäß den örtlichen Vorschriften aufstellen, um den fließenden Verkehr zu warnen und den Arbeitsbereich zu schützen.\n    *   **Persönliche Schutzausrüstung (PSA):** Warnkleidung (mind. Klasse 2), Sicherheitsschuhe und ggf. Helm tragen.\n    *   **Gefahrenanalyse:** Potenzielle Gefahren durch den Verkehr, die Anlage selbst oder die Umgebung bewerten.\n\n2.  **Sichtprüfung (erste Einschätzung):**\n    *   **Physischer Zustand:** Überprüfung auf offensichtliche Beschädigungen (z.B. Vandalismus, Anfahrschäden, Korrosion) am Mast, Gehäuse und den Leuchtmitteln/Signalgebern.\n    *   **Verkabelung/Anschlüsse:** Sichtkontrolle aller zugänglichen Kabel und Steckverbindungen auf Lockerheit, Beschädigung oder Anzeichen von Überhitzung (Verfärbungen, Schmorstellen).\n    *   **Umgebungseinflüsse:** Prüfung auf Fremdkörper, Bewuchs oder andere externe Faktoren, die die Funktion beeinträchtigen könnten.\n\n3.  **Diagnose und Beobachtung:**\n    *   **Verhaltensbeobachtung:** Die Anlage über einen längeren Zeitraum (mind. 15-30 Minuten) beobachten, um die gemeldeten Aussetzer/Neustarts oder inkonsistentes Verhalten direkt zu erfassen.\n    *   **Gerätestatus:** Trotz der \"ok\"-Meldung im System, lokale Statusanzeigen am Gerät prüfen (falls vorhanden).\n    *   **Fehlerspeicher:** Falls möglich, den Fehlerspeicher der Steuerung auslesen.\n    *   **Spannungsversorgung:** Überprüfung der Versorgungsspannung auf Stabilität und korrekte Werte.\n    *   **Wärmeentwicklung:** Auf ungewöhnliche Wärmeentwicklung an Komponenten achten.\n\n4.  **Dokumentation:**\n    *   **Vorfallbeschreibung:** Genaue Beschreibung des beobachteten Verhaltens, der Uhrzeiten und der Dauer der Aussetzer/Neustarts.\n    *   **Maßnahmen:** Alle durchgeführten Prüfungen und Maßnahmen detailliert festhalten.\n    *   **Fotos:** Aussagekräftige Fotos von der Anlage, eventuellen Beschädigungen und der Absicherung machen.\n    *   **Umgebungsbedingungen:** Wetter, Verkehrsaufkommen und Sichtverhältnisse zum Zeitpunkt der Beobachtung notieren.\n\n5.  **Eskalation:**\n    *   **Sofortige Eskalation:** Bei unmittelbarer Gefahr für den Verkehr oder die öffentliche Sicherheit (z.B. dauerhafter Ausfall einer Ampel an einer kritischen Kreuzung) ist umgehend der Bereitschaftsdienst oder die zuständige Leitstelle zu informieren.\n    *   **Fachabteilung:** Bei komplexen oder wiederkehrenden Fehlern, die nicht vor Ort behoben werden können, die Fachabteilung mit allen gesammelten Informationen kontaktieren.\n    *   **Ersatzteile/Spezialwerkzeug:** Falls für die Behebung spezielle Ersatzteile oder Werkzeuge benötigt werden, dies umgehend melden.",
+    "tokens_estimate_words": 344
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0030-TC3",
+    "scores": {
+      "R": 4,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: nutzt strukturierten CONTEXT vollständig (Koordinaten, Schweregrad medium, hoher Verkehr, Konnektivität online, Wetter), sehr klare 5-Schritt-Struktur mit PSA-Details, Safety-first prominent, detaillierte Dokumentation und differenzierte Eskalationslogik."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.683
+  },
+  "error": {}
+}

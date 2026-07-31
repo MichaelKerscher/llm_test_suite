@@ -1,0 +1,183 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0006-TC3",
+  "timestamp": "2026-07-28T23:40:20",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Störung tritt sporadisch auf: zeitweise normal, dann Aussetzer.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"low\",\n    \"reported_at\": \"2026-01-16T22:40:13+01:00\",\n    \"reporter\": \"citizen\",\n    \"photo_available\": false\n  },\n  \"asset\": {\n    \"asset_osm\": \"n3209364133\",\n    \"longitude\": 12.080256,\n    \"latitude\": 47.8426801\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"night\",\n    \"traffic_exposure\": \"low\",\n    \"weather\": \"rain\",\n    \"noise_level\": \"low\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "low",
+        "reported_at": "2026-01-16T22:40:13+01:00",
+        "reporter": "citizen",
+        "photo_available": false
+      },
+      "asset": {
+        "asset_osm": "n3209364133",
+        "longitude": 12.080256,
+        "latitude": 47.8426801
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "night",
+        "traffic_exposure": "low",
+        "weather": "rain",
+        "noise_level": "low"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0006",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Störung tritt sporadisch auf: zeitweise normal, dann Aussetzer.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": false,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": true,
+      "high_severity": false,
+      "photo_description": false,
+      "offline": false,
+      "spotty": true,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": true,
+      "bad_weather": true,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 696,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P2",
+        "reason": "photo-flag"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Eine sporadisch auftretende Störung erfordert eine sorgfältige Vorgehensweise, insbesondere unter den gegebenen Umgebungsbedingungen (Nacht, Regen, schlechte Sicht). Priorität hat immer die Sicherheit.\n\nHier ist eine Schritt-für-Schritt-Checkliste für den Einsatz vor Ort:\n\n**1. Absicherung**\n*   **Eigenschutz:** Warnkleidung tragen (gut sichtbar, reflektierend).\n*   **Verkehrssicherung:** Unmittelbaren Arbeitsbereich gemäß den Vorschriften absichern (Warnbake, Blitzleuchte, Warndreieck), auch bei geringem Verkehrsaufkommen.\n*   **Gefahrenbereich:** Sicherstellen, dass keine Gefahr für Passanten oder den Verkehr besteht, auch wenn die Anlage zeitweise normal funktioniert.\n\n**2. Sichtprüfung**\n*   **Umfeld:** Auf offensichtliche externe Beschädigungen (Anfahrschäden, Vandalismus) am Mast, am Gehäuse oder an der Verkabelung achten.\n*   **Feuchtigkeit:** Prüfen, ob Wasser in die Anlage eindringen kann oder bereits eingedrungen ist (z.B. undichte Gehäuse, beschädigte Kabeldurchführungen).\n*   **Kabel/Verbindungen:** Sichtprüfung der Zuleitungen und aller zugänglichen Verbindungen auf Beschädigungen, Korrosion oder lose Kontakte.\n*   **Leuchtmittel/Optik:** Bei Straßenlampen: Zustand des Leuchtmittels und der Optik prüfen. Bei Ampeln: Zustand der Signalgeber.\n\n**3. Diagnose/Beobachtung**\n*   **Langzeitbeobachtung:** Da die Störung sporadisch auftritt, ist eine längere Beobachtung des Verhaltens der Anlage notwendig. Notieren Sie die Zeitpunkte der Aussetzer und des normalen Betriebs.\n*   **Umwelteinflüsse:** Achten Sie darauf, ob die Aussetzer mit bestimmten Umwelteinflüssen (z.B. Windböen, stärkerer Regen, Temperaturschwankungen) korrelieren.\n*   **Spannungsversorgung:** Wenn möglich und sicher, die Spannungsversorgung prüfen (Schwankungen, Unterbrechungen).\n*   **Fehlerspeicher:** Falls vorhanden, den Fehlerspeicher der Anlage auslesen.\n\n**4. Dokumentation**\n*   **Offline-Erfassung:** Aufgrund der fleckigen Konnektivität (spotty connectivity) alle Beobachtungen, durchgeführten Schritte und Messergebnisse detailliert lokal auf dem Gerät erfassen.\n*   **Fotos:** Trotz fehlender initialer Fotos, eigene Fotos von Auffälligkeiten oder dem Gesamtzustand der Anlage machen.\n*   **Standort:** Die genaue Position (Längen- und Breitengrad, OSM-ID) und die Art der Anlage in der Dokumentation vermerken.\n*   **Synchronisation:** Sobald eine stabile Verbindung verfügbar ist, die erfassten Daten synchronisieren.\n\n**5. Eskalation**\n*   **Keine schnelle Lösung:** Wenn die Ursache nicht sofort identifiziert und behoben werden kann oder die Störung weiterhin sporadisch auftritt, ist eine Eskalation erforderlich.\n*   **Fachabteilung:** Informieren Sie die zuständige Fachabteilung mit allen gesammelten Informationen und Beobachtungen.\n*   **Wiederkehrende Prüfung:** Gegebenenfalls eine Wiedervorlage für eine erneute Prüfung zu einem späteren Zeitpunkt oder unter anderen Bedingungen anlegen.\n*   **Sicherheitsrisiko:** Bei einer Verschlechterung der Situation oder einem erhöhten Sicherheitsrisiko (z.B. Ampel fällt komplett aus) sofortige Eskalation an den Bereitschaftsdienst.",
+    "tokens_estimate_words": 355
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0006-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Nahezu perfekt: Safety-first, klare Schrittfolge, Offline-Workflow explizit (lokale Erfassung, spätere Synchronisation), Kontext vollständig genutzt (Wetter, Nacht, spotty connectivity, Guardrail-Hinweis beachtet). Sehr umsetzbar."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.003
+  },
+  "error": {}
+}

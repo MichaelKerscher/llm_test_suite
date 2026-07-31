@@ -1,0 +1,180 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0016-TC3",
+  "timestamp": "2026-07-28T22:09:21",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-18T17:05:05+01:00\",\n    \"reporter\": \"dispatch\",\n    \"photo_available\": false\n  },\n  \"asset\": {\n    \"asset_osm\": \"n2043315\",\n    \"longitude\": 12.1224516,\n    \"latitude\": 47.8415331\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"night\",\n    \"traffic_exposure\": \"medium\",\n    \"weather\": \"storm\",\n    \"noise_level\": \"medium\"\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-18T17:05:05+01:00",
+        "reporter": "dispatch",
+        "photo_available": false
+      },
+      "asset": {
+        "asset_osm": "n2043315",
+        "longitude": 12.1224516,
+        "latitude": 47.8415331
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "night",
+        "traffic_exposure": "medium",
+        "weather": "storm",
+        "noise_level": "medium"
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0016",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": false,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": true,
+      "high_severity": false,
+      "photo_description": false,
+      "offline": false,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": true,
+      "bad_weather": true,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 454,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P2",
+        "reason": "photo-flag"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Verstanden. Eine Ampel funktioniert aktuell, meldet aber wiederholt Ausfälle. Die Gerätediagnose zeigt \"online\" und \"ok\", aber die Umgebung ist durch Sturm, Nacht und schlechte Sicht erschwert.\n\nHier ist Ihre Schritt-für-Schritt-Checkliste für den Einsatz vor Ort:\n\n1.  **Absicherung (Priorität: Sicherheit & Verkehrssicherung)**\n    *   **Gefahrenbereich sichern:** Unverzüglich Warnblinklicht am Fahrzeug einschalten, Warnweste tragen.\n    *   **Verkehrsleitung:** Bei Bedarf Warndreiecke und/oder Blitzleuchten aufstellen, um den Verkehr frühzeitig zu warnen und die Arbeitsstelle abzusichern. Besondere Vorsicht aufgrund von Sturm, Nacht und schlechter Sicht.\n    *   **Eigenschutz:** Auf herabfallende Äste oder andere Sturmschäden achten.\n\n2.  **Sichtprüfung (Umfassend)**\n    *   **Gesamtanlage:** Überprüfen Sie die gesamte Ampelanlage auf offensichtliche Beschädigungen (Mast, Signalgeber, Kabel).\n    *   **Kabel und Anschlüsse:** Achten Sie auf lose Kabel, Korrosion an Kontakten oder Beschädigungen an den Zuleitungen, insbesondere im Bereich der Anschlusskästen und des Steuergeräts.\n    *   **Signalgeber:** Prüfen Sie, ob alle Signalgeber korrekt ausgerichtet sind und keine sichtbaren Defekte aufweisen (z.B. Risse, Feuchtigkeitseintritt).\n    *   **Umgebung:** Gibt es externe Faktoren, die die Funktion beeinträchtigen könnten (z.B. Bewuchs, der Sensoren verdeckt, oder Vandalismus)?\n\n3.  **Diagnose/Beobachtung (Fokus auf Intermittenz)**\n    *   **Steuergerät:** Überprüfen Sie das Steuergerät auf Fehlermeldungen oder Auffälligkeiten in den Systemprotokollen. Obwohl der Gerätestatus \"ok\" ist, können temporäre Fehler hinterlegt sein.\n    *   **Spannungsversorgung:** Messen Sie die Eingangsspannung und prüfen Sie die Sicherungen. Temporäre Spannungsschwankungen können Ausfälle verursachen.\n    *   **Sensoren/Detektoren:** Falls vorhanden, prüfen Sie die Funktion der Verkehrssensoren (Induktionsschleifen, Radardetektoren) auf korrekte Funktion und mögliche Störungen.\n    *   **Langzeitbeobachtung:** Da die Ausfälle wiederholt auftreten, ist eine längere Beobachtung des Ampelbetriebs vor Ort entscheidend. Versuchen Sie, das Fehlverhalten zu provozieren oder abzuwarten. Achten Sie auf Muster (z.B. Ausfälle bei bestimmten Schaltzyklen oder Verkehrsaufkommen).\n\n4.  **Dokumentation (Präzise & Vollständig)**\n    *   **Zeitpunkt & Dauer:** Notieren Sie den genauen Zeitpunkt und die Dauer der Beobachtung.\n    *   **Feststellungen:** Halten Sie alle Beobachtungen fest, auch wenn sie zunächst unerheblich erscheinen (z.B. Flackern, ungewöhnliche Schaltzeiten, Geräusche).\n    *   **Maßnahmen:** Dokumentieren Sie alle durchgeführten Prüfungen und Messungen.\n    *   **Fotos:** Machen Sie Fotos von Auffälligkeiten oder potenziellen Fehlerquellen, auch wenn im Vorfeld keine Fotos verfügbar waren.\n\n5.  **Eskalation (Bei unklarer Ursache oder erneutem Ausfall)**\n    *   **Keine sofortige Lösung:** Wenn die Ursache nicht eindeutig identifiziert und behoben werden kann, aber die Ampel aktuell funktioniert, informieren Sie die Leitstelle über den aktuellen Zustand und die durchgeführten Maßnahmen.\n    *   **Wiederkehrender Fehler:** Bei erneutem Ausfall nach Ihrer Abreise oder bei kritischen, nicht behebbaren Fehlern, muss eine sofortige Eskalation an den Bereitschaftsdienst oder die Fachabteilung erfolgen, um weitere Schritte (z.B. Austausch von Komponenten, detailliertere Analyse) einzuleiten.\n    *   **Verkehrssicherung bei Ausfall:** Sollte die Ampel während Ihrer Anwesenheit ausfallen und nicht sofort repariert werden können, stellen Sie sicher, dass die Kreuzung ausreichend gesichert ist (z.B. durch mobile Ampeln oder Verkehrsposten), bevor Sie den Einsatzort verlassen.",
+    "tokens_estimate_words": 437
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0016-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Nahezu perfekt: Safety-first klar priorisiert, exzellente Kontextnutzung (Sturm, Nacht, schlechte Sicht, intermittierend), strukturierte Schritte mit Fokus auf Intermittenz, vollständige Dokumentation, klare Eskalations-Trigger."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.331
+  },
+  "error": {}
+}

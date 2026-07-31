@@ -1,0 +1,184 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0012-TC3",
+  "timestamp": "2026-07-29T01:55:58",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Signalgeber/Mast beschädigt oder locker. Mögliche Gefahrenstelle.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"physical_damage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-15T12:07:36+01:00\",\n    \"reporter\": \"dispatch\",\n    \"photo_description\": \"Sichtbare Beschädigung am Signalkopf, Gehäuse geöffnet oder verformt. Kabelisolierung teilweise freiliegend.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n229809366\",\n    \"longitude\": 12.1207464,\n    \"latitude\": 47.8355923\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"night\",\n    \"traffic_exposure\": \"medium\",\n    \"weather\": \"snow\",\n    \"noise_level\": \"high\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=online und device.device_state=low_battery beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\",\n    \"SICHERHEITSHINWEIS: fault_type=physical_damage / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "physical_damage",
+        "severity": "high",
+        "reported_at": "2026-01-15T12:07:36+01:00",
+        "reporter": "dispatch",
+        "photo_description": "Sichtbare Beschädigung am Signalkopf, Gehäuse geöffnet oder verformt. Kabelisolierung teilweise freiliegend."
+      },
+      "asset": {
+        "asset_osm": "n229809366",
+        "longitude": 12.1207464,
+        "latitude": 47.8355923
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "night",
+        "traffic_exposure": "medium",
+        "weather": "snow",
+        "noise_level": "high"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=online und device.device_state=low_battery beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.",
+        "SICHERHEITSHINWEIS: fault_type=physical_damage / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0012",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Signalgeber/Mast beschädigt oder locker. Mögliche Gefahrenstelle.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": false,
+      "spotty": false,
+      "low_battery": true,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": true,
+      "bad_weather": true,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1040,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein beschädigter Signalgeber oder Mast stellt eine ernste Gefahr dar und erfordert sofortiges Handeln. Angesichts der sichtbaren Beschädigung am Signalkopf, des geöffneten/verformten Gehäuses und der freiliegenden Kabelisolierung sowie der Umgebungsbedingungen (Nacht, Schneefall, schlechte Sicht, mittleres Verkehrsaufkommen, hoher Lärmpegel) ist höchste Vorsicht geboten.\n\nHier ist die Checkliste für das Vorgehen vor Ort:\n\n**1. Absicherung (Priorität: Sicherheit)**\n*   **Gefahrenbereich sichern:** Sofortige und großräumige Absicherung der Unfallstelle gemäß UVV und RSA (Richtlinien zur Sicherung von Arbeitsstellen an Straßen).\n*   **Verkehrsfluss regeln:** Bei Ausfall der Signalanlage oder unklarer Funktion ist die Kreuzung als ungeregelt zu behandeln. Gegebenenfalls manuelle Verkehrsregelung einleiten oder Polizei/Verkehrsleitstelle zur Unterstützung anfordern.\n*   **Stromversorgung prüfen:** Bei freiliegenden Kabeln besteht Stromschlaggefahr. Abstand halten und, falls möglich und sicher, die Stromzufuhr zum betroffenen Signalgeber unterbrechen (z.B. über den Schaltkasten, falls zugänglich und eindeutig zuordenbar). **Eigene Sicherheit geht vor!**\n\n**2. Sichtprüfung (Umfassende Schadensaufnahme)**\n*   **Gesamtzustand des Mastes:** Ist der Mast verbogen, gerissen, unterbrochen? Steht er noch stabil oder droht er umzustürzen?\n*   **Signalgeber-Gehäuse:** Bestätigung der gemeldeten Beschädigungen: Geöffnet, verformt, Risse?\n*   **Kabel und Leitungen:** Umfang der freiliegenden Kabelisolierung, sichtbare Beschädigungen an den Leitern selbst. Sind weitere Kabel betroffen?\n*   **Befestigungen:** Sind die Befestigungselemente des Signalgebers am Mast intakt oder locker/beschädigt?\n*   **Funktion der Optiken:** Leuchten die Signalbilder noch korrekt oder sind sie dunkel/flackernd?\n*   **Umgebung:** Gibt es weitere Schäden an der Infrastruktur (z.B. Fahrbahn, Gehweg, andere Verkehrseinrichtungen)?\n\n**3. Diagnose/Beobachtung (Funktionsprüfung und Ursachenforschung)**\n*   **Verkehrsverhalten:** Beobachten, wie sich der Verkehr an der Kreuzung verhält. Gibt es gefährliche Situationen?\n*   **Signalbild:** Wenn das Signal noch in Betrieb ist, auf ungewöhnliches Verhalten (z.B. Dauerrot, Dunkelphase, falsche Signalfolge) achten.\n*   **Mögliche Ursache:** Gibt es Anzeichen für eine Kollision (Fahrzeugteile, Reifenspuren) oder Vandalismus?\n\n**4. Dokumentation (Lückenlose Erfassung)**\n*   **Fotos/Videos:** Umfassende Dokumentation des Schadens aus verschiedenen Perspektiven. Fokus auf die freiliegenden Kabel, die Beschädigung des Gehäuses und die Maststabilität.\n*   **Standort:** Genaue Positionsdaten (Längen- und Breitengrad: 12.1207464, 47.8355923, OSM-ID: n229809366).\n*   **Uhrzeit und Datum:** Exakte Erfassung des Zeitpunktes der Feststellung.\n*   **Beschreibung:** Detaillierte Beschreibung der festgestellten Schäden und der durchgeführten Absicherungsmaßnahmen.\n*   **Umgebungsbedingungen:** Notiz zu schlechter Sicht, Nacht, Schneefall, mittlerem Verkehr und hohem Lärmpegel.\n*   **Gerätezustand:** Hinweis auf den niedrigen Akkustand des Endgeräts, um einen Offline-Workflow für die Dokumentation zu berücksichtigen (lokale Speicherung, spätere Synchronisation).\n\n**5. Eskalation (Schnelle Information der Verantwortlichen)**\n*   **Leitstelle/Einsatzleitung:** Sofortige Meldung des Vorfalls mit allen gesammelten Informationen. Betonen Sie die hohe Dringlichkeit aufgrund der freiliegenden Kabel und der potenziellen Mastinstabilität.\n*   **Fachabteilung:** Information der zuständigen Fachabteilung für Ampelanlagen/Elektrotechnik zur schnellstmöglichen Reparatur.\n*   **Polizei:** Bei Unfallhergang oder Vandalismus ist die Polizei zu informieren.\n*   **Verkehrsmanagement:** Bei längerem Ausfall oder manueller Regelung ist das Verkehrsmanagement zu informieren, um ggf. Umleitungen oder Verkehrsinformationen zu veranlassen.\n\n**Wichtiger Hinweis:** Bei freiliegenden, spannungsführenden Kabeln oder drohendem Mastbruch ist die Gefährdung so hoch, dass die Reparatur nur durch qualifiziertes Fachpersonal unter Einhaltung aller Sicherheitsvorschriften erfolgen darf. Ihre Aufgabe ist die Absicherung und Dokumentation.",
+    "tokens_estimate_words": 470
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0012-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Perfekte Antwort: nutzt alle Kontextdaten inkl. Guardrail-Hinweise (Offline-Workflow wegen low_battery, Safety bei physical_damage/high severity). Safety-first, klare Struktur, vollständige Dokumentation, starke Eskalation. Keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.101
+  },
+  "error": {}
+}

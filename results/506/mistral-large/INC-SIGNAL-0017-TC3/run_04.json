@@ -1,0 +1,183 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0017-TC3",
+  "timestamp": "2026-07-28T23:19:42",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Keine Phasenwechsel erkennbar, Ampel reagiert nicht. (Richtung: backward).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"signal_stuck\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-15T22:39:02+01:00\",\n    \"reporter\": \"patrol\",\n    \"photo_description\": \"Dauerhaft rote Phase erkennbar, kein Phasenwechsel sichtbar. Staubildung an Kreuzung.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n6896899036\",\n    \"longitude\": 12.0900994,\n    \"latitude\": 47.8458891\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"night\",\n    \"traffic_exposure\": \"low\",\n    \"weather\": \"storm\",\n    \"noise_level\": \"medium\"\n  },\n  \"_guardrail_notes\": [\n    \"SICHERHEITSHINWEIS: fault_type=signal_stuck / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "signal_stuck",
+        "severity": "high",
+        "reported_at": "2026-01-15T22:39:02+01:00",
+        "reporter": "patrol",
+        "photo_description": "Dauerhaft rote Phase erkennbar, kein Phasenwechsel sichtbar. Staubildung an Kreuzung."
+      },
+      "asset": {
+        "asset_osm": "n6896899036",
+        "longitude": 12.0900994,
+        "latitude": 47.8458891
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "night",
+        "traffic_exposure": "low",
+        "weather": "storm",
+        "noise_level": "medium"
+      },
+      "_guardrail_notes": [
+        "SICHERHEITSHINWEIS: fault_type=signal_stuck / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0017",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Keine Phasenwechsel erkennbar, Ampel reagiert nicht. (Richtung: backward).",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": true,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": false,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": true,
+      "bad_weather": true,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 763,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ampelanlage reagiert nicht, keine Phasenwechsel erkennbar (Richtung: backward).\n\n**Checkliste für den Außendienst:**\n\n1.  **Absicherung (Priorität: Hoch)**\n    *   Sofortige Absicherung der Kreuzung gemäß UVV (Unfallverhütungsvorschriften) und örtlichen Richtlinien.\n    *   Verkehrsleitkegel, Warnleuchten und ggf. Warndreiecke aufstellen, um den Verkehr zu warnen und zu leiten.\n    *   Bei Bedarf: Anforderung der Polizei zur Verkehrsregelung, insbesondere bei hohem Verkehrsaufkommen oder unübersichtlicher Lage.\n    *   **Wichtiger Hinweis:** Da die Ampel keine Phasenwechsel zeigt und dauerhaft rot ist, ist die Kreuzung als ungesichert zu betrachten.\n\n2.  **Sichtprüfung**\n    *   Überprüfen Sie alle Signalgeber der betroffenen Richtung (backward) auf sichtbare Schäden (z.B. defekte Leuchtmittel, Vandalismus, lose Kabel).\n    *   Kontrollieren Sie die Mastkonstruktion auf Stabilität und Beschädigungen.\n    *   Prüfen Sie, ob andere Richtungen der Kreuzung ebenfalls betroffen sind oder ob der Fehler isoliert auftritt.\n\n3.  **Diagnose/Beobachtung**\n    *   Bestätigen Sie die Fehlerbeschreibung: Bleibt die Ampel dauerhaft auf Rot? Gibt es keinerlei Reaktion auf den Verkehr (z.B. Induktionsschleifen)?\n    *   Beobachten Sie den Verkehrsfluss und die Staubildung, um die Dringlichkeit der Maßnahme zu bewerten.\n    *   Prüfen Sie, ob die Steuerungseinheit (Schaltschrank) zugänglich ist und ob dort offensichtliche Fehleranzeigen (z.B. Störungsmeldungen, Sicherungen) sichtbar sind. (Vorsicht: Nur Sichtprüfung, keine Eingriffe ohne entsprechende Qualifikation).\n\n4.  **Dokumentation**\n    *   Halten Sie den genauen Zeitpunkt der Feststellung fest.\n    *   Machen Sie Fotos von der Situation, der Ampelanlage und der Absicherung.\n    *   Notieren Sie alle Beobachtungen (z.B. betroffene Richtungen, Art der Störung, Verkehrsaufkommen, Wetterbedingungen – Sturm, schlechte Sicht).\n    *   Erfassen Sie die Asset-ID (n6896899036) und die genaue Position (Längengrad: 12.0900994, Breitengrad: 47.8458891).\n\n5.  **Eskalation**\n    *   **Sofortige Meldung an die Leitstelle/Verkehrsmanagementzentrale.**\n    *   Geben Sie alle gesammelten Informationen weiter, insbesondere die hohe Priorität aufgrund des \"signal_stuck\" und der Staubildung.\n    *   Fordern Sie bei Bedarf weitere Unterstützung (z.B. Elektriker, Polizei) an.\n    *   Bleiben Sie vor Ort, bis die Situation entschärft oder weitere Anweisungen erteilt wurden.",
+    "tokens_estimate_words": 291
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0017-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellent: nutzt Kontext inkl. Guardrail-Hinweis (severity high, signal_stuck → sofortige Absicherung), Safety-first explizit (Priorität Hoch), klare 5-Schritte-Struktur, detaillierte Dokumentation mit Koordinaten/Asset-ID, sofortige Eskalation an Leitstelle. Keine Halluzinationen, sehr umsetzbar."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 8.06
+  },
+  "error": {}
+}

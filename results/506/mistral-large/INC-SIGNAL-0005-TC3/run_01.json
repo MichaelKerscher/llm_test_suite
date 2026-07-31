@@ -1,0 +1,180 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0005-TC3",
+  "timestamp": "2026-07-28T21:19:57",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet. (Hauptverkehrszeit / hoher Verkehr).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-18T00:42:54+01:00\",\n    \"reporter\": \"patrol\",\n    \"photo_available\": false\n  },\n  \"asset\": {\n    \"asset_osm\": \"n35664946\",\n    \"longitude\": 12.1102703,\n    \"latitude\": 47.8539754\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"normal_visibility\",\n    \"time_of_day\": \"rush_hour\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\",\n    \"weather\": \"clear\"\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-18T00:42:54+01:00",
+        "reporter": "patrol",
+        "photo_available": false
+      },
+      "asset": {
+        "asset_osm": "n35664946",
+        "longitude": 12.1102703,
+        "latitude": 47.8539754
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "normal_visibility",
+        "time_of_day": "rush_hour",
+        "traffic_exposure": "high",
+        "noise_level": "high",
+        "weather": "clear"
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0005",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet. (Hauptverkehrszeit / hoher Verkehr).",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": false,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": true,
+      "high_severity": false,
+      "photo_description": false,
+      "offline": false,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": false,
+      "rush_hour": true,
+      "night": false,
+      "bad_weather": false,
+      "high_traffic": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 455,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P1",
+        "reason": "high-traffic-env"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P2",
+        "reason": "photo-flag"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P3",
+        "reason": "context-weather"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die gemeldeten wiederholten Ausfälle der Ampelanlage, insbesondere während der Hauptverkehrszeit bei hohem Verkehrsaufkommen, erfordern eine sorgfältige Überprüfung. Obwohl die Anlage aktuell funktioniert, ist die intermittierende Natur des Fehlers kritisch für die Verkehrssicherheit.\n\nHier ist eine Schritt-für-Schritt-Checkliste für den Vor-Ort-Einsatz:\n\n1.  **Absicherung:**\n    *   **Verkehrssicherung:** Bei Ankunft sofort die notwendigen Maßnahmen zur Verkehrssicherung einleiten (Warnblinkanlage, Warnweste, ggf. Warndreieck/Leitkegel aufstellen), besonders da es sich um eine Hauptverkehrszeit-Problematik handelt.\n    *   **Eigensicherung:** Auf den fließenden Verkehr achten und sich selbst sowie das Team vor Gefahren schützen.\n\n2.  **Sichtprüfung (Äußerlich):**\n    *   **Physische Unversehrtheit:** Überprüfung aller Ampelköpfe auf Beschädigungen (Risse, Vandalismus, lose Teile).\n    *   **Kabel und Anschlüsse:** Sichtkontrolle der sichtbaren Kabel und Anschlusskästen auf Beschädigungen, Korrosion oder lose Verbindungen.\n    *   **Mast und Fundament:** Prüfung auf Stabilität, Risse oder Anzeichen von Beschädigungen.\n    *   **Umgebung:** Gibt es externe Faktoren, die die Funktion beeinträchtigen könnten (z.B. Bewuchs, Baustellen in der Nähe, die Vibrationen verursachen)?\n\n3.  **Diagnose/Beobachtung (Intermittierender Fehler):**\n    *   **Verkehrsfluss beobachten:** Die Ampelschaltung über einen längeren Zeitraum beobachten, insbesondere während Phasen mit hohem Verkehrsaufkommen, um das Fehlerbild zu reproduzieren oder Auffälligkeiten zu erkennen.\n    *   **Schaltzyklen:** Auf unregelmäßige Schaltzyklen, fehlende Phasen oder flackernde Signale achten.\n    *   **Detektoren:** Funktion der Fahrzeug- und Fußgängerdetektoren prüfen (Induktionsschleifen, Radarsensoren, Kameras). Sind diese verschmutzt oder blockiert?\n    *   **Steuerungsschrank:** Wenn sicher zugänglich, den Steuerungsschrank öffnen und auf offensichtliche Probleme prüfen (z.B. lose Klemmen, ungewöhnliche Gerüche, überhitzte Komponenten, Fehlercodes am Steuergerät).\n    *   **Spannungsversorgung:** Messung der Versorgungsspannung, um Schwankungen auszuschließen, die zu Ausfällen führen könnten.\n\n4.  **Dokumentation:**\n    *   **Zeitpunkt und Dauer:** Genaue Erfassung des Zeitpunkts und der Dauer der Beobachtung.\n    *   **Beobachtete Auffälligkeiten:** Detaillierte Beschreibung aller festgestellten Unregelmäßigkeiten (z.B. \"Ampel X schaltet nicht auf Grün für Y Sekunden\", \"Signal Z flackert\").\n    *   **Umgebungsbedingungen:** Wetter, Verkehrsaufkommen, Sichtverhältnisse zum Zeitpunkt der Beobachtung.\n    *   **Maßnahmen:** Welche Prüfungen wurden durchgeführt und welche Ergebnisse lieferten sie?\n    *   **Fotos:** Falls möglich, Fotos von Auffälligkeiten oder potenziellen Fehlerquellen machen, auch wenn keine Fotos im ursprünglichen Bericht verfügbar waren.\n\n5.  **Eskalation:**\n    *   **Keine Fehler gefunden:** Wenn trotz intensiver Beobachtung und Prüfung kein Fehler reproduziert oder gefunden werden kann, ist eine Eskalation an den technischen Support oder den Hersteller des Steuergeräts erforderlich, um eine tiefere Analyse der Systemprotokolle oder eine Überprüfung der Software zu veranlassen.\n    *   **Fehler reproduziert/gefunden:** Bei eindeutiger Fehlerfeststellung sofort die notwendigen Reparaturen einleiten. Bei komplexen oder sicherheitsrelevanten Fehlern, die nicht sofort behoben werden können, ist die zuständige Verkehrsleitstelle oder der Betreiber umgehend zu informieren, um gegebenenfalls manuelle Verkehrsregelung oder eine temporäre Außerbetriebnahme zu veranlassen.\n    *   **Wiederkehrende Probleme:** Da es sich um wiederholte Ausfälle handelt, sollte eine Historie der Störungen angefordert und mit den aktuellen Beobachtungen abgeglichen werden, um Muster zu erkennen.",
+    "tokens_estimate_words": 426
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0005-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Hervorragend: nutzt alle Kontextdaten korrekt (intermittent fault, medium severity, rush_hour, high traffic, online), Safety-first klar priorisiert, strukturierte Diagnose mit Fokus auf intermittierenden Fehler, detaillierte Dokumentation, differenzierte Eskalation inkl. Historie-Abgleich. Keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.587
+  },
+  "error": {}
+}

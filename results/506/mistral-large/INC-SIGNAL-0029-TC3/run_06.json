@@ -1,0 +1,184 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0029-TC3",
+  "timestamp": "2026-07-29T00:37:23",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Ampel ausgefallen, Fahrzeuge weichen unsicher aus. (Richtung: forward; Hauptverkehrszeit / hoher Verkehr).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"signal_dark\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-16T18:17:59+01:00\",\n    \"reporter\": \"dispatch\",\n    \"photo_description\": \"Alle Signalphasen dunkel, keine Lichtausgabe sichtbar. Ampelgehäuse äußerlich intakt. Kreuzung ohne Regelung.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n2991186127\",\n    \"longitude\": 12.1280783,\n    \"latitude\": 47.8502392\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"rush_hour\",\n    \"traffic_exposure\": \"high\",\n    \"weather\": \"rain\",\n    \"noise_level\": \"high\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=online und device.device_state=low_battery beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\",\n    \"SICHERHEITSHINWEIS: fault_type=signal_dark / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "signal_dark",
+        "severity": "high",
+        "reported_at": "2026-01-16T18:17:59+01:00",
+        "reporter": "dispatch",
+        "photo_description": "Alle Signalphasen dunkel, keine Lichtausgabe sichtbar. Ampelgehäuse äußerlich intakt. Kreuzung ohne Regelung."
+      },
+      "asset": {
+        "asset_osm": "n2991186127",
+        "longitude": 12.1280783,
+        "latitude": 47.8502392
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "rush_hour",
+        "traffic_exposure": "high",
+        "weather": "rain",
+        "noise_level": "high"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=online und device.device_state=low_battery beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.",
+        "SICHERHEITSHINWEIS: fault_type=signal_dark / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0029",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampel ausgefallen, Fahrzeuge weichen unsicher aus. (Richtung: forward; Hauptverkehrszeit / hoher Verkehr).",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": false,
+      "spotty": false,
+      "low_battery": true,
+      "poor_visibility": true,
+      "rush_hour": true,
+      "night": false,
+      "bad_weather": true,
+      "high_traffic": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1036,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P1",
+        "reason": "high-traffic-env"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die Situation erfordert sofortiges Handeln aufgrund der ausgefallenen Ampelanlage bei hohem Verkehrsaufkommen, schlechter Sicht und unsicherem Fahrverhalten. Hier ist die Checkliste für das Vorgehen:\n\n**Schritt-für-Schritt-Checkliste bei Ampelausfall (Signal Dark)**\n\n1.  **Absicherung (Priorität: Sicherheit & Verkehrssicherung)**\n    *   **Sofortmaßnahmen:** Unverzüglich die Einsatzstelle absichern. Da alle Signalphasen dunkel sind, ist die Kreuzung als unkontrolliert zu betrachten.\n    *   **Warnung:** Warnblinkanlage des Einsatzfahrzeugs einschalten, Warndreieck aufstellen, Warnleuchten verwenden.\n    *   **Verkehrsleitung:** Bei Bedarf und Möglichkeit den Verkehr manuell regeln, bis weitere Kräfte eintreffen.\n    *   **Persönliche Schutzausrüstung:** Warnweste tragen, auf den fließenden Verkehr achten.\n\n2.  **Sichtprüfung (Erste Einschätzung vor Ort)**\n    *   **Ampelgehäuse:** Prüfen, ob das Ampelgehäuse äußerlich intakt ist (laut Meldung: \"äußerlich intakt\").\n    *   **Kabel/Anschlüsse:** Sichtprüfung auf offensichtliche Beschädigungen an Kabeln oder Anschlüssen im Bereich der Ampel.\n    *   **Umgebung:** Gibt es Anzeichen für einen externen Einfluss (z.B. Unfallschaden, Vandalismus, umgestürzte Bäume, die Leitungen beschädigt haben könnten)?\n    *   **Stromversorgung:** Sind in der Nähe befindliche Verteilerkästen oder Sicherungen zugänglich und zeigen diese Auffälligkeiten?\n\n3.  **Diagnose/Beobachtung (Fehleranalyse & Situationsbewertung)**\n    *   **Fehlerbild:** Bestätigen, dass alle Signalphasen dunkel sind und keine Lichtausgabe erfolgt.\n    *   **Verkehrsfluss:** Beobachten, wie sich der Verkehr ohne Regelung verhält und welche Gefahrenpunkte entstehen.\n    *   **Umweltfaktoren:** Regen und schlechte Sicht erhöhen die Dringlichkeit und das Unfallrisiko.\n    *   **Geräusche:** Auf ungewöhnliche Geräusche aus dem Ampelkopf oder dem Steuerschrank achten.\n\n4.  **Dokumentation (Lückenlose Erfassung)**\n    *   **Vorfall:** Genaue Uhrzeit und Datum des Eintreffens, Beschreibung der Situation (Ampel dunkel, unsicheres Ausweichen der Fahrzeuge, hoher Verkehr, Regen, schlechte Sicht).\n    *   **Maßnahmen:** Alle durchgeführten Absicherungsmaßnahmen und Beobachtungen festhalten.\n    *   **Fotos:** Wenn sicher möglich, Fotos von der Situation und der Ampelanlage machen.\n    *   **Gerätestatus:** Beachten, dass das eigene Gerät \"low_battery\" anzeigt. Sicherstellen, dass die Dokumentation auch bei möglichem Verbindungsverlust lokal gespeichert und später synchronisiert wird.\n\n5.  **Eskalation (Priorisierte Meldung an die Leitstelle)**\n    *   **Dringlichkeit:** Aufgrund der hohen Gefährdung (signal_dark, hoher Verkehr, schlechte Sicht, unsicheres Fahrverhalten) ist eine sofortige und priorisierte Meldung an die Leitstelle erforderlich.\n    *   **Informationen:** Alle gesammelten Informationen (Standort, Fehlerbild, Verkehrsbedingungen, durchgeführte Absicherung) präzise weitergeben.\n    *   **Anforderung:** Zusätzliche Unterstützung (z.B. Polizei zur Verkehrsregelung, weitere Techniker) anfordern.\n    *   **Status:** Den Status der Ampelanlage als \"signal_dark\" und die Dringlichkeit als \"hoch\" kommunizieren.\n\n**Wichtiger Hinweis:** Die Sicherheit hat oberste Priorität. Bei unübersichtlichen oder gefährlichen Situationen ist die Anforderung von Unterstützung (z.B. Polizei) zur Verkehrsregelung essenziell, bevor weitere technische Schritte unternommen werden.",
+    "tokens_estimate_words": 374
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0029-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort. Nutzt Kontext inkl. Guardrail-Hinweise perfekt (low_battery bezieht sich auf Gerät, signal_dark-Eskalation, lokale Dokumentation bei Batterieproblem). Safety-first, strukturiert, umfassende Dokumentation, priorisierte Eskalation. Keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 8.992
+  },
+  "error": {}
+}

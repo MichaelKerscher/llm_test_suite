@@ -1,0 +1,180 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0016-TC3",
+  "timestamp": "2026-07-29T00:23:14",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-18T17:05:05+01:00\",\n    \"reporter\": \"dispatch\",\n    \"photo_available\": false\n  },\n  \"asset\": {\n    \"asset_osm\": \"n2043315\",\n    \"longitude\": 12.1224516,\n    \"latitude\": 47.8415331\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"night\",\n    \"traffic_exposure\": \"medium\",\n    \"weather\": \"storm\",\n    \"noise_level\": \"medium\"\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-18T17:05:05+01:00",
+        "reporter": "dispatch",
+        "photo_available": false
+      },
+      "asset": {
+        "asset_osm": "n2043315",
+        "longitude": 12.1224516,
+        "latitude": 47.8415331
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "night",
+        "traffic_exposure": "medium",
+        "weather": "storm",
+        "noise_level": "medium"
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0016",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": false,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": true,
+      "high_severity": false,
+      "photo_description": false,
+      "offline": false,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": true,
+      "bad_weather": true,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 454,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P2",
+        "reason": "photo-flag"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet.\n\nAngesichts der gemeldeten wiederholten Ausfälle und der aktuellen Wetterbedingungen (Sturm, Nacht, schlechte Sicht) ist bei der Überprüfung der Ampelanlage höchste Vorsicht geboten. Die Tatsache, dass das Gerät online und im Status \"ok\" ist, deutet auf ein lokales oder intermittierendes Problem hin, das nicht durch die Systemüberwachung erfasst wird.\n\nHier ist eine Schritt-für-Schritt-Checkliste für den Vor-Ort-Einsatz:\n\n1.  **Absicherung (Sicherheit geht vor!)**\n    *   **Verkehrssicherung:** Unverzüglich die Einsatzstelle gemäß den Vorschriften absichern (Warnblinkanlage, Warnleuchten, Warndreiecke, ggf. Verkehrsleiteinrichtungen aufstellen).\n    *   **Persönliche Schutzausrüstung (PSA):** Warnkleidung (Klasse 3), Helm, Sicherheitsschuhe, Handschuhe tragen.\n    *   **Wetterbedingungen beachten:** Bei Sturm und schlechter Sicht ist besondere Vorsicht geboten. Arbeiten in der Höhe (z.B. an Masten) sind bei Sturm zu vermeiden oder nur mit zusätzlicher Sicherung durchzuführen.\n    *   **Beleuchtung:** Ausreichende Arbeitsbeleuchtung sicherstellen, da es Nacht ist.\n\n2.  **Sichtprüfung**\n    *   **Umgebung:** Gibt es offensichtliche Schäden durch den Sturm (herabfallende Äste, lose Kabel, beschädigte Masten oder Signalgeber)?\n    *   **Signalgeber:** Sind alle Linsen intakt und sauber? Gibt es Anzeichen von Feuchtigkeitseintritt oder Kondensation?\n    *   **Kabel und Anschlüsse:** Sind alle Kabelverbindungen fest? Gibt es sichtbare Beschädigungen an Kabeln oder Kabelkanälen?\n    *   **Steuerungsschrank:** Ist der Schrank unbeschädigt und verschlossen? Gibt es Anzeichen von Vandalismus oder Feuchtigkeitseintritt?\n    *   **Fundament:** Ist das Fundament des Mastes stabil und unbeschädigt?\n\n3.  **Diagnose/Beobachtung**\n    *   **Verhalten der Ampel:** Beobachten Sie die Ampel über einen längeren Zeitraum (mindestens 15-30 Minuten), um das intermittierende Fehlverhalten zu erkennen. Achten Sie auf Flackern, Aussetzen einzelner Farben oder des gesamten Signals.\n    *   **Fehlerspeicher:** Falls zugänglich, den Fehlerspeicher der Steuerung auslesen. Auch wenn der Gerätestatus \"ok\" ist, könnten hier temporäre Fehler hinterlegt sein.\n    *   **Spannungsversorgung:** Prüfen Sie die Spannungsversorgung im Steuerungsschrank auf Schwankungen oder Unterbrechungen, die durch den Sturm verursacht werden könnten.\n    *   **Wärmeentwicklung:** Gibt es ungewöhnliche Wärmeentwicklung an Komponenten im Steuerungsschrank?\n    *   **Geräusche:** Ungewöhnliche Geräusche (Brummen, Knistern) können auf elektrische Probleme hindeuten.\n\n4.  **Dokumentation**\n    *   **Uhrzeit und Datum:** Genaue Erfassung des Beginns und Endes der Beobachtung.\n    *   **Beobachtungen:** Detaillierte Beschreibung des Fehlverhaltens (welche Signale, wie lange, in welchen Intervallen).\n    *   **Umweltbedingungen:** Notieren Sie die aktuellen Wetterbedingungen (Sturm, Regen, Windstärke), Sichtverhältnisse und Verkehrsaufkommen.\n    *   **Fotos/Videos:** Machen Sie Fotos oder Videos von Auffälligkeiten oder dem Fehlverhalten, falls es auftritt.\n    *   **Maßnahmen:** Dokumentieren Sie alle durchgeführten Prüfungen und eventuelle Sofortmaßnahmen.\n\n5.  **Eskalation**\n    *   **Bei anhaltendem oder kritischem Fehlverhalten:** Wenn das intermittierende Problem trotz erster Prüfungen nicht behoben werden kann oder die Verkehrssicherheit gefährdet ist, ist umgehend eine Eskalation an den Bereitschaftsdienst oder Fachdienst erforderlich.\n    *   **Bei Sturmschäden:** Wenn strukturelle Schäden am Mast oder der Anlage durch den Sturm festgestellt werden, ist sofort eine Meldung an die zuständige Stelle für Infrastruktur und ggf. die Feuerwehr zur Gefahrenabwehr notwendig.\n    *   **Bei unklarer Ursache:** Wenn die Ursache des intermittierenden Fehlers nicht eindeutig identifiziert werden kann, ist eine detailliertere Analyse durch spezialisiertes Personal erforderlich.\n\nBleiben Sie stets aufmerksam und priorisieren Sie Ihre eigene Sicherheit und die der Verkehrsteilnehmer.",
+    "tokens_estimate_words": 471
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0016-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: nutzt vollständigen Kontext (Sturm, Nacht, schlechte Sicht, mittleres Verkehrsaufkommen, intermittent) explizit und passt alle Maßnahmen an. Besonders stark: explizite Warnung vor Arbeiten in der Höhe bei Sturm, differenzierte Eskalationslogik inkl. Sturmschäden. Keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.86
+  },
+  "error": {}
+}

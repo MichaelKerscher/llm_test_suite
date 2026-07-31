@@ -1,0 +1,180 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-SIGNAL-0030-TC3",
+  "timestamp": "2026-07-28T21:50:39",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Kurzzeitige Aussetzer/Neustarts vermutet; Verhalten inkonsistent. (Richtung: backward).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-20T04:16:40+01:00\",\n    \"reporter\": \"citizen\",\n    \"photo_available\": false\n  },\n  \"asset\": {\n    \"asset_osm\": \"n12872023045\",\n    \"longitude\": 12.1183214,\n    \"latitude\": 47.8585403\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"normal_visibility\",\n    \"time_of_day\": \"day\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\",\n    \"weather\": \"clear\"\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-20T04:16:40+01:00",
+        "reporter": "citizen",
+        "photo_available": false
+      },
+      "asset": {
+        "asset_osm": "n12872023045",
+        "longitude": 12.1183214,
+        "latitude": 47.8585403
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "normal_visibility",
+        "time_of_day": "day",
+        "traffic_exposure": "high",
+        "noise_level": "high",
+        "weather": "clear"
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-SIGNAL-0030",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Kurzzeitige Aussetzer/Neustarts vermutet; Verhalten inkonsistent. (Richtung: backward).",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": false,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": true,
+      "high_severity": false,
+      "photo_description": false,
+      "offline": false,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": false,
+      "rush_hour": false,
+      "night": false,
+      "bad_weather": false,
+      "high_traffic": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 453,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P1",
+        "reason": "high-traffic-env"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P2",
+        "reason": "photo-flag"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P3",
+        "reason": "context-weather"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein inkonsistentes Verhalten mit kurzzeitigen Aussetzern/Neustarts bei hoher Verkehrsbelastung erfordert eine sorgfältige Prüfung. Die Diskrepanz zwischen der Systemmeldung \"online\" und \"ok\" und der beobachteten Störung ist hierbei besonders relevant.\n\nHier ist eine Schritt-für-Schritt-Checkliste für den Vor-Ort-Einsatz:\n\n1.  **Absicherung (Sicherheit geht vor!)**\n    *   **Verkehrssicherung:** Aufgrund der hohen Verkehrsbelastung (`traffic_exposure: high`) ist eine umgehende und umfassende Absicherung der Arbeitsstelle zwingend erforderlich. Stellen Sie Warnschilder, Warnbaken und gegebenenfalls eine temporäre Fahrbahnverengung oder -sperrung auf.\n    *   **Persönliche Schutzausrüstung (PSA):** Tragen Sie stets Warnkleidung (mindestens Klasse 2), Sicherheitsschuhe und gegebenenfalls Helm und Handschuhe.\n    *   **Beleuchtung:** Auch tagsüber kann zusätzliche Beleuchtung (z.B. Blitzleuchten) die Sichtbarkeit erhöhen.\n\n2.  **Sichtprüfung**\n    *   **Allgemeinzustand:** Überprüfen Sie das gesamte Asset (Ampel/Straßenlampe) auf offensichtliche Beschädigungen, Vandalismus oder Anfahrspuren.\n    *   **Kabel und Anschlüsse:** Achten Sie auf lose, beschädigte oder korrodierte Kabel und Steckverbindungen, insbesondere im Bereich der Stromzufuhr und der Signalübertragung.\n    *   **Feuchtigkeit/Nässe:** Suchen Sie nach Anzeichen von Wassereintritt oder Kondensation im Gehäuse oder an elektrischen Komponenten.\n    *   **Überhitzung:** Prüfen Sie auf Verfärbungen oder Schmelzspuren, die auf Überhitzung hindeuten könnten.\n    *   **Richtung \"backward\":** Klären Sie, ob sich dies auf eine spezifische Fahrtrichtung oder eine bestimmte Seite des Assets bezieht und prüfen Sie die Komponenten in diesem Bereich besonders genau.\n\n3.  **Diagnose/Beobachtung**\n    *   **Verhaltensmuster:** Beobachten Sie das Asset über einen längeren Zeitraum (mindestens 15-30 Minuten), um das inkonsistente Verhalten und die Neustarts zu dokumentieren. Versuchen Sie, ein Muster zu erkennen (z.B. bestimmte Intervalle, Abhängigkeit von externen Faktoren wie Vibrationen).\n    *   **Stromversorgung:** Prüfen Sie die Spannungsversorgung am Asset. Sind die Werte stabil oder gibt es Schwankungen?\n    *   **Systemstatus vs. Realität:** Da das System den Gerätezustand als \"online\" und \"ok\" meldet, liegt der Fehler möglicherweise nicht in der grundlegenden Konnektivität, sondern in der internen Logik, der Stromversorgung oder einem spezifischen Modul.\n    *   **Fehlermeldungen:** Prüfen Sie, ob das Gerät selbst lokale Fehlermeldungen oder Status-LEDs anzeigt.\n\n4.  **Dokumentation**\n    *   **Protokoll:** Halten Sie alle Beobachtungen, die genauen Zeiten der Aussetzer/Neustarts, die Umgebungsbedingungen (`time_of_day: day`, `weather: clear`) und die durchgeführten Schritte detailliert fest.\n    *   **Fotos:** Da keine Fotos verfügbar sind (`photo_available: false`), machen Sie aussagekräftige Bilder vom Asset, der Umgebung und insbesondere von allen festgestellten Auffälligkeiten oder Beschädigungen.\n    *   **Standort:** Bestätigen Sie den Standort anhand der bereitgestellten Koordinaten (`longitude: 12.1183214`, `latitude: 47.8585403`).\n\n5.  **Eskalation**\n    *   **Sofortmaßnahmen:** Wenn eine unmittelbare Gefahr für den Verkehr oder die öffentliche Sicherheit besteht (z.B. dauerhafter Ausfall einer Ampel), leiten Sie sofort weitere Sicherungsmaßnahmen ein und informieren Sie die zuständige Leitstelle.\n    *   **Bericht:** Erstellen Sie einen detaillierten Bericht mit allen gesammelten Informationen und Fotos.\n    *   **Fachabteilung:** Leiten Sie den Vorfall an die zuständige Fachabteilung weiter, idealerweise mit einer ersten Einschätzung der möglichen Ursache (z.B. \"Verdacht auf Wackelkontakt in der Stromversorgung\", \"Fehler in der Steuerungselektronik\").\n    *   **Priorität:** Aufgrund der \"medium\" Schwere und der hohen Verkehrsbelastung sollte der Vorfall mit angemessener Priorität behandelt werden.",
+    "tokens_estimate_words": 456
+  },
+  "judge": {
+    "test_id": "INC-SIGNAL-0030-TC3",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: hebt explizit die Diskrepanz zwischen System-Status (online/ok) und beobachteter Störung hervor, nutzt alle Kontextdaten (Verkehr, Wetter, Koordinaten), klare Safety-first-Struktur, umfassende Dokumentation und differenzierte Eskalation mit Prioritätsbewertung."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 13.867
+  },
+  "error": {}
+}
