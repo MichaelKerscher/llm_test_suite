@@ -181,6 +181,13 @@ def main():
         choices=["lamp", "signal"],
         help="filter by domain: lamp (INC-LAMP-*) or signal (INC-SIGNAL-*). Omit for combined.",
     )
+    ap.add_argument(
+        "--incident-filter",
+        default=None,
+        choices=["ablation", "regular"],
+        help="restrict to ablation incidents (IDs ending in -ABL) or to "
+             "regular ones (all others). Omit to include both.",
+    )
     args = ap.parse_args()
 
     base = Path(args.results_dir) / args.client
@@ -198,11 +205,25 @@ def main():
         return None
 
     _prefix = _domain_prefix(args.domain)
+
+    def _passes_incident_filter(name: str) -> bool:
+        """
+        Ablation test cases live in directories whose incident identifier
+        carries an -ABL suffix, alongside the regular ones. Without this
+        filter both sets are aggregated together, which silently mixes
+        conditions that are not comparable.
+        """
+        if args.incident_filter is None:
+            return True
+        is_abl = "-ABL" in name
+        return is_abl if args.incident_filter == "ablation" else not is_abl
+
     test_dirs = [
         p for p in base.iterdir()
         if p.is_dir()
         and not p.name.startswith("_agg")
         and (_prefix is None or p.name.startswith(_prefix))
+        and _passes_incident_filter(p.name)
     ]
 
     # ----------------------------
@@ -354,6 +375,8 @@ def main():
     md.append(f"# Aggregation Report ({args.client}){domain_label}\n")
     if args.judge_version:
         md.append(f"- judge_version filter: **{args.judge_version}**\n")
+    if args.incident_filter:
+        md.append(f"- incident filter: **{args.incident_filter}**\n")
     md.append(f"- Tests (latest runs): **{len(run_rows)}**\n")
     md.append(f"- Incidents with any deltas: **{len(deltas)}**\n")
 
@@ -467,6 +490,9 @@ def main():
                     v = summ.get(metric)
                     if isinstance(v, (int, float)):
                         strat_metric_run_means[strat][metric].append(v)
+                for fname, fval in (summ.get("flag_rates") or {}).items():
+                    if isinstance(fval, (int, float)):
+                        strat_metric_run_means[strat][f"flag_{fname}"].append(fval)
 
         def stats(xs):
             return {
@@ -491,6 +517,10 @@ def main():
                 "mean_D": stats(m.get("mean_D", [])),
                 "mean_K": stats(m.get("mean_K", [])),
                 "mean_overall": stats(m.get("mean_overall", [])),
+                "flag_safety_first": stats(m.get("flag_safety_first", [])),
+                "flag_escalation_present": stats(m.get("flag_escalation_present", [])),
+                "flag_offline_workflow_mentioned": stats(m.get("flag_offline_workflow_mentioned", [])),
+                "flag_hallucination_suspected": stats(m.get("flag_hallucination_suspected", [])),
             }
 
         runs_overall_path = out_dir / "runs_overall.json"

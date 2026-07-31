@@ -1,0 +1,164 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0014-ABL-NOASSET",
+  "timestamp": "2026-07-31T10:17:52",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-21T11:45:31+01:00\",\n    \"reporter\": \"patrol\"\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"day\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"normal_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T11:45:31+01:00",
+        "reporter": "patrol"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "day",
+        "weather": "clear",
+        "lighting_condition": "normal_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0014-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "clear",
+      "poor_visibility": false,
+      "time_of_day": "day",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 580,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Eine nicht leuchtende Lampe erfordert eine systematische Vorgehensweise. Hier ist die Checkliste für den Außendienst:\n\n**Schritt-für-Schritt-Checkliste bei Lampenausfall (Routinekontrolle)**\n\n1.  **Absicherung (Sicherheit geht vor!)**\n    *   **Verkehrssicherung:** Unmittelbaren Arbeitsbereich gemäß den Vorschriften absichern (Warnweste, Warndreieck/Blitzleuchte, ggf. Leitkegel), besonders bei geringem Verkehrsaufkommen nicht nachlässig werden.\n    *   **Persönliche Schutzausrüstung (PSA):** Sicherstellen, dass die vollständige PSA getragen wird.\n\n2.  **Sichtprüfung (Erste Einschätzung vor Ort)**\n    *   **Umgebung:** Gibt es offensichtliche Schäden in der Nähe der Lampe (z.B. Unfallspuren, Vandalismus, umgestürzte Bäume, Bauarbeiten)?\n    *   **Leuchtenkopf:** Ist der Leuchtenkopf intakt? Sind Scheiben zerbrochen, Abdeckungen lose oder fehlen sie?\n    *   **Mast:** Ist der Mast beschädigt, korrodiert oder schief?\n    *   **Kabel/Anschluss:** Sind sichtbare Kabel beschädigt oder herausgerissen? (Vorsicht: Nicht berühren!)\n    *   **Sicherungskasten/Zugang:** Ist der Sicherungskasten am Mast zugänglich und unbeschädigt?\n\n3.  **Diagnose/Beobachtung (Fehlersuche)**\n    *   **Sicherung:** Wenn zugänglich und sicher, prüfen, ob die Sicherung ausgelöst hat. **Achtung:** Nur bei entsprechender Qualifikation und unter Einhaltung der Sicherheitsvorschriften!\n    *   **Schalter/Steuerung:** Gibt es einen lokalen Schalter oder eine Steuerung am Mast, die geprüft werden kann?\n    *   **Geruch/Geräusche:** Gibt es ungewöhnliche Gerüche (z.B. Brandgeruch) oder Geräusche (z.B. Brummen)?\n    *   **Wärme:** Ist der Leuchtenkopf ungewöhnlich heiß oder kalt?\n    *   **Wiederholbarkeit:** Da die Meldung von einer Routinekontrolle kam, ist der Ausfall konstant.\n\n4.  **Dokumentation (Wichtig für die weitere Bearbeitung)**\n    *   **Fotos:** Mehrere Fotos aus verschiedenen Perspektiven machen (Gesamtsituation, Leuchtenkopf, Mastfuß, eventuelle Schäden).\n    *   **Beschreibung:** Genaue Beschreibung des Zustands und der durchgeführten Schritte.\n    *   **Fehlerursache (Vermutung):** Basierend auf der Sichtprüfung und Diagnose eine mögliche Fehlerursache festhalten (z.B. \"Leuchtmittel defekt\", \"Sicherung ausgelöst\", \"Kabelbruch vermutet\", \"Vandalismusschaden\").\n    *   **Standort:** Genaue Standortdaten erfassen (GPS-Koordinaten, Mastnummer).\n    *   **Datum/Uhrzeit:** Zeitpunkt der Feststellung und der Dokumentation.\n\n5.  **Eskalation (Nächste Schritte einleiten)**\n    *   **Meldung:** Die gesammelten Informationen umgehend an die zuständige Stelle (z.B. Leitwarte, Fachabteilung) weiterleiten.\n    *   **Priorität:** Den Ausfall als \"mittel\" einstufen, da es sich um eine Routinekontrolle handelt und keine unmittelbare Gefahr besteht, aber die Funktion der Beleuchtung beeinträchtigt ist.\n    *   **Folgeauftrag:** Klärung, ob ein spezialisiertes Team zur Reparatur entsandt werden muss oder ob der Fehler vor Ort behoben werden kann.\n\n**Hinweis:** Da das Techniker-Gerät \"online\" ist und der \"device_state\" \"ok\" ist, kann die Dokumentation direkt über die App erfolgen. Die Konnektivität des Geräts hat keinen Einfluss auf die Fehlerursache der Lampe selbst.",
+    "tokens_estimate_words": 360
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0014-ABL-NOASSET",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 5,
+      "K": 3
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Asset-ID/Mastnummer (nicht im Context verfügbar)"
+    ],
+    "short_justification": "Sehr strukturierte Antwort mit klarer Safety-first-Priorisierung und umfassender Dokumentations-Checkliste. Kontextnutzung korrekt (online-Gerät erwähnt), aber ohne Asset-ID bleibt Standorterfassung generisch (GPS-Koordinaten/Mastnummer werden genannt, aber nicht konkret aus Context übernommen)."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 9.011
+  },
+  "error": {}
+}

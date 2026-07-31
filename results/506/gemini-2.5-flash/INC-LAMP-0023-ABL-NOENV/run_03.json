@@ -1,0 +1,164 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0023-ABL-NOENV",
+  "timestamp": "2026-07-31T11:23:54",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-15T08:16:43+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Tagsicht bei Sturm: Laterne dunkel, Mast leicht schräg. Leitungsverbindung am Mastarm sichtbar beschädigt/abgerissen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n13293397459\",\n    \"latitude\": 47.8589872,\n    \"longitude\": 12.1320286\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-15T08:16:43+01:00",
+        "photo_available": true,
+        "photo_description": "Tagsicht bei Sturm: Laterne dunkel, Mast leicht schräg. Leitungsverbindung am Mastarm sichtbar beschädigt/abgerissen.",
+        "reporter": "dispatch"
+      },
+      "asset": {
+        "asset_osm": "n13293397459",
+        "latitude": 47.8589872,
+        "longitude": 12.1320286
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0023-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 956,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt mit einem schrägen Mast und beschädigter Leitungsverbindung erfordert sofortiges Handeln. Priorität haben Sicherheit und Verkehrssicherung.\n\n**Schritt-für-Schritt-Checkliste:**\n\n1.  **Absicherung:**\n    *   **Gefahrenbereich absperren:** Aufgrund des schrägen Mastes und der beschädigten Leitungsverbindung ist von einer akuten Gefahr auszugehen. Sichern Sie den Bereich großräumig ab, um Passanten und Verkehr zu schützen.\n    *   **Verkehrssicherung einrichten:** Stellen Sie Warnbaken, Leitkegel und Warnleuchten gemäß den geltenden Vorschriften auf, insbesondere da die Meldung bei Sturm erfolgte.\n    *   **Stromversorgung prüfen/sichern:** Falls gefahrlos möglich und zugänglich, prüfen Sie, ob die Stromversorgung des betroffenen Mastes gesichert oder abgeschaltet werden kann, um eine weitere Gefährdung durch das beschädigte Kabel zu verhindern.\n\n2.  **Sichtprüfung:**\n    *   **Bestätigung der Störung:** Verifizieren Sie, dass die Laterne dunkel ist.\n    *   **Mastbegutachtung:** Untersuchen Sie den Mast genau auf Neigung, Risse, Verformungen oder Beschädigungen am Fundament.\n    *   **Leitungsverbindung:** Überprüfen Sie die beschädigte/abgerissene Leitungsverbindung am Mastarm. Achten Sie auf blanke Drähte, Funkenflug oder weitere sichtbare Schäden an der Isolierung.\n    *   **Umfeld:** Suchen Sie nach weiteren Sturmschäden in der Umgebung, wie herabfallenden Ästen oder anderen beschädigten Infrastrukturelementen.\n\n3.  **Diagnose/Beobachtung:**\n    *   **Ursachenanalyse:** Versuchen Sie, die primäre Ursache der Störung zu identifizieren (z.B. direkter Kabelbruch, Mastbruch, Leuchtmittelausfall durch Überspannung).\n    *   **Gefährdungsbeurteilung:** Schätzen Sie das Ausmaß der Gefahr für den öffentlichen Raum durch den schrägen Mast und das beschädigte Kabel ein.\n    *   **Reparaturfähigkeit:** Beurteilen Sie, ob eine provisorische Sicherung oder Reparatur vor Ort möglich ist oder ob spezialisiertes Gerät/Personal benötigt wird.\n\n4.  **Dokumentation:**\n    *   **Offline-Workflow:** Da Ihr Gerät offline ist, dokumentieren Sie alle Beobachtungen, durchgeführten Maßnahmen und die festgestellten Schäden detailliert auf Papier oder in einer Offline-fähigen App.\n    *   **Fotos:** Machen Sie aussagekräftige Fotos von allen relevanten Schäden (Mastneigung, Kabelbruch, Absperrung).\n    *   **Daten erfassen:** Notieren Sie den genauen Standort (Latitude: 47.8589872, Longitude: 12.1320286) und die Asset-ID (n13293397459).\n    *   **Zeitstempel:** Halten Sie Datum und Uhrzeit Ihrer Feststellungen und Maßnahmen fest.\n\n5.  **Eskalation:**\n    *   **Sofortige Meldung:** Aufgrund der hohen Schwere und der akuten Gefahr durch den schrägen Mast und das beschädigte Kabel, melden Sie den Vorfall umgehend an die Leitstelle/Einsatzleitung.\n    *   **Spezialteam anfordern:** Fordern Sie ein spezialisiertes Team an, das über die notwendige Ausrüstung (z.B. Hebebühne) und Qualifikation (Elektriker, Statiker) zur Behebung des Mast- und Kabelschadens verfügt.\n    *   **Ggf. Blaulichtorganisationen:** Bei unmittelbarer Gefahr für Leib und Leben oder den Straßenverkehr informieren Sie zusätzlich die Polizei oder Feuerwehr.\n    *   **Synchronisation:** Sobald Ihr Gerät wieder online ist, synchronisieren Sie alle gesammelten Daten und Fotos im System.",
+    "tokens_estimate_words": 391
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0023-ABL-NOENV",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first (Absperrung, Stromversorgung sichern), klare 5-Schritte-Struktur, Offline-Workflow explizit beschrieben (Papier/Offline-App, spätere Synchronisation), umfassende Dokumentation mit GPS/Asset-ID, klare Eskalation mit Spezialteam-Anforderung. Nutzt photo_description aus incident-Context korrekt (Sturm, schräger Mast, Kabelschaden)."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.804
+  },
+  "error": {}
+}

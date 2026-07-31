@@ -1,0 +1,150 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0014-ABL-NOENV",
+  "timestamp": "2026-07-31T10:46:24",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-21T11:45:31+01:00\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4939032525\",\n    \"latitude\": 47.8553091,\n    \"longitude\": 12.1230035\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T11:45:31+01:00",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n4939032525",
+        "latitude": 47.8553091,
+        "longitude": 12.1230035
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0014-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 489,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Eine Straßenlampe leuchtet nicht mehr, gemeldet über Routinekontrolle. Hier ist die Checkliste für das Vorgehen vor Ort:\n\n**1. Absicherung**\n*   **Verkehrssicherung:** Sofort Warnblinkanlage einschalten, Warndreieck aufstellen, ggf. weitere Warnleuchten platzieren. Bei Bedarf den Bereich absperren.\n*   **Persönliche Sicherheit:** Warnweste tragen, Sicherheitsschuhe anziehen. Auf den fließenden Verkehr und andere Gefahren achten.\n\n**2. Sichtprüfung**\n*   **Umgebung:** Gibt es offensichtliche Beschädigungen durch Vandalismus, Unfall (z.B. Anfahrspuren am Mast), oder starken Bewuchs, der die Lampe verdeckt?\n*   **Mast und Leuchte:** Ist der Mast beschädigt, korrodiert oder geneigt? Ist das Leuchtengehäuse intakt? Sind Kabel sichtbar beschädigt oder herausgerissen?\n*   **Leuchtmittel:** Ist das Leuchtmittel (falls sichtbar) offensichtlich defekt (z.B. zerbrochen, geschwärzt)?\n*   **Anschlusskasten/Fußpunkt:** Falls sicher zugänglich, äußere Sichtprüfung auf Beschädigungen, offene Klappen oder Schmauchspuren.\n\n**3. Diagnose/Beobachtung**\n*   **Leuchtentyp:** Welcher Leuchtentyp ist verbaut (z.B. LED, Natriumdampf)?\n*   **Sicherung:** Gibt es eine Sicherung am Mast oder im Fußpunkt? Ist diese ausgelöst? (Nur prüfen, wenn sicher und zugänglich).\n*   **Gruppenfehler:** Funktionieren andere Lampen in unmittelbarer Nähe? Dies kann auf einen Fehler in der Zuleitung oder Steuerung hinweisen, statt auf einen Einzelfehler der Lampe.\n*   **Gerüche/Geräusche:** Gibt es Brandgeruch oder ungewöhnliche Geräusche?\n\n**4. Dokumentation**\n*   **Fotos:** Machen Sie aussagekräftige Fotos von der Gesamtsituation, dem defekten Bereich und eventuellen Beschädigungen.\n*   **Fehlerbeschreibung:** Notieren Sie präzise, was Sie beobachtet haben und welche Schritte Sie unternommen haben.\n*   **Asset-ID:** Vermerken Sie die Asset-ID: `n4939032525`.\n*   **Standort:** Bestätigen Sie den Standort (Latitude: 47.8553091, Longitude: 12.1230035).\n*   **Zeitstempel:** Datum und Uhrzeit der Feststellung und der durchgeführten Maßnahmen.\n*   **Zusätzliche Infos:** Notieren Sie alle weiteren relevanten Beobachtungen (z.B. Wetter, Verkehrssituation).\n\n**5. Eskalation**\n*   **Bericht:** Erstellen Sie einen detaillierten Bericht mit allen gesammelten Informationen und Fotos.\n*   **Weiterleitung:** Leiten Sie den Bericht an die zuständige Fachabteilung (z.B. Elektriker, Tiefbau) oder den Netzbetreiber weiter.\n*   **Dringlichkeit:** Bewerten Sie die Dringlichkeit der Reparatur (z.B. sofortige Reparatur bei Gefahr, oder planbare Instandsetzung).\n*   **Leitstelle/Disposition:** Informieren Sie die Leitstelle oder Disposition über den Status und die weiteren Schritte.",
+    "tokens_estimate_words": 317
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0014-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 5,
+      "K": 4
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Sehr gute Antwort: Safety first, klare Schrittfolge, Asset-ID und GPS explizit dokumentiert. Kontext wird korrekt genutzt (online → direkte Dokumentation möglich), keine Halluzinationen. Dokumentation vollständig."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.361
+  },
+  "error": {}
+}

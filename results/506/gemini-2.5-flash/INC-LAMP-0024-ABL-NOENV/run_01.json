@@ -1,0 +1,178 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0024-ABL-NOENV",
+  "timestamp": "2026-07-31T10:27:54",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-19T09:52:16+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme bei Sturm: Laterne aktuell an (nach gemeldetem Ausfall). Mastarm mit Sturmspuren, Schaltbox äußerlich geschlossen.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n5718630490\",\n    \"latitude\": 47.8512747,\n    \"longitude\": 12.1186732,\n    \"name\": \"Rosenheim, Bahnhof\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-19T09:52:16+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme bei Sturm: Laterne aktuell an (nach gemeldetem Ausfall). Mastarm mit Sturmspuren, Schaltbox äußerlich geschlossen.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n5718630490",
+        "latitude": 47.8512747,
+        "longitude": 12.1186732,
+        "name": "Rosenheim, Bahnhof",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0024-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "intermittent",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1021,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein sporadischer Fehler erfordert eine sorgfältige Vorgehensweise. Hier ist die Checkliste für den Einsatz vor Ort:\n\n**Schritt-für-Schritt-Checkliste:**\n\n1.  **Absicherung:**\n    *   **Persönliche Schutzausrüstung (PSA):** Stellen Sie sicher, dass Sie die vollständige PSA tragen.\n    *   **Verkehrssicherung:** Da es sich um den Bereich \"Rosenheim, Bahnhof\" handelt, ist mit Publikumsverkehr zu rechnen. Sichern Sie den Arbeitsbereich gemäß den Vorschriften ab (z.B. Warnkegel, Absperrband), um sich selbst und Dritte zu schützen.\n\n2.  **Sichtprüfung:**\n    *   **Gesamtzustand der Leuchte:** Prüfen Sie die Leuchte und den Mastarm auf offensichtliche Beschädigungen, insbesondere auf die in der Fotobeschreibung erwähnten **Sturmspuren**. Achten Sie auf Risse, Verformungen oder lose Teile.\n    *   **Leuchtenkopf:** Kontrollieren Sie den Leuchtenkopf auf äußere Schäden, fehlende Abdeckungen oder Anzeichen von Überhitzung (Verfärbungen).\n    *   **Schaltbox:** Überprüfen Sie die Schaltbox am Mastfuß (falls zugänglich) auf äußere Unversehrtheit und festen Verschluss.\n    *   **Kabel und Anschlüsse:** Suchen Sie nach sichtbaren Beschädigungen an Kabeln oder lockeren Verbindungen im zugänglichen Bereich.\n\n3.  **Diagnose/Beobachtung:**\n    *   **Verhalten der Lampe:** Beobachten Sie die Lampe über einen kurzen Zeitraum. Flackert sie? Geht sie erneut aus? Ändert sich die Helligkeit?\n    *   **Geräusche:** Achten Sie auf ungewöhnliche Geräusche wie Summen, Brummen oder Knistern aus der Leuchte oder dem Vorschaltgerät.\n    *   **Umwelteinflüsse:** Notieren Sie, ob aktuelle Wetterbedingungen (Wind, Regen) den Fehler möglicherweise beeinflussen.\n    *   **Fehlerursache:** Versuchen Sie, den Fehler zu reproduzieren oder eine mögliche Ursache für das sporadische Verhalten zu identifizieren (z.B. Wackelkontakt, thermische Ausdehnung).\n\n4.  **Dokumentation:**\n    *   **Offline-Workflow:** Da die Gerätekonnektivität \"offline\" ist, dokumentieren Sie alle Feststellungen sorgfältig lokal auf Ihrem Gerät.\n    *   **Zustand:** Halten Sie den aktuellen Zustand der Lampe (an, aus, flackernd) und alle Beobachtungen fest.\n    *   **Fotos:** Machen Sie neue Fotos von Auffälligkeiten oder Schäden, die über die bereits vorhandene Fotobeschreibung hinausgehen.\n    *   **Maßnahmen:** Notieren Sie alle durchgeführten Prüfungen und eventuell getroffenen Sofortmaßnahmen.\n    *   **Synchronisation:** Stellen Sie sicher, dass die Daten später synchronisiert werden, sobald eine Online-Verbindung verfügbar ist.\n\n5.  **Eskalation:**\n    *   **Klare Fehlerursache:** Wenn Sie eine eindeutige Fehlerursache (z.B. beschädigtes Kabel, defektes Vorschaltgerät) identifiziert haben, leiten Sie die notwendigen Schritte zur Reparatur oder zum Austausch ein.\n    *   **Keine eindeutige Ursache:** Wenn der sporadische Fehler vor Ort nicht reproduziert oder eindeutig diagnostiziert werden kann, empfehlen Sie eine weitere Beobachtung, eine Wiedervorlage oder eine detailliertere Untersuchung mit Spezialequipment.\n    *   **Sicherheitsrisiko:** Bei unmittelbarer Gefahr (z.B. stark beschädigter Mast, offene Elektrik) sichern Sie den Bereich großräumig ab und eskalieren Sie den Vorfall umgehend an die zuständige Stelle.",
+    "tokens_estimate_words": 387
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0024-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 4,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Verkehrssicherung weniger spezifisch (environment fehlt im Kontext)"
+    ],
+    "short_justification": "Gute Antwort: Safety-first (PSA, Verkehrssicherung für Bahnhofsbereich), strukturierte 5 Schritte, Offline-Workflow explizit (lokal dokumentieren, später synchronisieren), Asset-ID korrekt genutzt, Eskalation differenziert. Sturmspuren aus photo_description aufgegriffen. Verkehrssicherung weniger detailliert als bei vorhandenen environment-Daten, aber kein Fehler, da environment fehlt im Kontext."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.811
+  },
+  "error": {}
+}

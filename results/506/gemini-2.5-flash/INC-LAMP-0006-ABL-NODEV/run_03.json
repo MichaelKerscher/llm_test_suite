@@ -1,0 +1,191 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0006-ABL-NODEV",
+  "timestamp": "2026-07-31T11:07:36",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-19T01:52:56+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Aufnahme bei Sturm/Dämmerung: Laterne dunkel, Mast leicht geneigt. Schaltbox-Deckel leicht geöffnet – mögliche Sturmeinwirkung.\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n7230270217\",\n    \"latitude\": 47.8493667,\n    \"longitude\": 12.0941951,\n    \"name\": \"Rosenheim, Äußere Münchener Straße/Aicherpark\",\n    \"lit\": \"yes\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"storm\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-19T01:52:56+01:00",
+        "photo_available": true,
+        "photo_description": "Aufnahme bei Sturm/Dämmerung: Laterne dunkel, Mast leicht geneigt. Schaltbox-Deckel leicht geöffnet – mögliche Sturmeinwirkung.",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n7230270217",
+        "latitude": 47.8493667,
+        "longitude": 12.0941951,
+        "name": "Rosenheim, Äußere Münchener Straße/Aicherpark",
+        "lit": "yes"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "storm",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0006-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NODEV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "unknown",
+      "device_state": "unknown",
+      "low_battery": false,
+      "weather": "storm",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 782,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Hier ist eine Schritt-für-Schritt-Checkliste für den Vor-Ort-Einsatz:\n\n**Priorität: Sicherheit und Verkehrssicherung!**\n\n1.  **Absicherung der Einsatzstelle:**\n    *   **Gefahrenbereich absperren:** Aufgrund des leicht geneigten Mastes und der Sturmeinwirkung besteht akute Gefahr. Großräumige Absperrung mit Warnkegeln und/oder Absperrband ist zwingend erforderlich.\n    *   **Warnblinklicht einschalten:** Am Einsatzfahrzeug zur Kenntlichmachung.\n    *   **Warnweste tragen:** Bei schlechter Sicht und hohem Verkehrsaufkommen unerlässlich.\n    *   **Verkehrsfluss beobachten:** Bei Bedarf zusätzliche Sicherungsmaßnahmen oder Verkehrslenkung einleiten.\n\n2.  **Sichtprüfung (aus sicherem Abstand):**\n    *   **Mastzustand:** Ist der Mast weiterhin geneigt oder hat sich die Neigung verstärkt? Gibt es Risse, Beschädigungen oder lose Teile?\n    *   **Leuchtenkopf:** Ist die Leuchte intakt, beschädigt oder herabgefallen?\n    *   **Kabel und Anschlüsse:** Sind sichtbare Kabel beschädigt oder freiliegend?\n    *   **Schaltbox:** Der Deckel ist leicht geöffnet. Ist Wasser eingedrungen? Sind Sicherungen ausgelöst oder Komponenten sichtbar beschädigt?\n    *   **Umgebung:** Gibt es weitere Sturmschäden in der Nähe, die die Anlage beeinflussen könnten (z.B. umgestürzte Bäume, herabfallende Äste)?\n\n3.  **Diagnose/Beobachtung:**\n    *   **Ursachenforschung:** Die Kombination aus Sturm, leicht geneigtem Mast und offenem Schaltbox-Deckel deutet auf eine mechanische Beschädigung oder einen Kurzschluss durch Feuchtigkeit hin.\n    *   **Geruch/Geräusche:** Gibt es Brandgeruch oder ungewöhnliche Geräusche aus der Schaltbox oder dem Mast? (Nur bei sicherem Zugang prüfen!)\n    *   **Weitere Ausfälle:** Sind in der direkten Umgebung weitere Leuchten ausgefallen?\n\n4.  **Dokumentation:**\n    *   **Fotos:** Detaillierte Aufnahmen vom geneigten Mast, der geöffneten Schaltbox, der dunklen Leuchte und der Absperrung.\n    *   **Notizen:**\n        *   Genaue Uhrzeit der Feststellung.\n        *   Beschreibung der Absperrmaßnahmen.\n        *   Detaillierte Beobachtungen (Mastneigung, Zustand Schaltbox, sichtbare Schäden).\n        *   Wetterbedingungen vor Ort (Sturm, Regen).\n        *   Verkehrssituation.\n    *   **Asset-Daten:** Bestätigung der Asset-ID \"n7230270217\" und des Standorts \"Rosenheim, Äußere Münchener Straße/Aicherpark\".\n\n5.  **Eskalation:**\n    *   **Sofortige Meldung an die Leitstelle/Einsatzleitung:**\n        *   Dringlichkeit: **Hohe Priorität** aufgrund der Gefährdung durch den geneigten Mast und die Sturmeinwirkung.\n        *   Meldung der Absperrung und der festgestellten Schäden.\n        *   Anforderung von Fachpersonal (Elektriker, Statiker bei Mastschaden) und ggf. weiterer Sicherungsmittel.\n    *   **Keine eigenmächtigen Reparaturversuche:** Bei geneigtem Mast oder offener Schaltbox unter Sturmeinwirkung besteht Lebensgefahr. Nur qualifiziertes Personal darf hier tätig werden.\n    *   **Verbleib vor Ort:** Bis zur Ankunft weiterer Kräfte oder bis zur eindeutigen Anweisung der Leitstelle, um die Absperrung zu gewährleisten und weitere Schäden zu verhindern.",
+    "tokens_estimate_words": 347
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0006-ABL-NODEV",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 4
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Sehr starke Antwort: Safety-first konsequent umgesetzt, klare Priorisierung und Struktur, Eskalation mit hoher Priorität und 'Verbleib vor Ort' explizit genannt. Dokumentation vollständig inkl. Asset-ID. Offline-Workflow nicht erwähnt (device.* fehlt im Kontext), daher K=4 statt 5, aber kein Fehler."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 8.52
+  },
+  "error": {}
+}

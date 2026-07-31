@@ -1,0 +1,152 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0014-ABL-NOENV",
+  "timestamp": "2026-07-31T11:14:58",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-21T11:45:31+01:00\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4939032525\",\n    \"latitude\": 47.8553091,\n    \"longitude\": 12.1230035\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T11:45:31+01:00",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n4939032525",
+        "latitude": 47.8553091,
+        "longitude": 12.1230035
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0014-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 489,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Eine Lampe leuchtet gar nicht mehr, gemeldet durch eine Routinekontrolle. Hier ist die Schritt-für-Schritt-Checkliste für das Vorgehen vor Ort:\n\n**Checkliste: Lampenausfall (Totalausfall)**\n\n1.  **Absicherung der Einsatzstelle**\n    *   **Verkehrssicherung:** Unmittelbar Maßnahmen zur Sicherung des Verkehrs und des Arbeitsbereichs ergreifen (Warnblinkanlage, Warnleuchten, Warndreieck, ggf. Leitkegel aufstellen).\n    *   **Persönliche Schutzausrüstung (PSA):** Sicherstellen, dass Warnkleidung (mind. Klasse 2) getragen wird.\n    *   **Gefahrenbereich:** Prüfen, ob weitere Gefahren (z.B. herabhängende Kabel, beschädigte Masten) bestehen und den Bereich entsprechend absperren.\n\n2.  **Sichtprüfung (Erste Beobachtung)**\n    *   **Umgebung:** Gibt es offensichtliche Beschädigungen an der Leuchte, am Mast, am Kabel oder in der unmittelbaren Umgebung (z.B. Unfallspuren, Vandalismus)?\n    *   **Leuchtenkopf:** Ist der Leuchtenkopf intakt, oder gibt es sichtbare Schäden (Glasbruch, offene Klappen)?\n    *   **Sicherungskasten/Anschluss:** Ist der Sicherungskasten am Mast zugänglich und unbeschädigt? Sind die Klappen geschlossen?\n    *   **Weitere Leuchten:** Funktionieren benachbarte Leuchten im selben Stromkreis? (Hinweis auf mögliche Gruppenstörung).\n\n3.  **Diagnose/Beobachtung**\n    *   **Spannungsprüfung (falls möglich und sicher):** Mit geeignetem Prüfgerät die Spannungsfreiheit am Leuchtenanschluss feststellen, bevor weitere Arbeiten durchgeführt werden.\n    *   **Leuchtmittel:** Ist das Leuchtmittel sichtbar defekt (z.B. Glühfaden gerissen, Verfärbungen)? (Achtung: Bei LED-Leuchten oft nicht direkt erkennbar).\n    *   **Sicherung:** Ist die Sicherung im Mastfuß oder im Leuchtenkopf ausgelöst? (Nur prüfen, wenn gefahrlos möglich und entsprechende Qualifikation vorhanden).\n    *   **Fehlersuche:**\n        *   **Keine Spannung:** Prüfen, ob die Zuleitung unterbrochen ist oder eine vorgelagerte Sicherung/Schutzschalter ausgelöst hat.\n        *   **Spannung vorhanden, Leuchte aus:** Defekt des Vorschaltgeräts, des Leuchtmittels oder der internen Verkabelung der Leuchte.\n    *   **Smart-City-Komponente:** Da das Gerät online ist und der Gerätestatus \"ok\" ist, deutet dies darauf hin, dass die Kommunikationsverbindung zum Techniker-Gerät funktioniert, aber nicht unbedingt auf den Zustand der Leuchte selbst. Prüfen, ob die Leuchte selbst über eine Smart-City-Steuerung verfügt und ob diese erreichbar ist oder Fehler meldet.\n\n4.  **Dokumentation**\n    *   **Fotos:** Mehrere Fotos der Situation (Gesamtansicht, Detailaufnahmen der Beschädigung/Leuchte, Umgebung).\n    *   **Standort:** Genaue Positionsdaten (Latitude, Longitude) und Asset-ID (n4939032525) erfassen.\n    *   **Fehlerbeschreibung:** Detaillierte Beschreibung des festgestellten Fehlers und der durchgeführten Prüfungen.\n    *   **Maßnahmen:** Dokumentation der getroffenen Absicherungsmaßnahmen und der ersten Diagnoseergebnisse.\n    *   **Zeitstempel:** Uhrzeit der Feststellung und der durchgeführten Schritte.\n    *   **Zustand:** Angabe, ob eine provisorische Reparatur möglich war oder ob die Leuchte weiterhin außer Betrieb ist.\n\n5.  **Eskalation**\n    *   **Sofortige Meldung:** Bei größeren Schäden, Gefahr für die Öffentlichkeit oder komplexen Störungen, die nicht vor Ort behoben werden können, umgehend die zuständige Stelle (z.B. Leitstelle, Fachabteilung) informieren.\n    *   **Reparaturauftrag:** Einen detaillierten Reparaturauftrag mit allen gesammelten Informationen erstellen und an das zuständige Team weiterleiten.\n    *   **Priorisierung:** Die Dringlichkeit der Reparatur basierend auf der Bedeutung der Leuchte für die Verkehrssicherheit (z.B. Kreuzung, Fußgängerüberweg) und der Umgebung (z.B. dunkle Parkanlage) einschätzen und kommunizieren.\n\n**Wichtiger Hinweis:** Führen Sie nur Arbeiten durch, für die Sie qualifiziert und autorisiert sind. Bei Unsicherheiten oder komplexen Fehlern immer die Eskalationskette einhalten.",
+    "tokens_estimate_words": 445
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0014-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 5,
+      "K": 3
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Umweltkontext (nicht vorhanden, daher kein Fehler)"
+    ],
+    "short_justification": "Sehr strukturiert, Safety-first klar erkennbar, umfassende Dokumentation (Asset-ID, GPS, Fotos, Zeitstempel) und Eskalation. Erwähnt Smart-City-Komponente basierend auf device.connectivity=online, was zwar nicht falsch ist, aber leicht spekulativ wirkt (device beschreibt Techniker-Gerät). Keine gravierenden Halluzinationen, aber K=3 wegen dieser Unschärfe."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.357
+  },
+  "error": {}
+}

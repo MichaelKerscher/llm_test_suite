@@ -1,0 +1,151 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0005-ABL-NOENV",
+  "timestamp": "2026-07-31T10:38:05",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"low\",\n    \"reported_at\": \"2026-01-18T05:18:22+01:00\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n13293404153\",\n    \"latitude\": 47.8573976,\n    \"longitude\": 12.1307195\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_battery\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "low",
+        "reported_at": "2026-01-18T05:18:22+01:00",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n13293404153",
+        "latitude": 47.8573976,
+        "longitude": 12.1307195
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_battery"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0005-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "low",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 676,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt erfordert sofortige Aufmerksamkeit. Hier ist die Checkliste für das Vorgehen vor Ort, unter Berücksichtigung der gemeldeten Störung und der eingeschränkten Konnektivität Ihres Geräts:\n\n**Standort:** Breitengrad 47.8573976, Längengrad 12.1307195 (Asset-ID: n13293404153)\n\n**Wichtiger Hinweis:** Ihr Gerät hat eine \"spotty connectivity\" und \"low battery\". Bitte nutzen Sie den Offline-Workflow für die Dokumentation und speichern Sie Fotos lokal. Eine Synchronisation erfolgt, sobald eine stabile Verbindung verfügbar ist.\n\n---\n\n### **Schritt-für-Schritt-Checkliste für den Außendienst**\n\n**1. Absicherung & Sicherheit**\n*   **Verkehrssicherung:** Unverzüglich den Arbeitsbereich gemäß den geltenden Vorschriften absichern (z.B. Warnweste tragen, Warndreieck/Leitkegel aufstellen, Blitzleuchte verwenden).\n*   **Persönliche Schutzausrüstung (PSA):** Sicherstellen, dass die vollständige PSA getragen wird.\n*   **Gefahrenbeurteilung:** Vor Betreten des Bereichs auf offensichtliche Gefahren wie offene Kabel, Beschädigungen am Mast oder andere Risiken achten.\n\n**2. Sichtprüfung**\n*   **Umfeld:** Den Bereich um die betroffenen Leuchten auf Beschädigungen, Vandalismus, umgestürzte Bäume oder Bauarbeiten prüfen, die die Ursache sein könnten.\n*   **Lampenmast:** Den Mast auf sichtbare Schäden, Korrosion, lose oder herabhängende Kabel untersuchen.\n*   **Leuchte:** Die Leuchte selbst auf Glasbruch, fehlende Abdeckungen, sichtbare Defekte oder Anzeichen von Überhitzung prüfen.\n*   **Schaltkasten/Verteiler (falls sicher zugänglich):** Sichtbare Schäden am Schaltkasten oder offene Türen prüfen.\n\n**3. Diagnose & Beobachtung**\n*   **Ausmaß der Störung:** Feststellen, ob es sich um eine einzelne ausgefallene Leuchte, mehrere Leuchten oder einen gesamten dunklen Abschnitt handelt.\n*   **Mögliche Ursache:** Gibt es eine offensichtliche Ursache wie eine durchgebrannte Lampe, eine ausgelöste Sicherung (falls zugänglich und sicher zu prüfen) oder einen Kabelbruch?\n*   **Zustand der Leuchte:** Ist die Leuchte warm (Hinweis auf Stromfluss, aber Defekt der Leuchte selbst)? Gibt es ungewöhnliche Geräusche (Brummen, Knistern)?\n*   **Schaltzeiten:** Falls relevant, prüfen, ob die Leuchten außerhalb der regulären Schaltzeiten dunkel sind.\n\n**4. Dokumentation (Offline-Workflow beachten!)**\n*   **Fotos:** Mehrere Fotos der Situation, des Schadens und des Umfelds machen. Diese werden lokal auf dem Gerät gespeichert.\n*   **Beschreibung:** Eine detaillierte Beschreibung des Schadens, der Beobachtungen und der betroffenen Leuchten (Anzahl, Position) festhalten.\n*   **Asset-Informationen:** Die Asset-ID (n13293404153) und die genaue Position (Breitengrad 47.8573976, Längengrad 12.1307195) in der Dokumentation vermerken.\n*   **Durchgeführte Maßnahmen:** Alle vor Ort getroffenen Maßnahmen (z.B. Absicherung) dokumentieren.\n*   **Synchronisation:** Sobald eine stabile Netzwerkverbindung besteht, die gesammelten Daten und Fotos synchronisieren.\n\n**5. Eskalation**\n*   **Behebung vor Ort:** Falls es sich um einen einfachen Defekt handelt (z.B. Leuchtmittelwechsel) und die Behebung sicher und im Rahmen Ihrer Kompetenzen liegt, diesen durchführen.\n*   **Fachfirma/Elektriker:** Bei komplexeren Fehlern (z.B. Kabelbruch, Defekt im Schaltkasten, Mastschaden) umgehend eine Fachfirma oder einen Elektriker beauftragen.\n*   **Netzbetreiber:** Bei Störungen, die auf das öffentliche Stromnetz zurückzuführen sind, den zuständigen Netzbetreiber informieren.\n*   **Gefahr im Verzug:** Bei unmittelbarer Gefahr (z.B. offene stromführende Kabel, umsturzgefährdeter Mast) sofort den Notdienst/Vorgesetzten informieren und die Absicherung des Bereichs verstärken.",
+    "tokens_estimate_words": 437
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0005-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Sehr gute Antwort: Offline-Workflow explizit und korrekt integriert, Asset-ID und GPS genutzt, klare Dokumentations-Checkliste, Safety-first vorhanden, Eskalation differenziert. S=4 statt 5, da Umweltbedingungen (Nebel/Dämmerung) fehlen und daher Verkehrssicherung weniger betont als in anderen Varianten."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.814
+  },
+  "error": {}
+}

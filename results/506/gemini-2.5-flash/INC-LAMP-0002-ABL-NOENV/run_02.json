@@ -1,0 +1,177 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0002-ABL-NOENV",
+  "timestamp": "2026-07-31T10:35:14",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Zeitweiser Ausfall gemeldet; aktuell normal. Bitte kontrollieren.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-18T14:56:09+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Straßenlaterne im Nebel aufgenommen; Leuchtmittel aktiv, jedoch Mast mit leichten Feuchtigkeitsflecken. Schaltbox äußerlich in Ordnung.\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n1987093602\",\n    \"latitude\": 47.8369218,\n    \"longitude\": 12.116307,\n    \"name\": \"Rosenheim, Heilig Blut\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-18T14:56:09+01:00",
+        "photo_available": true,
+        "photo_description": "Straßenlaterne im Nebel aufgenommen; Leuchtmittel aktiv, jedoch Mast mit leichten Feuchtigkeitsflecken. Schaltbox äußerlich in Ordnung.",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n1987093602",
+        "latitude": 47.8369218,
+        "longitude": 12.116307,
+        "name": "Rosenheim, Heilig Blut",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0002-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Zeitweiser Ausfall gemeldet; aktuell normal. Bitte kontrollieren.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "intermittent",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 850,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein zeitweiser Ausfall, der aktuell nicht sichtbar ist, erfordert eine genaue Beobachtung. Hier ist die Checkliste für Ihr Vorgehen vor Ort:\n\n**Checkliste: Zeitweiser Ausfall Straßenlaterne**\n\n1.  **Absicherung:**\n    *   Sorgen Sie für Ihre eigene Sicherheit und die der Verkehrsteilnehmer.\n    *   Stellen Sie, falls nötig, Warnschilder oder Warnbaken auf, um den Arbeitsbereich zu kennzeichnen.\n    *   Tragen Sie stets Ihre persönliche Schutzausrüstung (PSA).\n\n2.  **Sichtprüfung (Umfeld & Asset):**\n    *   **Umfeld:** Prüfen Sie den Bereich um die Laterne auf offensichtliche Gefahren (z.B. beschädigte Kabel, offene Schaltkästen, Bauarbeiten, Vandalismus).\n    *   **Mast:** Begutachten Sie den Mast auf Beschädigungen, Risse oder starke Korrosion. Achten Sie besonders auf die gemeldeten \"leichten Feuchtigkeitsflecken\" – diese könnten auf einen Wassereintritt hindeuten.\n    *   **Leuchte:** Überprüfen Sie das Leuchtmittel und das Gehäuse auf sichtbare Schäden, Verunreinigungen oder Anzeichen von Überhitzung.\n    *   **Schaltbox/Anschluss:** Die Schaltbox ist äußerlich in Ordnung, prüfen Sie dennoch auf Feuchtigkeit, lose Abdeckungen oder ungewöhnliche Gerüche.\n    *   **Kabel:** Kontrollieren Sie sichtbare Kabel auf Beschädigungen oder lose Verbindungen.\n\n3.  **Diagnose/Beobachtung (Fokus auf Intermittenz):**\n    *   Da der Fehler aktuell nicht auftritt, ist eine längere Beobachtung wichtig.\n    *   **Wetterbedingungen:** Berücksichtigen Sie die Wetterbedingungen zum Zeitpunkt der Meldung (Nebel, Feuchtigkeit) und die aktuellen Bedingungen. Feuchtigkeitseintritt ist eine häufige Ursache für intermittierende Fehler.\n    *   **Schaltzeiten:** Überprüfen Sie, ob die Laterne korrekt zu den programmierten Schaltzeiten ein- und ausschaltet.\n    *   **Wackelkontakt:** Versuchen Sie, durch leichtes Rütteln am Mast oder an der Schaltbox (falls sicher zugänglich) einen Wackelkontakt zu provozieren.\n    *   **Spannungsmessung:** Wenn möglich und sicher, führen Sie eine Spannungsmessung an relevanten Punkten durch, um Schwankungen zu identifizieren.\n    *   **Wärmebildkamera:** Falls vorhanden, kann eine Wärmebildkamera helfen, überhitzte Komponenten zu identifizieren, die auf einen bevorstehenden Ausfall hindeuten.\n\n4.  **Dokumentation:**\n    *   Halten Sie alle Beobachtungen detailliert fest, auch wenn kein direkter Fehler gefunden wird.\n    *   Machen Sie Fotos von allen relevanten Bereichen, insbesondere von den Feuchtigkeitsflecken am Mast.\n    *   Notieren Sie Datum, Uhrzeit, Wetterbedingungen und die Dauer Ihrer Beobachtung.\n    *   Erfassen Sie alle durchgeführten Prüfschritte und Messergebnisse.\n\n5.  **Eskalation:**\n    *   **Kein Fehler gefunden, aber Verdacht:** Wenn Sie trotz intensiver Suche keinen Fehler finden, aber der Verdacht auf einen Feuchtigkeitseintritt oder einen latenten Defekt besteht, planen Sie eine erneute Kontrolle bei ähnlichen Wetterbedingungen oder eine präventive Wartung.\n    *   **Fehler reproduziert/gefunden:** Wenn Sie den Fehler reproduzieren oder eine klare Ursache finden, leiten Sie die entsprechenden Reparaturmaßnahmen ein.\n    *   **Gefahr im Verzug:** Bei unmittelbarer Gefahr (z.B. offene Elektrik, stark beschädigter Mast) sichern Sie den Bereich großräumig ab und leiten Sie umgehend die notwendigen Schritte zur Gefahrenbeseitigung ein.",
+    "tokens_estimate_words": 405
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0002-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 5,
+      "K": 3
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Umweltkontext (weather/traffic/visibility nicht verfügbar)"
+    ],
+    "short_justification": "Solide Antwort mit klarer Struktur und exzellenter Dokumentation (Datum, Uhrzeit, Wetter, Fotos). Safety-first vorhanden, Eskalation klar. K=3, da Umweltbedingungen (Nebel, Feuchtigkeit) erwähnt werden, obwohl nicht im Context – aber plausibel aus Foto-Beschreibung abgeleitet, daher keine Halluzination."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 8.981
+  },
+  "error": {}
+}
