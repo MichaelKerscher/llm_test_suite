@@ -195,7 +195,8 @@ def main():
         raise SystemExit(f"[ERROR] Results dir not found: {base}")
 
     domain_suffix = f"_{args.domain}" if args.domain else ""
-    out_dir = Path(args.out) if args.out else (base / f"_agg{domain_suffix}")
+    filter_suffix = f"_{args.incident_filter}" if args.incident_filter else ""
+    out_dir = Path(args.out) if args.out else (base / f"_agg{domain_suffix}{filter_suffix}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     # filter test dirs by domain (and exclude _agg dirs)
