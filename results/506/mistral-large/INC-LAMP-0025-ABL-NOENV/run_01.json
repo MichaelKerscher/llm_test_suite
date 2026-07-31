@@ -1,0 +1,177 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0025-ABL-NOENV",
+  "timestamp": "2026-07-31T16:36:06",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 20 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-16T20:06:14+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme: Laterne dunkel, Gewerbegebiet ohne Beleuchtung. Mast intakt, Schaltbox geschlossen. Kein sichtbarer Vandalismus.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4465173757\",\n    \"latitude\": 47.8409877,\n    \"longitude\": 12.1236173,\n    \"name\": \"Rosenheim, Isarstraße/Gewerbegebiet\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"low_battery\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-16T20:06:14+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme: Laterne dunkel, Gewerbegebiet ohne Beleuchtung. Mast intakt, Schaltbox geschlossen. Kein sichtbarer Vandalismus.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n4465173757",
+        "latitude": 47.8409877,
+        "longitude": 12.1236173,
+        "name": "Rosenheim, Isarstraße/Gewerbegebiet",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "low_battery"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0025-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 20 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 858,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Verstanden. Eine dunkle Straßenlampe in einem Gewerbegebiet, die seit 20 Minuten aus ist und ein unsicheres Gefühl vermittelt, erfordert schnelles und strukturiertes Vorgehen. Hier ist die Checkliste für den Außendienst:\n\n**Checkliste: Dunkle Straßenlampe (Rosenheim, Isarstraße/Gewerbegebiet)**\n\n**1. Absicherung (Priorität: Sicherheit!)**\n*   **Eigenschutz:** Betreten Sie den Bereich nur, wenn es sicher ist. Achten Sie auf den Verkehr und andere Gefahrenquellen.\n*   **Verkehrssicherung:** Falls erforderlich und möglich, sichern Sie den Bereich um die dunkle Lampe ab (z.B. Warnbake, Warnleuchte), um Passanten und Verkehrsteilnehmer zu schützen.\n*   **Gefahrenbeurteilung:** Prüfen Sie, ob durch die Dunkelheit akute Gefahren (z.B. Stolperfallen, unübersichtliche Kreuzungen) entstehen.\n\n**2. Sichtprüfung (Erste Einschätzung vor Ort)**\n*   **Lampe/Leuchtenkopf:**\n    *   Ist der Leuchtenkopf intakt? (Keine sichtbaren Beschädigungen, Glasbruch, offene Kabel)\n    *   Ist die Lampe selbst (Leuchtmittel) sichtbar beschädigt oder locker?\n    *   Gibt es Anzeichen für Vandalismus am Leuchtenkopf?\n*   **Mast:**\n    *   Ist der Mast stabil und unbeschädigt? (Keine Risse, Rost, Anfahrspuren)\n    *   Sind die Masttür/Schaltbox geschlossen und unbeschädigt? (Laut Foto: Schaltbox geschlossen, Mast intakt)\n    *   Gibt es sichtbare Kabelbeschädigungen am Mast oder im Bereich der Masttür?\n*   **Umgebung:**\n    *   Gibt es in der Nähe weitere dunkle Lampen? (Hinweis auf größere Störung)\n    *   Gibt es Bauarbeiten oder andere Aktivitäten, die die Stromversorgung beeinflussen könnten?\n    *   Gibt es sichtbare Schäden an der Stromzuleitung (falls oberirdisch)?\n\n**3. Diagnose/Beobachtung (Fehlerursache eingrenzen)**\n*   **Schaltuhr/Steuerung:** Falls zugänglich und sicher: Prüfen Sie, ob die Schaltuhr oder Sicherungen in der Masttür ausgelöst haben. **Vorsicht: Arbeiten an elektrischen Anlagen nur durch geschultes Personal!**\n*   **Gerät (Techniker-Smartphone):** Ihr Gerät ist online, aber der Akkustand ist niedrig. Planen Sie die Dokumentation entsprechend, um Datenverlust zu vermeiden.\n*   **Wärmeentwicklung/Geruch:** Gibt es ungewöhnliche Gerüche (z.B. Brandgeruch) oder sichtbare Rauchentwicklung an der Lampe oder im Schaltkastenbereich? **Bei Gefahr sofort Abstand halten und Feuerwehr rufen!**\n*   **Schaltzeiten:** Ist es möglich, dass die Lampe aufgrund einer falschen Schaltzeit ausgeschaltet ist? (Eher unwahrscheinlich, wenn sie seit 20 Minuten dunkel ist und vorher funktionierte).\n\n**4. Dokumentation (Wichtig für die weitere Bearbeitung)**\n*   **Fotos:** Machen Sie detaillierte Fotos vom Zustand der Lampe, des Mastes und der Umgebung. (Ein Foto ist bereits vorhanden, aber aktuelle Aufnahmen sind wichtig).\n*   **Standort:** Bestätigen Sie die genaue Position (Latitude: 47.8409877, Longitude: 12.1236173, Asset-Name: Rosenheim, Isarstraße/Gewerbegebiet).\n*   **Beobachtungen:** Notieren Sie alle Feststellungen aus der Sichtprüfung und Diagnose (z.B. \"Mast intakt, Schaltbox geschlossen, keine sichtbaren Schäden am Leuchtenkopf, keine weiteren dunklen Lampen in direkter Umgebung\").\n*   **Uhrzeit:** Halten Sie die genaue Uhrzeit Ihrer Feststellungen fest.\n*   **Einschätzung:** Geben Sie eine Einschätzung zur möglichen Ursache ab (z.B. \"vermutlich Leuchtmittelausfall\", \"Sicherung ausgelöst\", \"Kabelbruch\").\n\n**5. Eskalation (Nächste Schritte einleiten)**\n*   **Meldung:** Leiten Sie die gesammelten Informationen und die Dokumentation umgehend an die zuständige Stelle weiter (z.B. Leitstelle, Störungsmanagement).\n*   **Priorität:** Betonen Sie die hohe Priorität aufgrund der gemeldeten Unsicherheit im Bereich.\n*   **Folgeauftrag:** Klären Sie, ob ein sofortiger Reparatureinsatz oder eine weitere Untersuchung durch Fachpersonal erforderlich ist.",
+    "tokens_estimate_words": 465
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0025-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 5,
+      "K": 3
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Umwelt-Kontext (traffic/lighting)"
+    ],
+    "short_justification": "Sehr gut strukturiert, Safety-first, vollständige Dokumentation inkl. Asset-ID/GPS. K=3 wegen fehlender Umwelt-Kontext-Nutzung (nicht verfügbar), aber Offline-Workflow bei low_battery erwähnt."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.974
+  },
+  "error": {}
+}

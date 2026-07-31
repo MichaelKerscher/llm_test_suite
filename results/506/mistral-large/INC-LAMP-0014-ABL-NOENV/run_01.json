@@ -1,0 +1,150 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0014-ABL-NOENV",
+  "timestamp": "2026-07-31T16:24:54",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-21T11:45:31+01:00\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4939032525\",\n    \"latitude\": 47.8553091,\n    \"longitude\": 12.1230035\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T11:45:31+01:00",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n4939032525",
+        "latitude": 47.8553091,
+        "longitude": 12.1230035
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0014-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 489,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die Lampe leuchtet gar nicht mehr. Hier ist die Checkliste für das Vorgehen vor Ort:\n\n**Schritt-für-Schritt-Checkliste bei Lampenausfall**\n\n1.  **Absicherung der Einsatzstelle**\n    *   **Verkehrssicherung:** Sichern Sie den Arbeitsbereich gemäß den Vorschriften (z.B. Warnbake, Warnleuchte, Warnkleidung). Achten Sie auf den fließenden Verkehr und Fußgänger.\n    *   **Persönliche Sicherheit:** Tragen Sie immer die vorgeschriebene persönliche Schutzausrüstung (PSA).\n\n2.  **Sichtprüfung (ohne Werkzeug)**\n    *   **Umgebung:** Gibt es offensichtliche Beschädigungen an der Leuchte, am Mast oder in der direkten Umgebung (z.B. Unfallspuren, Vandalismus, herabhängende Kabel)?\n    *   **Leuchtenkopf:** Ist der Leuchtenkopf intakt? Sind alle Abdeckungen vorhanden und geschlossen?\n    *   **Sicherungskasten/Anschluss:** Ist der Sicherungskasten am Mast zugänglich und unbeschädigt? (Nur Sichtprüfung, keine Manipulation!)\n\n3.  **Diagnose/Beobachtung**\n    *   **Leuchtmitteltyp:** Welcher Leuchtmitteltyp ist verbaut (z.B. LED, Natriumdampf, Quecksilberdampf)? Dies kann Hinweise auf die Fehlerursache geben.\n    *   **Schaltuhr/Steuerung:** Falls zugänglich und sicher, prüfen Sie, ob die Schaltuhr oder Steuerung (falls vorhanden) korrekt eingestellt ist und Strom anzeigt.\n    *   **Wackelkontakt:** Bewegen Sie vorsichtig den Leuchtenkopf oder die Zuleitung, um einen möglichen Wackelkontakt auszuschließen (nur wenn sicher und ohne Risiko).\n    *   **Geruch/Geräusche:** Nehmen Sie ungewöhnliche Gerüche (z.B. Brandgeruch) oder Geräusche wahr?\n\n4.  **Dokumentation**\n    *   **Fotos:** Machen Sie aussagekräftige Fotos von der Leuchte, dem Mast und eventuellen Beschädigungen.\n    *   **Beschreibung:** Notieren Sie detailliert Ihre Beobachtungen:\n        *   Genaue Position (ggf. Mastnummer).\n        *   Art des Leuchtmittels.\n        *   Festgestellte Beschädigungen oder Auffälligkeiten.\n        *   Uhrzeit der Prüfung.\n    *   **Gerätezustand:** Das Techniker-Gerät ist online und der Gerätezustand ist \"ok\", was die Dokumentation über die App ermöglicht.\n\n5.  **Eskalation**\n    *   **Sofortige Meldung:** Melden Sie alle Feststellungen umgehend an die zuständige Stelle (z.B. Leitwarte, Disposition).\n    *   **Priorität:** Da die Lampe komplett ausgefallen ist, hat dies eine mittlere Priorität (\"severity: medium\").\n    *   **Nächste Schritte:** Besprechen Sie das weitere Vorgehen (z.B. Austausch des Leuchtmittels, Überprüfung der Elektrik durch Fachpersonal).",
+    "tokens_estimate_words": 285
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0014-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 4,
+      "K": 4
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Sehr gute Antwort: Safety-First, Asset-ID genannt, Dokumentation inkl. Geräte-Online-Status explizit erwähnt ('Gerätezustand ist ok, was die Dokumentation über die App ermöglicht'). Eskalation klar. Keine Environment-Daten im Context, daher keine spezifischen Wetter-/Traffic-Anpassungen – korrekt generisch gehalten."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 7.95
+  },
+  "error": {}
+}

@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0016-ABL-NOASSET",
+  "timestamp": "2026-07-31T17:27:37",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-17T13:48:16+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerung/Regen: Laterne aktuell an, Foto kurz nach gemeldetem Ausfall. Mast mit Wasserlaufspuren, Schaltbox geschlossen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"rain\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "high",
+        "reported_at": "2026-01-17T13:48:16+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerung/Regen: Laterne aktuell an, Foto kurz nach gemeldetem Ausfall. Mast mit Wasserlaufspuren, Schaltbox geschlossen.",
+        "reporter": "dispatch"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "rain",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0016-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "intermittent",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "rain",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1062,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein sporadischer Fehler erfordert eine systematische Vorgehensweise, besonders da die Leuchte aktuell wieder in Betrieb ist. Priorität haben Sicherheit und eine präzise Dokumentation für die weitere Fehleranalyse.\n\n**Schritt-für-Schritt-Checkliste:**\n\n1.  **Absicherung:**\n    *   **Verkehrssicherung:** Trotz geringem Verkehrsaufkommen die Arbeitsstelle gemäß den geltenden Vorschriften absichern (z.B. Warnweste, Warndreieck/Blitzleuchte, ggf. Absperrung). Dies ist besonders wichtig bei Dämmerung/Regen und schlechter Sicht.\n    *   **Eigensicherung:** Persönliche Schutzausrüstung (PSA) tragen. Bei Nässe und im Umgang mit elektrischen Anlagen ist erhöhte Vorsicht geboten.\n\n2.  **Sichtprüfung:**\n    *   **Umfeld & Mast:** Den Mast auf Beschädigungen, Korrosion und insbesondere auf die im Foto beschriebenen Wasserlaufspuren prüfen. Diese könnten auf Feuchtigkeitseintritt hindeuten.\n    *   **Leuchte:** Äußere Beschädigungen am Leuchtengehäuse, Glas oder der Optik feststellen.\n    *   **Schaltbox/Anschlusskasten:** Prüfen, ob die Schaltbox tatsächlich geschlossen und dicht ist. Anzeichen von Feuchtigkeitseintritt oder Beschädigungen am Gehäuse suchen.\n    *   **Kabel & Anschlüsse:** Sichtprüfung auf lose Kabel, beschädigte Isolierungen, Anzeichen von Überhitzung oder Kurzschlüssen im sichtbaren Bereich.\n\n3.  **Diagnose/Beobachtung:**\n    *   **Verhalten der Leuchte:** Da die Leuchte aktuell an ist, das Verhalten über einen längeren Zeitraum beobachten. Auf Flackern, Dimmen, plötzliches Ausgehen oder andere Unregelmäßigkeiten achten.\n    *   **Feuchtigkeit:** Die Wasserlaufspuren am Mast sind ein wichtiger Hinweis. Prüfen, ob Feuchtigkeit in die Leuchte oder den Mast eindringen kann, was zu sporadischen Kurzschlüssen oder Fehlfunktionen führen könnte.\n    *   **Umwelteinflüsse:** Andere mögliche externe Einflüsse wie Vibrationen, Wind oder nahegelegene Störquellen ausschließen.\n\n4.  **Dokumentation:**\n    *   **Offline-Workflow:** Aufgrund der \"spotty connectivity\" und des \"low battery\" Zustands des Techniker-Geräts: Alle Beobachtungen, Diagnoseschritte und Fotos lokal auf dem Gerät speichern.\n    *   **Fotos:** Aktuelle Fotos vom Zustand der Leuchte, des Mastes (insbesondere der Wasserlaufspuren) und der Schaltbox machen.\n    *   **Details:** Genaue Uhrzeit der Beobachtung, aktuelle Wetterbedingungen, beobachtetes Verhalten der Leuchte und alle festgestellten Auffälligkeiten oder Schäden detailliert notieren.\n    *   **Synchronisation:** Sobald wieder stabile Konnektivität und ausreichende Akkuladung vorhanden sind, die gesammelten Daten synchronisieren.\n\n5.  **Eskalation:**\n    *   **Keine direkte Ursache gefunden:** Wenn trotz sorgfältiger Prüfung keine offensichtliche Ursache für den sporadischen Fehler gefunden wird, aber die Beobachtung auf ein tieferliegendes Problem hindeutet (z.B. interne Komponenten, Vorschaltgerät, Verkabelung im Mast), ist eine detailliertere technische Untersuchung oder der Austausch von Komponenten erforderlich.\n    *   **Sicherheitsrisiko:** Bei Feststellung eines unmittelbaren Sicherheitsrisikos (z.B. offene elektrische Leitungen, instabiler Mast) ist sofort eine Sperrung des Bereichs und die Einleitung von Sofortmaßnahmen zur Gefahrenbeseitigung zu veranlassen.\n    *   **Meldung:** Die Ergebnisse der Vor-Ort-Prüfung und die Empfehlung für die weiteren Schritte an die zuständige Stelle melden.",
+    "tokens_estimate_words": 386
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0016-ABL-NOASSET",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert, strukturierte Schrittfolge, nutzt Kontext (spotty connectivity → Offline-Workflow, Wasserlaufspuren, Dämmerung/Regen → Sicherheitsmaßnahmen), klare Eskalationslogik bei sporadischem Fehler, umfassende Dokumentation. Keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 19.795
+  },
+  "error": {}
+}

@@ -1,0 +1,177 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0013-ABL-NOASSET",
+  "timestamp": "2026-07-31T16:53:51",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Gehäuse beschädigt, mögliche Berührungsgefahr. Bitte absichern.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"open_housing\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-20T17:30:17+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Gehäuse der Leuchte sichtbar geöffnet/beschädigt: Innenleben teilweise freiliegend. Kabelisolierung sichtbar. Berührungsgefahr erkennbar.\",\n    \"reporter\": \"citizen\"\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"medium\",\n    \"noise_level\": \"high\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "open_housing",
+        "severity": "high",
+        "reported_at": "2026-01-20T17:30:17+01:00",
+        "photo_available": true,
+        "photo_description": "Gehäuse der Leuchte sichtbar geöffnet/beschädigt: Innenleben teilweise freiliegend. Kabelisolierung sichtbar. Berührungsgefahr erkennbar.",
+        "reporter": "citizen"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0013-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Gehäuse beschädigt, mögliche Berührungsgefahr. Bitte absichern.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "open_housing",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 894,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein beschädigtes Gehäuse mit Berührungsgefahr erfordert sofortiges und umsichtiges Handeln. Hier ist die Schritt-für-Schritt-Checkliste für den Außendienst:\n\n**Checkliste: Gehäuse beschädigt, Berührungsgefahr**\n\n1.  **Absicherung (Priorität: Sicherheit & Verkehrssicherung)**\n    *   **Gefahrenbereich absperren:** Sofortige und großräumige Absperrung des Bereichs um die beschädigte Leuchte/Anlage mit geeigneten Mitteln (z.B. Warnkegel, Flatterband, Bauzaun).\n    *   **Warnhinweise anbringen:** Deutliche Warnschilder \"Gefahr! Nicht berühren!\" oder \"Stromschlaggefahr!\" anbringen.\n    *   **Persönliche Schutzausrüstung (PSA):** Vor dem Betreten des Gefahrenbereichs unbedingt vollständige PSA anlegen (Sicherheitsschuhe, Warnkleidung, Schutzhandschuhe, ggf. Helm).\n    *   **Verkehrssicherung:** Bei mittlerem Verkehrsaufkommen und Dämmerung/schlechter Sicht zusätzliche Warnleuchten oder Blitzleuchten einsetzen, um den fließenden Verkehr frühzeitig zu warnen und die Arbeitsstelle abzusichern.\n    *   **Stromzufuhr prüfen/unterbrechen:** Wenn gefahrlos möglich und die Anlage eindeutig identifizierbar ist, die Stromzufuhr zur betroffenen Leuchte/Anlage unterbrechen (Sicherung ausschalten). **Vorsicht: Nur tun, wenn keine zusätzliche Gefahr entsteht!**\n\n2.  **Sichtprüfung (Umfassende Begutachtung)**\n    *   **Schadensausmaß:** Art und Umfang der Gehäusebeschädigung genau feststellen (Risse, Brüche, fehlende Teile).\n    *   **Freiliegende Teile:** Prüfen, welche internen Komponenten freiliegen (Kabel, Klemmen, Vorschaltgeräte).\n    *   **Kabelisolierung:** Zustand der Kabelisolierungen beurteilen – sind sie intakt oder ebenfalls beschädigt?\n    *   **Umgebung:** Gibt es weitere Schäden in der unmittelbaren Umgebung (z.B. am Mast, Fundament, angrenzenden Einrichtungen)?\n    *   **Ursache (wenn erkennbar):** Hinweise auf die mögliche Ursache der Beschädigung sammeln (Vandalismus, Unfall, Materialermüdung).\n\n3.  **Diagnose/Beobachtung (Detaillierte Einschätzung)**\n    *   **Berührungsgefahr bestätigen:** Ist die Berührungsgefahr weiterhin akut, auch nach erster Absicherung?\n    *   **Funktion:** Funktion der Leuchte/Anlage prüfen (leuchtet sie noch, blinkt sie, etc.).\n    *   **Feuchtigkeit:** Sind freiliegende Teile Feuchtigkeit ausgesetzt (Regen, Tau)?\n    *   **Stabilität:** Ist die gesamte Konstruktion (Mast, Leuchte) noch stabil oder besteht Einsturzgefahr?\n\n4.  **Dokumentation (Lückenlose Erfassung)**\n    *   **Fotos:** Mehrere Fotos aus verschiedenen Perspektiven machen, die den Schaden, die freiliegenden Teile und die erfolgte Absicherung dokumentieren. (Die Meldung besagt, dass ein Foto verfügbar ist, aber eigene Fotos vor Ort sind für die weitere Bearbeitung unerlässlich).\n    *   **Schadensbeschreibung:** Genaue Beschreibung des Schadens, der freiliegenden Komponenten und der festgestellten Gefahren.\n    *   **Maßnahmen:** Dokumentation der durchgeführten Absicherungsmaßnahmen.\n    *   **Uhrzeit/Datum:** Genaue Erfassung von Uhrzeit und Datum der Feststellung und der durchgeführten Maßnahmen.\n    *   **Standort:** Präzise Standortangabe der betroffenen Anlage.\n\n5.  **Eskalation (Nächste Schritte einleiten)**\n    *   **Sofortmeldung:** Aufgrund der hohen Dringlichkeit und Berührungsgefahr umgehende Meldung an die zuständige Leitstelle/Fachabteilung.\n    *   **Reparatur/Austausch:** Klare Empfehlung für die weiteren Schritte (sofortige Reparatur, Austausch des Gehäuses/der gesamten Leuchte).\n    *   **Spezialisten anfordern:** Bei komplexen Schäden oder unklarer Gefahrenlage ggf. Elektrofachkraft oder spezialisiertes Team anfordern.\n    *   **Dauerhafte Absicherung:** Sicherstellen, dass die Absicherung bis zur endgültigen Behebung des Schadens bestehen bleibt und regelmäßig kontrolliert wird.",
+    "tokens_estimate_words": 400
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0013-ABL-NOASSET",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 4,
+      "K": 3
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "asset_id/location"
+    ],
+    "short_justification": "Sehr gute Safety-first-Struktur mit klarer Priorisierung und Eskalation. Nutzt Umgebungskontext (Dämmerung, mittlerer Verkehr) sinnvoll für Verkehrssicherung. Fehlende Asset-Identifikation (kein asset_osm/GPS) wird nicht thematisiert, obwohl im Kontext nicht vorhanden – konservativ bewertet."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 9.698
+  },
+  "error": {}
+}

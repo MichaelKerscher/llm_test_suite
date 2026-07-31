@@ -1,0 +1,165 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0015-ABL-NOENV",
+  "timestamp": "2026-07-31T17:26:21",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 10 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-16T10:13:59+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme: Laterne komplett dunkel, Bereich nicht beleuchtet. Mast intakt, keine sichtbare mechanische Beschädigung.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n13293431103\",\n    \"latitude\": 47.8580112,\n    \"longitude\": 12.1324162\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-16T10:13:59+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme: Laterne komplett dunkel, Bereich nicht beleuchtet. Mast intakt, keine sichtbare mechanische Beschädigung.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n13293431103",
+        "latitude": 47.8580112,
+        "longitude": 12.1324162
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0015-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 10 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 778,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die dunkle Straßenlampe und das Gefühl der Unsicherheit erfordern sofortiges Handeln. Hier ist eine Schritt-für-Schritt-Checkliste für das Vorgehen vor Ort:\n\n**Checkliste: Ausfall Straßenlampe (Hohe Priorität)**\n\n1.  **Absicherung (Priorität: Sicherheit)**\n    *   **Verkehrssicherung:** Sichern Sie den Bereich um die dunkle Lampe umgehend ab (z.B. Warnbake, Warnleuchte, Warnweste tragen).\n    *   **Gefahrenbereich:** Prüfen Sie, ob unmittelbare Gefahren (z.B. herabhängende Kabel, beschädigter Mast, Stolperfallen) bestehen. Halten Sie ausreichend Abstand.\n\n2.  **Sichtprüfung (Erste Einschätzung)**\n    *   **Lampe/Leuchte:** Ist die Leuchte selbst beschädigt (Glasbruch, Gehäuse)?\n    *   **Mast:** Ist der Mast intakt oder gibt es sichtbare mechanische Beschädigungen (Anfahrschäden, Risse)? (Laut Vorabinformation ist der Mast intakt.)\n    *   **Umgebung:** Gibt es Anzeichen für Vandalismus, Bauarbeiten oder andere externe Einflüsse in der Nähe?\n    *   **Schaltkasten:** Falls zugänglich und sicher: Sind Sicherungen ausgelöst oder Schalter umgelegt? (Nur prüfen, wenn keine Gefahr besteht und Sie dazu berechtigt sind.)\n\n3.  **Diagnose/Beobachtung (Fehlerursache eingrenzen)**\n    *   **Stromversorgung:** Ist die Lampe komplett tot oder gibt es Flackerversuche?\n    *   **Uhrzeit/Schaltuhr:** Prüfen Sie, ob die Lampe generell nicht schaltet oder nur diese eine Lampe betroffen ist. (Die Angabe \"seit etwa 10 Minuten\" deutet auf einen plötzlichen Ausfall hin.)\n    *   **Wetter:** Gab es kürzlich Unwetter, die einen Ausfall verursachen könnten?\n\n4.  **Dokumentation (Beweissicherung & Meldung)**\n    *   **Fotos:** Machen Sie aktuelle Fotos der Situation (Gesamtansicht, Details der Lampe/des Mastes, Absicherung).\n    *   **Beschreibung:** Notieren Sie präzise:\n        *   Genaue Uhrzeit des Ausfalls (falls abweichend von der Meldung).\n        *   Ihre Beobachtungen (siehe Punkte 2 & 3).\n        *   Durchgeführte Absicherungsmaßnahmen.\n        *   Genaue Position (Asset-ID n13293431103, Latitude 47.8580112, Longitude 12.1324162).\n    *   **App/System:** Tragen Sie alle Informationen in das System ein. Ihr Gerät ist online und funktionsfähig.\n\n5.  **Eskalation (Nächste Schritte)**\n    *   **Sofortige Reparatur:** Wenn der Fehler einfach zu beheben ist (z.B. Sicherung), beheben Sie ihn unter Einhaltung aller Sicherheitsvorschriften.\n    *   **Fachpersonal anfordern:** Bei komplexeren Problemen (Kabelbruch, defektes Vorschaltgerät, Mastschaden) oder wenn die Ursache nicht sofort ersichtlich ist, fordern Sie umgehend spezialisiertes Fachpersonal an.\n    *   **Verkehrssicherung aufrechterhalten:** Stellen Sie sicher, dass der Bereich bis zur Behebung des Problems weiterhin ausreichend gesichert ist.\n\nDie hohe Priorität des Vorfalls und die Unsicherheit im Bereich erfordern ein zügiges und sicherheitsorientiertes Vorgehen.",
+    "tokens_estimate_words": 341
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0015-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 5,
+      "K": 3
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Umgebungsbedingungen (night, traffic, visibility) nicht explizit genutzt"
+    ],
+    "short_justification": "Gute Struktur, Safety-first erkennbar, vollständige Dokumentation inkl. Asset-ID und GPS. Eskalation klar. Umgebungsbedingungen (night, high traffic, poor_visibility) fehlen im Context, daher nicht als Fehler wertbar, aber Antwort bleibt etwas generischer."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.181
+  },
+  "error": {}
+}

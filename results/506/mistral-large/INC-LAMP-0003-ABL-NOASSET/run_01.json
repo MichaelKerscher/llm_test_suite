@@ -1,0 +1,165 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0003-ABL-NOASSET",
+  "timestamp": "2026-07-31T16:13:44",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe leuchtet gar nicht mehr. Meldung kam über Bürgerhinweis.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-21T22:47:36+01:00\",\n    \"reporter\": \"citizen\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T22:47:36+01:00",
+        "reporter": "citizen"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0003-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Lampe leuchtet gar nicht mehr. Meldung kam über Bürgerhinweis.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 772,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Okay, hier ist die Schritt-für-Schritt-Checkliste für den Vor-Ort-Einsatz bei einer ausgefallenen Straßenlampe, unter Berücksichtigung der Meldung und der Gerätezustände:\n\n**Checkliste: Straßenlampe leuchtet nicht (Bürgerhinweis)**\n\n**1. Absicherung der Einsatzstelle**\n*   **Verkehrssicherung:** Unmittelbar vor Ort die Gefahrenstelle absichern (Warnblinkanlage, Warndreieck, ggf. Warnleuchten aufstellen).\n*   **Persönliche Schutzausrüstung (PSA):** Warnkleidung tragen, auf den Verkehr achten.\n*   **Umgebung prüfen:** Auf weitere Gefahrenquellen (z.B. beschädigte Masten, herabhängende Kabel) achten.\n\n**2. Sichtprüfung der Anlage**\n*   **Lampenkopf:** Ist die Lampe physisch beschädigt (Glasbruch, Gehäuse offen)?\n*   **Mast:** Ist der Mast beschädigt, korrodiert oder angefahren?\n*   **Zuleitung:** Sind sichtbare Kabel beschädigt oder abgerissen?\n*   **Umgebung:** Gibt es Anzeichen für Vandalismus oder Fremdeinwirkung?\n*   **Schaltkasten/Sicherung:** Falls zugänglich und sicher, prüfen, ob ein Sicherungsautomat ausgelöst hat oder der Schalter in \"Aus\"-Position steht. **Vorsicht: Nur bei entsprechender Qualifikation und unter Einhaltung der Sicherheitsvorschriften!**\n\n**3. Diagnose/Beobachtung**\n*   **Lampentyp identifizieren:** Welcher Lampentyp ist verbaut (LED, Natriumdampf, Quecksilberdampf)? Dies beeinflusst die mögliche Fehlerursache.\n*   **Schaltzeitpunkt:** Leuchtet die Lampe auch tagsüber nicht? (Relevant, da die Meldung nachts kam).\n*   **Weitere Lampen in der Nähe:** Sind andere Lampen im gleichen Stromkreis oder auf dem gleichen Mast ebenfalls ausgefallen? Dies könnte auf eine übergeordnete Störung hinweisen.\n*   **Geräteprüfung (falls möglich):** Wenn ein Prüfgerät vorhanden ist, Spannung an der Lampe messen (falls sicher zugänglich).\n\n**4. Dokumentation (Offline-Workflow beachten!)**\n*   **Fotos:** Mehrere Fotos der Situation machen (Gesamtansicht, Detailansicht der Lampe, eventuelle Schäden). Da die Konnektivität \"spotty\" ist und der Akku \"low_battery\", Fotos lokal speichern und später synchronisieren.\n*   **Fehlerbeschreibung:** Genaue Beschreibung des Fehlers (Lampe leuchtet gar nicht, flackert nicht, kein Geräusch).\n*   **Standort:** Genaue Positionsbestimmung (Mastnummer, Adresse, GPS-Koordinaten).\n*   **Feststellungen:** Alle Beobachtungen aus Schritt 2 und 3 notieren.\n*   **Maßnahmen:** Welche Schritte wurden bereits unternommen?\n*   **Gerätezustand:** Hinweis auf \"spotty connectivity\" und \"low battery\" in der Dokumentation vermerken, um den Offline-Workflow zu rechtfertigen.\n\n**5. Eskalation**\n*   **Sofortige Gefahr:** Bei akuter Gefahr (z.B. offene Kabel, umsturzgefährdeter Mast) sofort den Vorgesetzten oder die zuständige Leitstelle informieren und die Gefahrenstelle großräumig absichern.\n*   **Standard-Eskalation:** Nach Abschluss der Vor-Ort-Dokumentation (und sobald Konnektivität und Akku es zulassen, die Daten synchronisiert sind) den Fall an die zuständige Fachabteilung oder den Wartungsdienst zur weiteren Bearbeitung und Reparatur weiterleiten.\n*   **Priorität:** Aufgrund des Bürgerhinweises und der vollständigen Dunkelheit (Meldung kam nachts) sollte die Reparatur priorisiert werden.",
+    "tokens_estimate_words": 368
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0003-ABL-NOASSET",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 4,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Asset-ID fehlt (nicht im Kontext vorhanden)"
+    ],
+    "short_justification": "Sehr gute Antwort: Safety-first klar priorisiert, Offline-Workflow explizit integriert (spotty connectivity + low battery), klare Eskalationslogik. Struktur und Dokumentation stark. Keine Asset-ID erwartbar, da nicht im Kontext."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.393
+  },
+  "error": {}
+}

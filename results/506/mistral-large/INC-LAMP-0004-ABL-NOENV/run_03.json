@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0004-ABL-NOENV",
+  "timestamp": "2026-07-31T17:14:57",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-16T11:25:07+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Laterne komplett dunkel, Mast aufrecht. Foto bei Nebel und Nacht: keine sichtbare Beschädigung erkennbar, aber Leuchtmittel ohne Funktion.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n12551286240\",\n    \"latitude\": 47.8298471,\n    \"longitude\": 12.1275622,\n    \"name\": \"Happinger Hof\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-16T11:25:07+01:00",
+        "photo_available": true,
+        "photo_description": "Laterne komplett dunkel, Mast aufrecht. Foto bei Nebel und Nacht: keine sichtbare Beschädigung erkennbar, aber Leuchtmittel ohne Funktion.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n12551286240",
+        "latitude": 47.8298471,
+        "longitude": 12.1275622,
+        "name": "Happinger Hof",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0004-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1018,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Eine dunkle Straßenlampe, die seit 90 Minuten ausfällt und ein unsicheres Gefühl im Bereich des Happinger Hofs (Asset-ID: n12551286240) verursacht, erfordert sofortiges Handeln. Die hohe Priorität liegt auf der Sicherheit der Verkehrsteilnehmer und Ihrer eigenen.\n\nHier ist die Schritt-für-Schritt-Checkliste für Ihr Vorgehen vor Ort:\n\n**1. Absicherung (Sicherheit geht vor!)**\n*   **Eigenschutz:** Tragen Sie immer Ihre persönliche Schutzausrüstung (PSA), insbesondere Warnkleidung.\n*   **Gefahrenbereich absichern:** Stellen Sie Warnkegel oder Warndreiecke auf, um den Bereich um die defekte Straßenlampe zu kennzeichnen und andere Verkehrsteilnehmer zu warnen. Beachten Sie dabei die örtlichen Gegebenheiten und die Verkehrslage.\n*   **Beleuchtung:** Nutzen Sie Ihre eigene Arbeitsbeleuchtung (Taschenlampe, Stirnlampe), um den Arbeitsbereich auszuleuchten und Stolperfallen zu vermeiden.\n\n**2. Sichtprüfung (Erste Einschätzung)**\n*   **Umgebung:** Überprüfen Sie die unmittelbare Umgebung der Lampe auf offensichtliche Gefahren wie herabhängende Kabel, umgestürzte Objekte oder Beschädigungen am Mast.\n*   **Mast und Leuchtenkopf:** Begutachten Sie den Mast und den Leuchtenkopf auf sichtbare Beschädigungen, Vandalismus oder Anzeichen eines Aufpralls. Das vorliegende Foto zeigt keine sichtbare Beschädigung, aber dies sollte vor Ort bestätigt werden.\n*   **Sicherungskasten/Zugang:** Falls zugänglich und sicher, prüfen Sie, ob der Sicherungskasten der Lampe (falls vorhanden) äußerlich unversehrt ist. **Keine eigenmächtigen Eingriffe!**\n\n**3. Diagnose/Beobachtung (Fehlerursache eingrenzen)**\n*   **Leuchtmittel:** Bestätigen Sie, dass das Leuchtmittel tatsächlich ohne Funktion ist.\n*   **Schaltzeiten:** Überprüfen Sie, ob andere Lampen in der Nähe funktionieren oder ob es sich um einen größeren Ausfall handelt. Dies könnte auf ein Problem mit der Stromversorgung oder der Steuerung hindeuten.\n*   **Geräusche/Gerüche:** Achten Sie auf ungewöhnliche Geräusche (z.B. Brummen) oder Gerüche (z.B. Brandgeruch) im Bereich der Lampe.\n*   **Wetterbedingungen:** Berücksichtigen Sie die aktuellen Wetterbedingungen (Nebel, Nacht laut Foto), die die Sicht beeinträchtigen können.\n\n**4. Dokumentation (Wichtig für die weitere Bearbeitung)**\n*   **Fotos:** Machen Sie detaillierte Fotos vom Zustand der Lampe und der Umgebung. Dokumentieren Sie alle sichtbaren Schäden oder Auffälligkeiten. Da die Konnektivität \"spotty\" ist, stellen Sie sicher, dass die Fotos lokal auf Ihrem Gerät gespeichert werden und später synchronisiert werden können.\n*   **Beschreibung:** Notieren Sie präzise Ihre Beobachtungen:\n    *   Genaue Uhrzeit der Feststellung.\n    *   Art des Ausfalls (komplett dunkel).\n    *   Alle festgestellten Beschädigungen oder Auffälligkeiten.\n    *   Angaben zur Absicherung des Bereichs.\n    *   Bestätigung der Asset-ID: n12551286240, Happinger Hof.\n*   **Offline-Workflow:** Da die Geräte-Konnektivität \"spotty\" ist, nutzen Sie die Offline-Funktionen Ihrer App, um alle Daten und Fotos lokal zu speichern. Synchronisieren Sie diese, sobald eine stabile Verbindung verfügbar ist.\n\n**5. Eskalation (Nächste Schritte einleiten)**\n*   **Meldung:** Erfassen Sie den Vorfall in Ihrem System mit allen gesammelten Informationen und Fotos.\n*   **Priorität:** Aufgrund der hohen Dringlichkeit (\"Bereich wirkt unsicher\") und der Dauer des Ausfalls (90 Minuten) ist eine schnelle Behebung erforderlich. Markieren Sie den Vorfall entsprechend.\n*   **Fachabteilung informieren:** Leiten Sie die Informationen an die zuständige Fachabteilung oder den Bereitschaftsdienst weiter, damit die Reparatur schnellstmöglich eingeleitet werden kann. Geben Sie dabei alle relevanten Details an, die Sie vor Ort gesammelt haben.\n\nBleiben Sie sicher und vielen Dank für Ihren Einsatz!",
+    "tokens_estimate_words": 474
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0004-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-First, klare Schrittfolge, Offline-Workflow explizit integriert, Asset-ID korrekt verwendet, Dokumentation sehr detailliert. Umweltdaten fehlen im Kontext, daher keine Abwertung."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.674
+  },
+  "error": {}
+}

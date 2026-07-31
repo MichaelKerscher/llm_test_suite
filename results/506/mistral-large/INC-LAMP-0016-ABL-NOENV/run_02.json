@@ -1,0 +1,166 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0016-ABL-NOENV",
+  "timestamp": "2026-07-31T16:56:44",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-17T13:48:16+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerung/Regen: Laterne aktuell an, Foto kurz nach gemeldetem Ausfall. Mast mit Wasserlaufspuren, Schaltbox geschlossen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n13293470414\",\n    \"latitude\": 47.8570666,\n    \"longitude\": 12.1309433\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_battery\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "high",
+        "reported_at": "2026-01-17T13:48:16+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerung/Regen: Laterne aktuell an, Foto kurz nach gemeldetem Ausfall. Mast mit Wasserlaufspuren, Schaltbox geschlossen.",
+        "reporter": "dispatch"
+      },
+      "asset": {
+        "asset_osm": "n13293470414",
+        "latitude": 47.8570666,
+        "longitude": 12.1309433
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_battery"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0016-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "intermittent",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 974,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein sporadischer Fehler erfordert eine systematische Vorgehensweise. Da die Lampe aktuell an ist, liegt der Fokus auf der Identifizierung potenzieller Ursachen für den gemeldeten Ausfall.\n\n**Schritt-für-Schritt-Checkliste:**\n\n1.  **Absicherung:**\n    *   Sichere die Arbeitsstelle gemäß den geltenden Verkehrssicherungsvorschriften (z.B. RSA).\n    *   Trage die persönliche Schutzausrüstung (PSA).\n\n2.  **Sichtprüfung:**\n    *   Überprüfe den allgemeinen Zustand der Leuchte, des Mastes und der Verkabelung auf sichtbare Beschädigungen, Korrosion oder lose Teile.\n    *   Achte besonders auf die im Kontext erwähnten **Wasserlaufspuren am Mast**. Dies könnte auf Feuchtigkeitseintritt hindeuten, der sporadische Fehler verursachen kann.\n    *   Prüfe die Schaltbox auf Unversehrtheit und ob sie korrekt geschlossen ist (im Kontext als \"geschlossen\" beschrieben).\n    *   Kontrolliere die Umgebung auf Fremdeinwirkungen (z.B. Baumwuchs, Anfahrtschäden).\n\n3.  **Diagnose/Beobachtung:**\n    *   Da die Lampe aktuell leuchtet, ist eine direkte Fehlerbehebung schwierig. Versuche, den Fehler zu provozieren:\n        *   Führe eine **Wackelkontaktprüfung** durch (vorsichtiges Rütteln am Mast oder Leuchtenkopf, sofern sicher und ohne Risiko).\n        *   Wenn möglich und sicher, führe eine **Spannungsmessung** an der Leuchte durch, um stabile Werte zu prüfen.\n        *   Prüfe die Funktion der Dämmerungsschaltung oder Zeitschaltuhr, falls zugänglich und relevant.\n        *   Beobachte die Leuchte für einen angemessenen Zeitraum, um ein erneutes Ausfallen zu erkennen.\n\n4.  **Dokumentation:**\n    *   Halte alle Beobachtungen, Messwerte und durchgeführten Schritte detailliert fest.\n    *   Mache zusätzliche Fotos, insbesondere von den Wasserlaufspuren, potenziellen Beschädigungen oder Auffälligkeiten, auch wenn bereits ein Foto existiert.\n    *   **Wichtig:** Da die Konnektivität \"spotty\" ist und der Akku des Geräts \"low_battery\", nutze die Offline-Funktionen deiner App. Speichere alle Daten und Fotos lokal und synchronisiere sie, sobald eine stabile Verbindung und ausreichende Akkuleistung vorhanden sind.\n    *   Notiere die genaue Uhrzeit deiner Ankunft, der Beobachtungen und der Abfahrt.\n\n5.  **Eskalation:**\n    *   Sollte keine eindeutige Ursache gefunden werden oder der Fehler weiterhin sporadisch auftreten, informiere die Leitstelle/Fachabteilung mit allen gesammelten Daten.\n    *   Empfehle gegebenenfalls einen Folgeeinsatz mit spezieller Messtechnik (z.B. Isolationsmessung) oder eine Beobachtung zu einer anderen Tageszeit (z.B. während der Dämmerung, wenn der Fehler ursprünglich auftrat).",
+    "tokens_estimate_words": 315
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0016-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 3,
+      "D": 4,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Umgebungsbedingungen (Dämmerung/Regen) nicht explizit in Safety integriert"
+    ],
+    "short_justification": "Gute Antwort: Offline-Workflow klar erkannt und beschrieben (spotty + low_battery), Wasserlaufspuren aus photo_description genutzt, strukturierte Schritte, Eskalation vorhanden. Safety-first genannt, aber Dämmerung/Regen (aus photo_description) nicht explizit in Verkehrssicherung integriert – daher S=3 statt 4."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.493
+  },
+  "error": {}
+}

@@ -1,0 +1,152 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0019-ABL-NOENV",
+  "timestamp": "2026-07-31T16:59:44",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 60 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-19T01:20:38+01:00\",\n    \"reporter\": \"dispatch\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4939032796\",\n    \"latitude\": 47.8552359,\n    \"longitude\": 12.1220818\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-19T01:20:38+01:00",
+        "reporter": "dispatch"
+      },
+      "asset": {
+        "asset_osm": "n4939032796",
+        "latitude": 47.8552359,
+        "longitude": 12.1220818
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0019-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 60 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 491,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die dunkle Straßenlampe und das Gefühl der Unsicherheit im Bereich erfordern ein schnelles und strukturiertes Vorgehen. Hier ist die Checkliste für den Außendienst:\n\n**Checkliste: Dunkle Straßenlampe**\n\n1.  **Absicherung der Einsatzstelle**\n    *   **Priorität:** Eigenschutz und Verkehrssicherung.\n    *   **Maßnahmen:**\n        *   Fahrzeug sicher abstellen (Warnblinkanlage, Warnweste anlegen).\n        *   Gefahrenbereich großräumig absichern (Warndreieck, Warnleuchten, ggf. Absperrband), besonders wenn die Lampe über einer Fahrbahn oder einem Gehweg ist und eine Gefahr darstellen könnte (z.B. lose Teile).\n        *   Auf den fließenden Verkehr achten und sich nicht unnötig in Gefahr begeben.\n\n2.  **Sichtprüfung (aus sicherer Entfernung)**\n    *   **Beobachtung:**\n        *   Ist die Lampe mechanisch beschädigt (Glasbruch, Gehäuse defekt, Mast verbogen)?\n        *   Sind Kabel sichtbar beschädigt oder herunterhängend?\n        *   Gibt es Anzeichen für Vandalismus oder einen Unfall?\n        *   Sind andere Lampen in der Nähe ebenfalls dunkel oder flackern sie? (Hinweis auf Stromkreisausfall)\n        *   Gibt es sichtbare Rauchspuren oder Brandgeruch?\n\n3.  **Diagnose/Beobachtung (am Asset)**\n    *   **Vorsicht:** Nur durchführen, wenn die Absicherung gewährleistet ist und keine unmittelbare Gefahr besteht.\n    *   **Prüfung:**\n        *   Leuchtmitteltyp identifizieren (LED, Natriumdampf, etc.).\n        *   Gibt es einen Sicherungskasten am Mast? Wenn ja, ist die Sicherung ausgelöst? (Nur prüfen, wenn autorisiert und geschult).\n        *   Gibt es einen Schalter oder eine Steuerung am Mast, die versehentlich betätigt wurde?\n        *   Hören Sie ungewöhnliche Geräusche (Brummen, Knistern)?\n        *   Ist die Lampe warm oder kalt? (Hinweis auf kürzlichen Betrieb oder Totalausfall).\n\n4.  **Dokumentation**\n    *   **Erfassung:**\n        *   Genaue Uhrzeit der Feststellung und des Beginns der Maßnahmen.\n        *   Genaue Position der Lampe (Breiten- und Längengrad: 47.8552359, 12.1220818, OSM-ID: n4939032796).\n        *   Beschreibung des Schadensbildes und der durchgeführten Beobachtungen (z.B. \"Lampe komplett dunkel, keine sichtbaren äußeren Schäden, keine weiteren Ausfälle in der Nähe\").\n        *   Fotos der Situation (Gesamtansicht, Detailaufnahmen des Schadens, Absicherung).\n        *   Angaben zur Umgebung (Verkehrsaufkommen, angrenzende Gebäude, Fußgängerzone).\n        *   Vermutliche Ursache (z.B. Leuchtmittelausfall, Stromkreisunterbrechung).\n\n5.  **Eskalation**\n    *   **Maßnahmen:**\n        *   **Bei Gefahr im Verzug (z.B. herunterhängende Kabel, Brandgefahr):** Sofortige Meldung an die Notrufzentrale (Feuerwehr/Polizei) und den zuständigen Netzbetreiber.\n        *   **Bei regulärem Ausfall:** Meldung an die zuständige Fachabteilung/Störungsstelle mit allen gesammelten Informationen und Fotos.\n        *   **Empfehlung:** Anforderung eines Elektrikers zur weiteren Fehleranalyse und Reparatur.\n        *   **Hinweis:** Die Lampe ist seit ca. 60 Minuten dunkel, was auf einen dauerhaften Ausfall hindeutet. Die gemeldete Schwere \"medium\" und der \"outage\"-Fehlertyp bestätigen die Notwendigkeit einer Reparatur.",
+    "tokens_estimate_words": 366
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0019-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 5,
+      "K": 4
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Nacht/Nebel-Kontext fehlt, daher keine spezifische Sicherheitsanpassung"
+    ],
+    "short_justification": "Sehr gut strukturiert, Safety-first vorhanden, nutzt Asset-Daten korrekt. Ohne Environment-Kontext fehlt die Anpassung an Nacht/Nebel/schlechte Sicht, aber Grundsicherung ist solide. Dokumentation exzellent."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.366
+  },
+  "error": {}
+}

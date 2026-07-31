@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0010-ABL-NOENV",
+  "timestamp": "2026-07-31T17:21:23",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang Rosenheim, Stadtmitte; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-21T09:52:03+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerungsaufnahme im Regen: Laterne dunkel, Umgebung abgedunkelt. Mast ohne erkennbare Beschädigung, Leuchtmittelabdeckung leicht beschlagen.\",\n    \"reporter\": \"internal\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4427955479\",\n    \"latitude\": 47.8562438,\n    \"longitude\": 12.1253894,\n    \"name\": \"Rosenheim, Stadtmitte\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-21T09:52:03+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerungsaufnahme im Regen: Laterne dunkel, Umgebung abgedunkelt. Mast ohne erkennbare Beschädigung, Leuchtmittelabdeckung leicht beschlagen.",
+        "reporter": "internal"
+      },
+      "asset": {
+        "asset_osm": "n4427955479",
+        "latitude": 47.8562438,
+        "longitude": 12.1253894,
+        "name": "Rosenheim, Stadtmitte",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0010-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Dunkler Abschnitt entlang Rosenheim, Stadtmitte; bitte prüfen.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1030,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt in Rosenheim, Stadtmitte, erfordert eine umgehende Prüfung. Angesichts der hohen Priorität und der gemeldeten Störung (\"outage\") sowie der eingeschränkten Konnektivität Ihres Geräts ist ein strukturiertes Vorgehen essenziell.\n\n**Checkliste für den Außendienst:**\n\n1.  **Absicherung:**\n    *   **Verkehrssicherung:** Sichern Sie den Arbeitsbereich gemäß den Vorschriften ab, insbesondere wenn sich die Laterne im Bereich von Fahrbahnen oder Gehwegen befindet. Beachten Sie die örtlichen Gegebenheiten in der Stadtmitte.\n    *   **Persönliche Schutzausrüstung (PSA):** Tragen Sie stets die vorgeschriebene PSA (z.B. Warnkleidung, Sicherheitsschuhe).\n    *   **Gefahrenbereich:** Stellen Sie sicher, dass keine Gefahr für Passanten oder den Verkehr besteht.\n\n2.  **Sichtprüfung:**\n    *   **Laterne/Mast:** Überprüfen Sie den Mast auf sichtbare Beschädigungen. Die Beschreibung \"Mast ohne erkennbare Beschädigung\" ist ein erster Hinweis, aber eine Vor-Ort-Prüfung ist unerlässlich.\n    *   **Leuchtmittelabdeckung:** Begutachten Sie die Leuchtmittelabdeckung. Die Angabe \"leicht beschlagen\" könnte auf Feuchtigkeitseintritt hindeuten.\n    *   **Kabel/Anschlüsse:** Suchen Sie nach offensichtlichen Beschädigungen an Kabeln oder Anschlüssen im zugänglichen Bereich.\n    *   **Umgebung:** Prüfen Sie, ob weitere Leuchten im Abschnitt betroffen sind oder ob externe Faktoren (z.B. umgestürzte Äste, Baufahrzeuge) die Ursache sein könnten.\n\n3.  **Diagnose/Beobachtung:**\n    *   **Fehlerbild:** Ist die Laterne komplett dunkel oder flackert sie?\n    *   **Stromzufuhr:** Wenn sicher zugänglich und im Rahmen Ihrer Befugnisse, prüfen Sie die Stromzufuhr (z.B. Sicherungskasten, Schutzschalter).\n    *   **Sensorik:** Überprüfen Sie, ob ein Dämmerungsschalter oder Bewegungsmelder vorhanden ist und ob dieser korrekt funktioniert.\n    *   **Feuchtigkeit:** Bestätigt sich der Verdacht auf Feuchtigkeitseintritt in der Leuchte?\n\n4.  **Dokumentation (Offline-Workflow beachten!):**\n    *   **Fotos:** Machen Sie detaillierte Fotos vom Zustand der Laterne, etwaigen Beschädigungen und der Umgebung. Speichern Sie diese lokal auf Ihrem Gerät.\n    *   **Fehlerbeschreibung:** Notieren Sie präzise Ihre Beobachtungen und die vermutete Ursache.\n    *   **Maßnahmen:** Halten Sie fest, welche Schritte Sie unternommen haben.\n    *   **Standort:** Bestätigen Sie die Koordinaten (47.8562438, 12.1253894) und den Asset-Namen \"Rosenheim, Stadtmitte\".\n    *   **Synchronisation:** Sobald wieder eine stabile Verbindung besteht, synchronisieren Sie alle gesammelten Daten und Fotos.\n\n5.  **Eskalation:**\n    *   **Sofortige Behebung:** Wenn es sich um eine einfache Störung handelt (z.B. Leuchtmittelwechsel) und Sie die notwendigen Ersatzteile und Werkzeuge dabei haben, beheben Sie den Fehler direkt.\n    *   **Fachabteilung:** Bei komplexeren Problemen (z.B. defektes Vorschaltgerät, Kabelschaden, Mastschaden) oder wenn spezielle Ausrüstung erforderlich ist, leiten Sie den Vorfall mit Ihrer detaillierten Dokumentation an die zuständige Fachabteilung weiter.\n    *   **Sicherheitsrisiko:** Besteht weiterhin ein Sicherheitsrisiko, stellen Sie sicher, dass der Bereich bis zur endgültigen Behebung ausreichend gesichert bleibt.",
+    "tokens_estimate_words": 378
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0010-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Sehr starke Antwort: Safety-first, Asset-ID korrekt genutzt, Offline-Workflow explizit und korrekt integriert, Dokumentation detailliert, Eskalation klar. Keine environment-Daten, aber Antwort bleibt robust und generisch sinnvoll."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 13.142
+  },
+  "error": {}
+}

@@ -1,0 +1,179 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0015-ABL-NODEV",
+  "timestamp": "2026-07-31T16:55:40",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 10 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-16T10:13:59+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme: Laterne komplett dunkel, Bereich nicht beleuchtet. Mast intakt, keine sichtbare mechanische Beschädigung.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n13293431103\",\n    \"latitude\": 47.8580112,\n    \"longitude\": 12.1324162\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-16T10:13:59+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme: Laterne komplett dunkel, Bereich nicht beleuchtet. Mast intakt, keine sichtbare mechanische Beschädigung.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n13293431103",
+        "latitude": 47.8580112,
+        "longitude": 12.1324162
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0015-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NODEV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 10 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "unknown",
+      "device_state": "unknown",
+      "low_battery": false,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 703,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die dunkle Straßenlampe in einem unsicheren Bereich erfordert schnelles und strukturiertes Vorgehen. Hier ist die Checkliste für den Außendienst:\n\n**Checkliste: Ausfall Straßenlampe (Nacht, unsicherer Bereich)**\n\n1.  **Absicherung (Priorität: Sicherheit!)**\n    *   **Verkehrssicherung:** Sofortige Absicherung der Arbeitsstelle gemäß UVV und StVO. Warndreieck, Warnleuchten, Warnbaken aufstellen. Warnweste tragen.\n    *   **Persönliche Sicherheit:** Bereich auf weitere Gefahren (z.B. Stolperfallen, unbefugte Personen) prüfen. Bei Bedarf Unterstützung anfordern (z.B. Polizei bei akuter Gefahr).\n    *   **Beleuchtung:** Eigene Arbeitsbeleuchtung (Stirnlampe, Handleuchte) nutzen, um den Arbeitsbereich auszuleuchten.\n\n2.  **Sichtprüfung (Erste Einschätzung)**\n    *   **Lampe/Leuchte:** Ist die Leuchte selbst intakt (Glas, Gehäuse)? Sind offensichtliche Beschädigungen (z.B. Vandalismus, Sturmschäden) erkennbar?\n    *   **Mast:** Ist der Mast intakt? Keine sichtbaren Risse, Verbiegungen oder Anfahrtschäden?\n    *   **Zuleitung/Kabel:** Sind sichtbare Kabelbeschädigungen am Mast oder im Bereich der Leuchte erkennbar? (Vorsicht: Nicht berühren!)\n    *   **Umgebung:** Gibt es Anzeichen für externe Einflüsse (z.B. umgestürzte Bäume, Baufahrzeuge, die Leitungen beschädigt haben könnten)?\n    *   **Hinweis:** Die vorliegende Fotobeschreibung deutet auf einen intakten Mast ohne sichtbare mechanische Beschädigung hin.\n\n3.  **Diagnose/Beobachtung (Ursachenforschung)**\n    *   **Schaltkasten/Sicherung:** Falls zugänglich und sicher, prüfen, ob eine Sicherung ausgelöst hat oder ein Schalter umgelegt ist. (Nur durch geschultes Personal!)\n    *   **Gruppenausfall:** Sind weitere Lampen in der Nähe ebenfalls dunkel? Dies könnte auf einen übergeordneten Fehler (z.B. Trafostation, Hauptleitung) hindeuten.\n    *   **Flackern/Geräusche:** Gab es vor dem Ausfall Flackern oder ungewöhnliche Geräusche von der Lampe? (Hier nicht zutreffend, da bereits dunkel).\n    *   **Wärmeentwicklung:** Bei Berührung (falls sicher möglich) prüfen, ob die Leuchte ungewöhnlich heiß ist (Hinweis auf internen Defekt).\n\n4.  **Dokumentation**\n    *   **Standort:** Genaue Positionsdaten (Breitengrad: 47.8580112, Längengrad: 12.1324162, Asset-ID: n13293431103).\n    *   **Zeitpunkt:** Festgestellter Ausfall (seit ca. 10 Minuten, gemeldet am 16.01.2026 um 10:13 Uhr MEZ, aber aktuelle Beobachtung ist nachts).\n    *   **Beobachtungen:** Alle Ergebnisse der Sichtprüfung und Diagnose (z.B. \"Mast intakt\", \"keine sichtbaren Kabelschäden\", \"keine weiteren Ausfälle in der Gruppe\").\n    *   **Fotos:** Detaillierte Fotos der Situation, der Lampe und des Mastes.\n    *   **Maßnahmen:** Dokumentation der durchgeführten Absicherungsmaßnahmen.\n\n5.  **Eskalation**\n    *   **Meldung:** Umgehende Meldung an die zuständige Leitstelle/Fachabteilung mit allen gesammelten Informationen.\n    *   **Priorität:** Aufgrund der Dunkelheit, schlechten Sichtverhältnisse und hohen Verkehrsbelastung ist eine hohe Priorität für die Störungsbehebung zu vergeben.\n    *   **Nächste Schritte:** Klärung, ob eine sofortige Reparatur möglich ist oder ob temporäre Maßnahmen (z.B. mobile Beleuchtung) bis zur Behebung erforderlich sind.",
+    "tokens_estimate_words": 363
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0015-ABL-NODEV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety first, klare Struktur, vollständige Dokumentation inkl. Asset-ID und GPS-Koordinaten. Kontext (night, traffic, photo, severity) optimal genutzt, keine Halluzinationen."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 9.991
+  },
+  "error": {}
+}

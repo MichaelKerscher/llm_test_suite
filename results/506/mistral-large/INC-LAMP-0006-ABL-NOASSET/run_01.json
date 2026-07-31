@@ -1,0 +1,178 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0006-ABL-NOASSET",
+  "timestamp": "2026-07-31T16:16:58",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-19T01:52:56+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Aufnahme bei Sturm/Dämmerung: Laterne dunkel, Mast leicht geneigt. Schaltbox-Deckel leicht geöffnet – mögliche Sturmeinwirkung.\",\n    \"reporter\": \"patrol\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"storm\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-19T01:52:56+01:00",
+        "photo_available": true,
+        "photo_description": "Aufnahme bei Sturm/Dämmerung: Laterne dunkel, Mast leicht geneigt. Schaltbox-Deckel leicht geöffnet – mögliche Sturmeinwirkung.",
+        "reporter": "patrol"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "storm",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0006-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "storm",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1064,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Okay, verstanden. Die Situation ist kritisch aufgrund des geneigten Mastes, der offenen Schaltbox, des Sturms und der hohen Verkehrsdichte. Dein Gerät ist offline und hat wenig Akku, daher ist schnelles und sicheres Handeln gefragt.\n\nHier ist deine Schritt-für-Schritt-Checkliste:\n\n### Checkliste: Straßenlampe dunkel & unsicher\n\n1.  **Absicherung (Priorität: Sicherheit!)**\n    *   **Sofortige Gefahrenabsicherung:** Stelle Warndreiecke/Warnleuchten auf, um den Bereich um die Laterne großräumig abzusichern.\n    *   **Eigenschutz:** Halte ausreichend Abstand zum geneigten Mast und der offenen Schaltbox. Trage deine Warnweste.\n    *   **Verkehrsleitung:** Bei Bedarf (hohe Verkehrsgefährdung) umgehend die Polizei oder Verkehrsleitung zur Unterstützung bei der Absicherung anfordern.\n\n2.  **Sichtprüfung (Ohne Berührung!)**\n    *   **Laterne:** Bestätige, dass die Lampe dunkel ist.\n    *   **Mast:** Prüfe den Grad der Neigung, sichtbare Risse oder Beschädigungen am Mastfuß oder -körper.\n    *   **Schaltbox:** Begutachte die offene Schaltbox: Sind Kabel sichtbar? Gibt es Anzeichen von Wassereintritt oder Kurzschluss?\n    *   **Umgebung:** Achte auf weitere Sturmschäden in der Nähe, die die Situation verschärfen könnten.\n\n3.  **Diagnose/Beobachtung**\n    *   **Schadensbild:** Beschreibe präzise die Art und das Ausmaß der Beschädigung (z.B. \"Mast ca. 15 Grad geneigt\", \"Schaltbox-Deckel hängt lose, Kabel freiliegend\").\n    *   **Ursache (vermutet):** Ist die Sturmeinwirkung als Ursache plausibel? Gibt es Anzeichen für einen Anprall?\n    *   **Gefahrenpotenzial:** Einschätzung der akuten Gefahr (z.B. \"Mast droht umzustürzen\", \"Stromschlaggefahr durch freiliegende Kabel\").\n\n4.  **Dokumentation (Offline-Workflow beachten!)**\n    *   **Fotos:** Mache trotz Dämmerung/Sturm so viele aussagekräftige Fotos wie möglich (Gesamtsituation, Mastneigung, offene Schaltbox).\n    *   **Notizen:** Erfasse alle Beobachtungen und getroffenen Absicherungsmaßnahmen detailliert in deiner App.\n    *   **Standort:** Notiere die genaue Position (GPS-Koordinaten, falls nicht automatisch erfasst, oder markante Orientierungspunkte).\n    *   **Offline speichern:** Stelle sicher, dass alle Daten lokal auf deinem Gerät gespeichert werden.\n\n5.  **Eskalation (Umgehend!)**\n    *   **Leitstelle/Einsatzleitung:** Kontaktiere umgehend die Leitstelle/Einsatzleitung (telefonisch, sobald Empfang möglich ist, oder über Funk).\n    *   **Dringlichkeit:** Betone die **hohe Dringlichkeit** und die **akute Gefahr** durch den geneigten Mast und die offene Schaltbox, insbesondere bei Sturm und hoher Verkehrsdichte.\n    *   **Informationen:** Gib alle gesammelten Informationen weiter: Standort, Schadensbild, Absicherungsmaßnahmen, Fotos (falls bereits übertragbar).\n    *   **Anforderung:** Fordere umgehend Fachpersonal (Elektriker, ggf. Statiker) und weitere Absicherungsmaßnahmen (z.B. Sperrung des Bereichs) an.\n    *   **Synchronisation:** Sobald du wieder Empfang hast und dein Akku es zulässt, synchronisiere die Daten in der App und informiere die Leitstelle über die vollständige Dokumentation.",
+    "tokens_estimate_words": 360
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0006-ABL-NOASSET",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 4,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Asset-ID/Standort (nicht verfügbar im Context, daher korrekt weggelassen)"
+    ],
+    "short_justification": "Sehr starke Antwort: Safety-first klar priorisiert, Offline-Workflow explizit integriert, Eskalation dringlich und strukturiert. Nutzt alle verfügbaren Context-Signale (offline, low_battery, storm, high traffic, geneigter Mast, offene Schaltbox) korrekt. Keine Halluzinationen. Einzige Schwäche: Asset-ID fehlt, aber das ist im Context nicht vorhanden, daher kein Fehler."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 17.202
+  },
+  "error": {}
+}
