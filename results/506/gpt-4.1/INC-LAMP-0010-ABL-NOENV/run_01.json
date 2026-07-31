@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0010-ABL-NOENV",
+  "timestamp": "2026-07-31T12:53:24",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang Rosenheim, Stadtmitte; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-21T09:52:03+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerungsaufnahme im Regen: Laterne dunkel, Umgebung abgedunkelt. Mast ohne erkennbare Beschädigung, Leuchtmittelabdeckung leicht beschlagen.\",\n    \"reporter\": \"internal\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4427955479\",\n    \"latitude\": 47.8562438,\n    \"longitude\": 12.1253894,\n    \"name\": \"Rosenheim, Stadtmitte\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-21T09:52:03+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerungsaufnahme im Regen: Laterne dunkel, Umgebung abgedunkelt. Mast ohne erkennbare Beschädigung, Leuchtmittelabdeckung leicht beschlagen.",
+        "reporter": "internal"
+      },
+      "asset": {
+        "asset_osm": "n4427955479",
+        "latitude": 47.8562438,
+        "longitude": 12.1253894,
+        "name": "Rosenheim, Stadtmitte",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0010-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Dunkler Abschnitt entlang Rosenheim, Stadtmitte; bitte prüfen.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1030,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Okay, ich habe die Meldung zu dem dunklen Abschnitt in Rosenheim, Stadtmitte (OSM: n4427955479, 47.8562438, 12.1253894) erhalten. Die ursprüngliche Meldung stammt vom 21.01.2026 und beschreibt eine dunkle Laterne bei Dämmerung und Regen, ohne sichtbare Mastbeschädigung, aber mit leicht beschlagener Leuchtmittelabdeckung.\n\nBitte gehe wie folgt vor, um die Situation vor Ort zu prüfen und zu beheben:\n\n### Schritt-für-Schritt-Checkliste für den Außendienst\n\n1.  **Absicherung (Priorität: Sicherheit!)**\n    *   **Fahrzeug:** Warnblinkanlage einschalten, Warndreieck in ausreichendem Abstand aufstellen.\n    *   **Persönlich:** Warnkleidung (Warnweste) tragen.\n    *   **Verkehr:** Bei Bedarf (starker Verkehr, unübersichtliche Stelle) zusätzliche Absperrmaßnahmen (Leitkegel, Absperrbaken) ergreifen. Ggf. Polizei oder Verkehrsleitstelle informieren, um den Bereich sichern zu lassen.\n    *   **Gefahren:** Auf offene Kabel, beschädigte Masten oder andere unmittelbare Gefahren achten und den Bereich großräumig absperren.\n\n2.  **Sichtprüfung**\n    *   **Leuchte:** Ist die gesamte Leuchte dunkel oder nur Teile? Gibt es sichtbare Beschädigungen am Leuchtenkopf (Glasbruch, offene Klappen, Vandalismus)? Ist die Leuchtmittelabdeckung (wie in der alten Meldung beschrieben) beschlagen oder verschmutzt?\n    *   **Mast:** Zustand des Mastes prüfen (Korrosion, Risse, Neigung, Anfahrtschäden). Die alte Meldung sprach von \"Mast ohne erkennbare Beschädigung\" – dies ist zu verifizieren.\n    *   **Kabel/Anschlüsse:** Sind sichtbare Kabel beschädigt, lose oder freiliegend? Gibt es Anzeichen von Kurzschlüssen oder Überhitzung (Schmauchspuren)?\n    *   **Umgebung:** Gibt es Fremdkörper (Äste, Banner), die die Leuchte verdecken oder beschädigt haben könnten? Sind benachbarte Leuchten ebenfalls betroffen? (Hinweis auf übergeordneten Stromkreisausfall).\n\n3.  **Diagnose/Beobachtung**\n    *   **Geräusche/Geruch:** Gibt es ungewöhnliche Geräusche (Brummen, Knistern) oder Gerüche (Schmorgeruch) im Bereich der Leuchte oder des Mastes?\n    *   **Schaltkasten:** Falls zugänglich und qualifiziert, den zugehörigen Schaltkasten prüfen (Sicherungen, Schalterstellung). **Achtung: Nur bei entsprechender Qualifikation und unter Einhaltung aller Sicherheitsvorschriften!**\n    *   **Leuchtmittel:** Ist das Leuchtmittel defekt (z.B. Glühfaden gerissen, Entladungsröhre dunkel)?\n\n4.  **Dokumentation**\n    *   **Standort:** Die GPS-Koordinaten (47.8562438, 12.1253894) sind bekannt. Bestätige den genauen Standort und die betroffene Leuchte.\n    *   **Feststellungen:** Alle Beobachtungen aus der Sichtprüfung und Diagnose detailliert festhalten.\n    *   **Fotos:** Aktuelle Fotos der Situation machen (Gesamtansicht, Detailaufnahmen von Schäden, Leuchtenkopf, Mastfuß).\n    *   **Wichtig (Connectivity):** Da die Konnektivität \"spotty\" ist, bitte alle Daten und Fotos **lokal auf dem Gerät speichern** und den Offline-Workflow nutzen. Die Synchronisation mit dem System erfolgt, sobald wieder eine stabile Verbindung besteht.\n\n5.  **Eskalation**\n    *   **Meldung aktualisieren:** Die gesammelten Informationen und Fotos in das System einpflegen (sobald Synchronisation möglich ist).\n    *   **Fachpersonal anfordern:** Bei komplexen Fehlern (z.B. vermuteter Erdkabelbruch, Mastbruch, defekte Steuerung, die nicht vor Ort behoben werden kann) umgehend den zuständigen Störungsdienst oder Fachpersonal informieren und die Dringlichkeit einstufen.\n    *   **Gefahr im Verzug:** Bei unmittelbarer Gefahr für Personen oder Sachen (z.B. offene Elektrik, umsturzgefährdeter Mast) sofort die Notdienste (Feuerwehr, Polizei) und den zuständigen Bereitschaftsdienst informieren und den Bereich weiträumig absperren.\n\nBitte gib nach Abschluss der Prüfung eine Rückmeldung mit den festgestellten Ursachen und den eingeleiteten Maßnahmen.",
+    "tokens_estimate_words": 442
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0010-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Kontextnutzung: GPS-Koordinaten, Offline-Workflow explizit und korrekt integriert, alte Meldung referenziert. Sicherheit priorisiert, Eskalation klar. Dokumentation sehr detailliert. Ohne environment-Daten fehlen Wetter/Verkehr-Hinweise, aber das ist kontextbedingt korrekt."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 16.621
+  },
+  "error": {}
+}

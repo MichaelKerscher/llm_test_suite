@@ -1,0 +1,150 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0014-ABL-NOENV",
+  "timestamp": "2026-07-31T12:56:44",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-21T11:45:31+01:00\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4939032525\",\n    \"latitude\": 47.8553091,\n    \"longitude\": 12.1230035\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T11:45:31+01:00",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n4939032525",
+        "latitude": 47.8553091,
+        "longitude": 12.1230035
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0014-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Lampe leuchtet gar nicht mehr. Meldung kam über Routinekontrolle.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 489,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Hier ist die Checkliste für den Vor-Ort-Einsatz bei einer ausgefallenen Straßenlampe:\n\n**Checkliste: Straßenlampe leuchtet nicht**\n\n1.  **Absicherung (Sicherheit geht vor!)**\n    *   Fahrzeug sicher abstellen (Warnblinkanlage, ggf. Warndreieck).\n    *   Persönliche Schutzausrüstung (PSA) anlegen (Warnweste, Sicherheitsschuhe).\n    *   Arbeitsbereich nach Erfordernis absichern (z.B. mit Pylonen), besonders bei Arbeiten im Verkehrsraum.\n\n2.  **Sichtprüfung (Erste Einschätzung)**\n    *   **Lampe/Leuchtenkopf:** Ist äußerlich ein Schaden erkennbar (z.B. Glasbruch, lose Teile, Vandalismus)?\n    *   **Mast:** Ist der Mast beschädigt, schief oder weist er Korrosion auf?\n    *   **Zuleitung/Kabel:** Sind sichtbare Kabel beschädigt oder abgerissen?\n    *   **Umgebung:** Gibt es Anzeichen für externe Einflüsse (z.B. Unfallschäden, Baufahrzeuge, die Kabel beschädigt haben könnten)?\n    *   **Andere Lampen:** Leuchten benachbarte Lampen im selben Stromkreis? Dies kann auf eine lokale Störung oder eine übergeordnete Ursache hindeuten.\n\n3.  **Diagnose/Beobachtung (Fehlerursache eingrenzen)**\n    *   **Stromversorgung:**\n        *   Prüfen, ob die Sicherung im Mastfuß oder im Verteilerkasten ausgelöst hat.\n        *   Spannungsmessung an der Leuchte, falls zugänglich und sicher.\n    *   **Leuchtmittel:**\n        *   Ist das Leuchtmittel (Lampe) defekt? Bei älteren Systemen kann ein einfacher Leuchtmittelwechsel die Lösung sein.\n        *   Bei LED-Leuchten: Ist das Vorschaltgerät (Treiber) defekt?\n    *   **Steuerung:**\n        *   Funktioniert die Zeitschaltuhr oder der Dämmerungsschalter korrekt?\n        *   Gibt es eine zentrale Steuerung, die die Lampe abgeschaltet haben könnte?\n    *   **Hinweis:** Die Meldung, dass Ihr Techniker-Gerät \"online\" und der \"device_state\" \"ok\" ist, bezieht sich auf die Funktionsfähigkeit Ihrer App/Ihres Smartphones, nicht auf die Straßenlampe selbst.\n\n4.  **Dokumentation**\n    *   Alle Beobachtungen und durchgeführten Schritte detailliert in der App erfassen.\n    *   Fotos von Schäden, der Umgebung und der Fehlerstelle machen.\n    *   Genaue Uhrzeit des Eintreffens und Verlassens der Einsatzstelle notieren.\n    *   Festgestellte Fehlerursache und ggf. provisorische Maßnahmen dokumentieren.\n\n5.  **Eskalation**\n    *   **Behebung vor Ort möglich:** Wenn der Fehler einfach behoben werden kann (z.B. Sicherung wieder einschalten, Leuchtmittelwechsel), dies durchführen und Funktion prüfen.\n    *   **Behebung vor Ort nicht möglich / komplexer Schaden:**\n        *   Information an die Leitstelle/Disposition mit detaillierter Fehlerbeschreibung und benötigten Ressourcen (z.B. Spezialwerkzeug, Hebebühne, Elektriker).\n        *   Ggf. weitere Absicherung der Gefahrenstelle veranlassen, falls eine unmittelbare Gefahr besteht (z.B. offene Kabel, umsturzgefährdeter Mast).\n        *   Priorität der Störung neu bewerten (z.B. bei Ausfall an einem Zebrastreifen oder in einer unübersichtlichen Kurve).",
+    "tokens_estimate_words": 343
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0014-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 4,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Sehr gute Antwort. Nutzt Kontext korrekt (Asset-ID, GPS, online-Status des Geräts). Expliziter Hinweis, dass device.* das Techniker-Gerät beschreibt, nicht das Asset. Klare Struktur, Safety, Eskalation, Doku vollständig."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 8.176
+  },
+  "error": {}
+}

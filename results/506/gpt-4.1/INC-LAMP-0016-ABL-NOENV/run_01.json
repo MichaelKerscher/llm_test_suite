@@ -1,0 +1,164 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0016-ABL-NOENV",
+  "timestamp": "2026-07-31T12:58:30",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-17T13:48:16+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerung/Regen: Laterne aktuell an, Foto kurz nach gemeldetem Ausfall. Mast mit Wasserlaufspuren, Schaltbox geschlossen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n13293470414\",\n    \"latitude\": 47.8570666,\n    \"longitude\": 12.1309433\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_battery\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "high",
+        "reported_at": "2026-01-17T13:48:16+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerung/Regen: Laterne aktuell an, Foto kurz nach gemeldetem Ausfall. Mast mit Wasserlaufspuren, Schaltbox geschlossen.",
+        "reporter": "dispatch"
+      },
+      "asset": {
+        "asset_osm": "n13293470414",
+        "latitude": 47.8570666,
+        "longitude": 12.1309433
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_battery"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0016-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "intermittent",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 974,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein sporadischer Fehler erfordert eine besonders sorgfältige Vorgehensweise. Da die Lampe aktuell wieder an ist, liegt der Fokus auf der Ursachenforschung für den gemeldeten Ausfall und der Dokumentation.\n\n**Schritt-für-Schritt-Checkliste:**\n\n1.  **Absicherung:**\n    *   **Verkehrssicherung:** Sichern Sie die Arbeitsstelle gemäß den Vorschriften (z.B. Warnbake, Warnleuchte), insbesondere bei Arbeiten im öffentlichen Verkehrsraum.\n    *   **Persönliche Schutzausrüstung (PSA):** Tragen Sie stets Ihre vollständige PSA (Warnkleidung, Sicherheitsschuhe, Helm, Handschuhe).\n    *   **Gefahrenbeurteilung:** Prüfen Sie die Umgebung auf potenzielle Gefahren (z.B. lose Teile, beschädigte Kabel, Nässe).\n\n2.  **Sichtprüfung:**\n    *   **Gesamtzustand:** Begutachten Sie den Mast und die Leuchte auf offensichtliche Beschädigungen, Vandalismus oder Anfahrspuren.\n    *   **Wasserlaufspuren:** Achten Sie besonders auf die im Kontext erwähnten Wasserlaufspuren am Mast. Prüfen Sie, ob diese bis zur Leuchte oder zur Schaltbox reichen könnten.\n    *   **Schaltbox/Anschlussbereich:** Überprüfen Sie die Schaltbox am Mastfuß auf Beschädigungen, Feuchtigkeitseintritt oder offene Klappen. (Hinweis: Die Schaltbox war laut Foto geschlossen.)\n    *   **Leuchte:** Prüfen Sie die Leuchte selbst auf Risse, Beschädigungen am Gehäuse oder der Abdeckung.\n    *   **Kabel/Verbindungen:** Soweit sicher zugänglich, prüfen Sie sichtbare Kabel auf Beschädigungen oder lose Verbindungen.\n\n3.  **Diagnose/Beobachtung:**\n    *   **Aktueller Zustand:** Bestätigen Sie, dass die Lampe aktuell leuchtet.\n    *   **Flimmern/Unregelmäßigkeiten:** Beobachten Sie die Lampe für einige Minuten auf Flimmern, Helligkeitsschwankungen oder andere Auffälligkeiten.\n    *   **Geräusche/Gerüche:** Achten Sie auf ungewöhnliche Geräusche (z.B. Brummen) oder Gerüche (z.B. Brandgeruch) im Bereich der Leuchte oder Schaltbox.\n    *   **Feuchtigkeit:** Suchen Sie aktiv nach Anzeichen von Feuchtigkeit oder Kondenswasser im Bereich der Leuchte oder der Schaltbox, insbesondere im Zusammenhang mit den Wasserlaufspuren.\n    *   **Schaltvorgänge:** Wenn möglich und sicher, prüfen Sie, ob ein manuelles Ein- und Ausschalten über die Schaltbox den Fehler reproduziert oder beeinflusst.\n\n4.  **Dokumentation:**\n    *   **Offline-Workflow:** Da die Konnektivität \"spotty\" ist und der Akkustand \"low_battery\", dokumentieren Sie alle Schritte und Beobachtungen zunächst lokal auf Ihrem Gerät. Synchronisieren Sie die Daten, sobald eine stabile Verbindung verfügbar ist.\n    *   **Fotos:**\n        *   Machen Sie aktuelle Fotos vom Gesamtzustand der Leuchte und des Mastes.\n        *   Dokumentieren Sie die festgestellten Wasserlaufspuren detailliert mit Fotos.\n        *   Fotografieren Sie den Zustand der Schaltbox und des Anschlussbereichs.\n        *   Machen Sie ein Foto der aktuell leuchtenden Lampe.\n    *   **Fehlerbeschreibung:** Beschreiben Sie den Fehler (sporadisch, war aus, jetzt an) und alle Ihre Beobachtungen präzise.\n    *   **Auffälligkeiten:** Halten Sie alle Auffälligkeiten fest, insbesondere die Wasserlaufspuren und mögliche Feuchtigkeitseintritte.\n    *   **Maßnahmen:** Dokumentieren Sie alle durchgeführten Prüfungen und Beobachtungen.\n    *   **Standort:** Bestätigen Sie die Asset-ID (n13293470414) und die Koordinaten (47.8570666, 12.1309433).\n\n5.  **Eskalation:**\n    *   **Keine direkte Fehlerbehebung möglich:** Da der Fehler sporadisch auftritt und die Lampe aktuell funktioniert, ist eine direkte Reparatur vor Ort oft nicht möglich.\n    *   **Bericht:** Erstellen Sie einen detaillierten Bericht mit allen gesammelten Informationen und Fotos.\n    *   **Fachabteilung:** Leiten Sie den Bericht an die zuständige Fachabteilung weiter, um eine tiefere Analyse und gegebenenfalls eine präventive Wartung oder den Austausch von Komponenten (z.B. bei Verdacht auf Feuchtigkeitsschaden) zu veranlassen.\n    *   **Priorität:** Aufgrund der potenziellen Sicherheitsrisiken durch Feuchtigkeitseintritt und der intermittierenden Natur sollte der Vorfall als hochpriorisiert behandelt werden.",
+    "tokens_estimate_words": 478
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0016-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Kontextnutzung: Offline-Workflow explizit und korrekt (spotty connectivity, low battery → lokal dokumentieren, später synchronisieren). Wasserlaufspuren detailliert adressiert. Safety-first, klare Eskalation, Asset-ID und Koordinaten bestätigt. Sehr vollständige Dokumentation."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.204
+  },
+  "error": {}
+}

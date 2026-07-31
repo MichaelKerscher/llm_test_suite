@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0023-ABL-NOASSET",
+  "timestamp": "2026-07-31T13:05:17",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-15T08:16:43+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Tagsicht bei Sturm: Laterne dunkel, Mast leicht schräg. Leitungsverbindung am Mastarm sichtbar beschädigt/abgerissen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"day\",\n    \"weather\": \"storm\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-15T08:16:43+01:00",
+        "photo_available": true,
+        "photo_description": "Tagsicht bei Sturm: Laterne dunkel, Mast leicht schräg. Leitungsverbindung am Mastarm sichtbar beschädigt/abgerissen.",
+        "reporter": "dispatch"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "day",
+        "weather": "storm",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0023-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "storm",
+      "poor_visibility": true,
+      "time_of_day": "day",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1046,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Verstanden. Hier ist die Checkliste für den Einsatz vor Ort, priorisierend Sicherheit und Verkehrssicherung, insbesondere unter den gegebenen Bedingungen (Sturm, hohe Verkehrsdichte, schlechte Sicht, schräger Mast, beschädigte Leitung):\n\n**Checkliste für den Außendienst-Einsatz: Dunkler Abschnitt / Mastschaden**\n\n**1. Absicherung (Priorität: Eigenschutz & Fremdschutz)**\n*   **Persönliche Schutzausrüstung (PSA):** Vollständig anlegen (Warnkleidung, Helm, Sicherheitsschuhe, Handschuhe).\n*   **Gefahrenbereich absichern:**\n    *   Fahrzeug sicher abstellen (Warnblinkanlage, ggf. Dachbalken).\n    *   Unfallstelle großräumig mit Warndreieck, Warnleuchten und Pylonen absichern.\n    *   Bei Bedarf Verkehr regeln oder Polizei/Verkehrsleitdienst anfordern (hohe Verkehrsdichte!).\n*   **Sofortige Gefahrenbeurteilung:**\n    *   Ist der Mast einsturzgefährdet?\n    *   Liegen spannungsführende Leitungen frei oder am Boden? **NICHT BERÜHREN!**\n    *   Gibt es herabfallende Teile durch den Sturm?\n    *   Bei akuter Lebensgefahr (z.B. offene, spannungsführende Leitungen im öffentlichen Bereich): **SOFORT Notruf (112) absetzen und Bereich sperren.**\n\n**2. Sichtprüfung (Umfassende Schadensaufnahme)**\n*   **Bestätigung des Ausfalls:** Ist die Laterne tatsächlich dunkel? Sind weitere Leuchten im Abschnitt betroffen?\n*   **Mastzustand:**\n    *   Bestätigung der Schräglage des Mastes.\n    *   Sichtprüfung des Mastfußes und Fundaments auf Risse, Hebung oder weitere Beschädigungen.\n    *   Kontrolle des Mastmaterials auf Verformungen, Korrosion oder Risse.\n*   **Leitungsverbindung:**\n    *   Detaillierte Begutachtung der \"sichtbar beschädigten/abgerissenen Leitungsverbindung am Mastarm\".\n    *   Art der Beschädigung (gerissen, durchgescheuert, blanke Drähte?).\n    *   Ist die Leitung noch mit dem Mast oder dem Arm verbunden?\n    *   Gibt es Anzeichen für Kurzschlüsse oder Lichtbögen?\n*   **Umgebung:**\n    *   Gibt es weitere Sturmschäden in der Nähe (umgestürzte Bäume, beschädigte Gebäude, andere Infrastruktur)?\n    *   Anzeichen für Fremdeinwirkung (z.B. Fahrzeuganprall)?\n\n**3. Diagnose/Beobachtung (Ursachenforschung & Ausmaß)**\n*   **Fehlerursache:** Aufgrund der Beschreibung (Sturm, schräger Mast, abgerissene Leitung) ist ein externer mechanischer Schaden (Sturm, Anprall) sehr wahrscheinlich.\n*   **Spannungsfreiheit:** Wenn gefahrlos möglich und die Leitung nicht am Boden liegt, mit geeignetem Prüfmittel Spannungsfreiheit feststellen (Vorsicht bei Sturm und Nässe!).\n*   **Ausmaß des Ausfalls:** Betrifft es nur diese eine Leuchte oder einen ganzen Abschnitt/Stromkreis?\n\n**4. Dokumentation (Offline-Workflow beachten!)**\n*   **Fotos:** Umfassende Fotos aus verschiedenen Perspektiven (Gesamtansicht, Mastfuß, beschädigte Leitung, Mastarm, Absicherung).\n    *   *Hinweis:* Da bereits ein Foto vorliegt, dienen diese der Aktualisierung und Detaillierung des aktuellen Zustands.\n*   **Notizen:**\n    *   Genaue Uhrzeit und Datum der Feststellung.\n    *   Genaue Standortbeschreibung (Straße, Hausnummer, ggf. GPS-Koordinaten).\n    *   Detaillierte Beschreibung aller Schäden (Mastschräglage in Grad/cm, Art der Leitungsbeschädigung).\n    *   Durchgeführte Absicherungsmaßnahmen.\n    *   Wetterbedingungen (Sturm, schlechte Sicht, Lärm).\n    *   Verkehrssituation.\n*   **Offline speichern:** Alle Daten (Fotos, Notizen) lokal auf dem Gerät speichern. Synchronisation erfolgt, sobald wieder Konnektivität besteht.\n\n**5. Eskalation (Schnelle Reaktion erforderlich)**\n*   **Meldung an Leitstelle/Disposition:**\n    *   Sofortige telefonische Meldung der Lage und der festgestellten Schäden.\n    *   Betonung der hohen Dringlichkeit und der Sicherheitsrelevanz (schräger Mast, beschädigte Leitung, Sturm, hohe Verkehrsdichte).\n    *   Anforderung eines spezialisierten Reparaturteams mit entsprechender Ausrüstung (z.B. Hubsteiger, Elektrofachkräfte).\n*   **Gefahrenabwehr:**\n    *   Wenn die Gefahr nicht vollständig beseitigt werden kann, sicherstellen, dass der Bereich bis zum Eintreffen des Reparaturteams oder der Notdienste gesichert bleibt.\n    *   Ggf. weitere Absperrungen oder Warnhinweise anbringen.\n\n**Wichtiger Hinweis:** Bei Unsicherheit oder unübersichtlicher Gefahrenlage immer die Leitstelle kontaktieren und ggf. Notdienste hinzuziehen. Eigenschutz geht vor!",
+    "tokens_estimate_words": 478
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0023-ABL-NOASSET",
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge, umfassende Dokumentation mit explizitem Offline-Workflow, klare Eskalationslogik passend zu severity=high/Sturm/schräger Mast. Nutzt Kontext vollständig (offline, storm, high traffic, photo_available)."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 16.089
+  },
+  "error": {}
+}

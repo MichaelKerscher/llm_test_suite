@@ -1,0 +1,178 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0007-ABL-NOASSET",
+  "timestamp": "2026-07-31T13:45:20",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Kurze Aussetzer und Flackern, mögliche Kontaktprobleme.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"flicker\",\n    \"severity\": \"low\",\n    \"reported_at\": \"2026-01-21T18:59:18+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Foto bei Sturm/Tag: Leuchtmittel flackert intermittierend. Anschlusskabel am Mastarm sichtbar locker hängend, Klebestreifen löst sich.\",\n    \"reporter\": \"patrol\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"day\",\n    \"weather\": \"storm\",\n    \"lighting_condition\": \"normal_visibility\",\n    \"traffic_exposure\": \"medium\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "flicker",
+        "severity": "low",
+        "reported_at": "2026-01-21T18:59:18+01:00",
+        "photo_available": true,
+        "photo_description": "Foto bei Sturm/Tag: Leuchtmittel flackert intermittierend. Anschlusskabel am Mastarm sichtbar locker hängend, Klebestreifen löst sich.",
+        "reporter": "patrol"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "day",
+        "weather": "storm",
+        "lighting_condition": "normal_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0007-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Kurze Aussetzer und Flackern, mögliche Kontaktprobleme.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "low",
+      "fault_type": "flicker",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "storm",
+      "poor_visibility": false,
+      "time_of_day": "day",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1067,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein flackerndes Leuchtmittel mit locker hängendem Anschlusskabel bei Sturm erfordert schnelles und sicheres Handeln. Hier ist die Checkliste:\n\n**Checkliste: Flackerndes Leuchtmittel mit losem Kabel (Sturm)**\n\n1.  **Absicherung:**\n    *   **Gefahrenbereich definieren:** Sofortige Einschätzung des Risikos durch das lose Kabel, besonders bei Sturm.\n    *   **Verkehrssicherung:** Unverzüglich Warnblinklicht einschalten, Warnweste anlegen. Bei Bedarf Warndreieck/Leitkegel aufstellen, um den Bereich um den Mast abzusichern und Passanten/Verkehr zu schützen.\n    *   **Abstand halten:** Direkten Kontakt zum Kabel oder Mast vermeiden, da Stromschlaggefahr bestehen kann.\n\n2.  **Sichtprüfung:**\n    *   **Bestätigung des Fehlers:** Leuchtmittel flackert intermittierend.\n    *   **Kabelzustand:** Zustand des Anschlusskabels am Mastarm prüfen – ist es sichtbar locker, hängt es herab, löst sich die Isolierung oder der Klebestreifen?\n    *   **Weitere Schäden:** Mast, Leuchtenkopf, andere Kabel auf sichtbare Beschädigungen (Risse, Brüche, Korrosion) prüfen.\n    *   **Umgebung:** Auf weitere Gefahren durch den Sturm (herabfallende Äste, lose Teile) achten.\n\n3.  **Diagnose/Beobachtung:**\n    *   **Ursache:** Das lose hängende Anschlusskabel ist die primäre Fehlerursache und stellt eine akute Gefahr dar.\n    *   **Flackerverhalten:** Muster des Flackerns (kurz, lang, konstant) beobachten.\n\n4.  **Dokumentation:**\n    *   **Fotos:** Aktuelle Fotos der Situation machen, insbesondere des lockeren Kabels und der Absicherung. (Hinweis: Bereits vorhandenes Foto ist gut, aber aktuelle Lage dokumentieren).\n    *   **Details erfassen:** Genaue Standortbeschreibung, Art des Schadens (lockeres Kabel, gelöster Klebestreifen), Wetterbedingungen (Sturm), Uhrzeit.\n    *   **Offline-Workflow:** Da die Konnektivität offline ist, alle Daten und Fotos lokal auf dem Gerät speichern und die Synchronisation durchführen, sobald eine Verbindung verfügbar ist.\n\n5.  **Eskalation:**\n    *   **Priorität:** Aufgrund des lockeren Kabels bei Sturm besteht akute Gefahr für Leib und Leben sowie Sachschäden. Dies ist ein Notfall.\n    *   **Meldung:** Unverzügliche Meldung an die Leitstelle/Einsatzleitung.\n    *   **Dringlichkeit:** Dringlichkeit des Einsatzes betonen und die Gefahrenlage klar kommunizieren (Stromschlaggefahr, herabfallendes Kabel bei Sturm).\n    *   **Reparatur:** Anforderung eines sofortigen Reparatureinsatzes durch Fachpersonal.",
+    "tokens_estimate_words": 283
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0007-ABL-NOASSET",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 4,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Asset-ID fehlt (nicht im Kontext vorhanden)"
+    ],
+    "short_justification": "Sehr starke Antwort: Safety-first klar priorisiert, Offline-Workflow explizit genannt, Eskalation passend zu Sturm+loses Kabel. Struktur klar, Dokumentation gut. Keine Asset-ID, aber nicht erwartbar (nicht im Kontext)."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.356
+  },
+  "error": {}
+}

@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0029-ABL-NOENV",
+  "timestamp": "2026-07-31T13:10:36",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 15 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-15T12:53:33+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme: Laterne dunkel, Pang/Cafe-Bereich unbeleuchtet. Mast ohne erkennbare Beschädigung, Schaltbox geschlossen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n9223569763\",\n    \"latitude\": 47.8238909,\n    \"longitude\": 12.0889764,\n    \"name\": \"Pang, Cafe Neu\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-15T12:53:33+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme: Laterne dunkel, Pang/Cafe-Bereich unbeleuchtet. Mast ohne erkennbare Beschädigung, Schaltbox geschlossen.",
+        "reporter": "dispatch"
+      },
+      "asset": {
+        "asset_osm": "n9223569763",
+        "latitude": 47.8238909,
+        "longitude": 12.0889764,
+        "name": "Pang, Cafe Neu",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0029-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 15 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1002,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die dunkle Straßenlampe im Bereich \"Pang, Cafe Neu\" und die damit verbundene Unsicherheit erfordern ein schnelles und strukturiertes Vorgehen. Da Ihr Gerät offline ist, ist ein Offline-Workflow für Dokumentation und Kommunikation entscheidend.\n\nHier ist Ihre Schritt-für-Schritt-Checkliste:\n\n1.  **Absicherung (Priorität: Sicherheit)**\n    *   **Fahrzeug:** Warnblinklicht einschalten, Fahrzeug sicher und sichtbar abstellen.\n    *   **Persönlich:** Warnweste anlegen.\n    *   **Arbeitsbereich:** Bei Bedarf Warndreieck und/oder Leitkegel aufstellen, um den Arbeitsbereich zu sichern und andere Verkehrsteilnehmer zu warnen. Besonders wichtig, da der Bereich als unsicher beschrieben wird.\n    *   **Umgebung:** Achten Sie auf den Verkehr (Fußgänger, Fahrzeuge) und andere potenzielle Gefahrenquellen.\n\n2.  **Sichtprüfung (Erste Einschätzung)**\n    *   **Bestätigung:** Prüfen Sie, ob die Straßenlampe tatsächlich dunkel ist.\n    *   **Mast:** Begutachten Sie den Mast auf sichtbare Beschädigungen, Vandalismus oder Anfahrspuren. (Laut Vorabinformation ist der Mast unbeschädigt, bitte vor Ort bestätigen.)\n    *   **Leuchte:** Überprüfen Sie die Leuchte selbst auf Glasbruch, lose Teile, herabhängende Kabel oder andere offensichtliche Defekte.\n    *   **Schaltbox:** Prüfen Sie die Schaltbox am Mastfuß auf Manipulation, Beschädigung oder ob sie offensteht. (Laut Vorabinformation ist die Schaltbox geschlossen, bitte vor Ort bestätigen.)\n    *   **Umgebung:** Sind weitere Lampen in der unmittelbaren Umgebung ebenfalls dunkel? Dies könnte auf einen größeren Ausfall hindeuten.\n    *   **Gerüche/Geräusche:** Achten Sie auf ungewöhnliche Gerüche (z.B. Brandgeruch) oder Geräusche (z.B. Knistern).\n\n3.  **Diagnose/Beobachtung (Fehlerursache eingrenzen)**\n    *   **Spannung:** Falls Sie qualifiziert und es sicher ist, prüfen Sie die Spannung am Mastfuß oder an der Leuchte.\n    *   **Sicherung:** Überprüfen Sie, ob eine Sicherung im Mastfußkasten ausgelöst hat (falls zugänglich und sicher).\n    *   **Kabel:** Sind Kabel sichtbar beschädigt oder durchtrennt?\n    *   **Wärme:** Fühlt sich die Leuchte warm an? Dies könnte auf einen kürzlichen Betrieb oder ein internes Problem hindeuten.\n\n4.  **Dokumentation (Offline-Workflow)**\n    *   **App:** Halten Sie alle Beobachtungen, durchgeführten Schritte und Feststellungen detailliert in Ihrer Offline-App fest.\n    *   **Fotos:** Machen Sie aussagekräftige Fotos vom aktuellen Zustand der Lampe, des Mastes, der Schaltbox und der gesamten Situation vor Ort. Diese werden später synchronisiert.\n    *   **Uhrzeit:** Notieren Sie die genaue Uhrzeit Ihrer Feststellungen.\n    *   **Kontext:** Beschreiben Sie die Umgebung, das Verkehrsaufkommen und die Auswirkungen der dunklen Lampe auf die Sicherheit.\n\n5.  **Eskalation (Kommunikation bei Offline-Status)**\n    *   **Leitstelle/Disposition:** Da Ihr Gerät offline ist, kontaktieren Sie umgehend die Leitstelle oder Disposition telefonisch.\n    *   **Informationen:** Geben Sie alle gesammelten Informationen weiter: Standort (\"Pang, Cafe Neu\"), Art des Fehlers (Lampe dunkel), Ihre Beobachtungen, die durchgeführten Schritte und Ihre Einschätzung der Lage (insbesondere die Unsicherheit des Bereichs).\n    *   **Unterstützung:** Besprechen Sie, ob weitere Unterstützung (z.B. Elektriker, Hebebühne, erweiterte Verkehrssicherung) oder eine sofortige Reparatur notwendig ist.\n    *   **Temporäre Maßnahmen:** Falls eine unmittelbare Gefahr besteht und die Ursache nicht sofort behoben werden kann, besprechen Sie temporäre Maßnahmen zur Gefahrenabwehr (z.B. erweiterte Absperrung, Hinweis auf Gefahrenstelle).",
+    "tokens_estimate_words": 434
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0029-ABL-NOENV",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 4,
+      "D": 4,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first, Offline-Workflow explizit und korrekt integriert (lokal dokumentieren, telefonische Eskalation), Asset-Daten genutzt, klare Struktur. Keine environment-Daten im Kontext, daher keine Spekulation über Wetter/Verkehr - korrekt."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.828
+  },
+  "error": {}
+}

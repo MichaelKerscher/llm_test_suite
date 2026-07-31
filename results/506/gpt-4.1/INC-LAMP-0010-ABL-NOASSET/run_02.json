@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.1",
+  "test_id": "INC-LAMP-0010-ABL-NOASSET",
+  "timestamp": "2026-07-31T13:20:37",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang Rosenheim, Stadtmitte; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-21T09:52:03+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerungsaufnahme im Regen: Laterne dunkel, Umgebung abgedunkelt. Mast ohne erkennbare Beschädigung, Leuchtmittelabdeckung leicht beschlagen.\",\n    \"reporter\": \"internal\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"rain\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-21T09:52:03+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerungsaufnahme im Regen: Laterne dunkel, Umgebung abgedunkelt. Mast ohne erkennbare Beschädigung, Leuchtmittelabdeckung leicht beschlagen.",
+        "reporter": "internal"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "rain",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "incident",
+    "incident_id": "INC-LAMP-0010-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Dunkler Abschnitt entlang Rosenheim, Stadtmitte; bitte prüfen.",
+    "judge_version": "judge_v1_1",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "rain",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1072,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt in Rosenheim, Stadtmitte, erfordert umgehende Prüfung. Basierend auf den vorliegenden Informationen (Dämmerung, Regen, hohe Verkehrsbelastung, Laterne dunkel, Leuchtmittelabdeckung leicht beschlagen, Mast ohne erkennbare Beschädigung) ist hier die Checkliste für das Vorgehen vor Ort:\n\n**Checkliste für den Außendienst:**\n\n1.  **Absicherung (Sicherheit geht vor!)**\n    *   **Verkehrssicherung:** Unmittelbar nach Ankunft die Arbeitsstelle gemäß den Vorschriften für Arbeiten im öffentlichen Verkehrsraum absichern (Warnleuchten, Warndreiecke, ggf. Absperrband). Besondere Vorsicht aufgrund der hohen Verkehrsbelastung und schlechten Sichtverhältnisse (Dämmerung, Regen).\n    *   **Persönliche Schutzausrüstung (PSA):** Sicherstellen, dass Warnkleidung (mind. Klasse 2), Sicherheitsschuhe und ggf. Regenkleidung getragen werden.\n    *   **Gefahrenbereich:** Den Bereich um die defekte Leuchte auf weitere Gefahren (z.B. lose Teile, Stolperfallen, Wasseransammlungen) prüfen.\n\n2.  **Sichtprüfung (Erste Einschätzung)**\n    *   **Leuchte:** Prüfen, ob die gesamte Leuchte dunkel ist oder nur einzelne Leuchtmittel.\n    *   **Mast:** Den Mast auf sichtbare Beschädigungen, Korrosion oder Vandalismus untersuchen. (Hinweis: Laut Foto keine erkennbare Beschädigung am Mast).\n    *   **Leuchtmittelabdeckung:** Die leicht beschlagene Leuchtmittelabdeckung genauer inspizieren. Ist Feuchtigkeit eingedrungen? Gibt es Risse oder andere Defekte?\n    *   **Umgebung:** Gibt es in der Nähe andere Leuchten, die ebenfalls ausgefallen sind? Dies könnte auf eine übergeordnete Störung (z.B. Sicherung, Kabelbruch) hindeuten.\n    *   **Zuleitung:** Sichtprüfung der Zuleitung am Mastfuß, falls zugänglich, auf Beschädigungen.\n\n3.  **Diagnose/Beobachtung (Fehlerursache eingrenzen)**\n    *   **Schaltkasten/Verteiler:** Falls zugänglich und sicher, den zugehörigen Schaltkasten oder Verteiler auf ausgelöste Sicherungen oder Schutzschalter prüfen.\n    *   **Leuchtmittel:** Wenn möglich und sicher, die Art des Leuchtmittels identifizieren. Ein defektes Leuchtmittel ist eine häufige Ursache.\n    *   **Feuchtigkeit:** Besondere Aufmerksamkeit auf mögliche Feuchtigkeitseintritte in der Leuchte oder im Mast. Die beschlagene Abdeckung ist ein starker Hinweis.\n    *   **Geräusche/Gerüche:** Ungewöhnliche Geräusche (z.B. Brummen) oder Gerüche (z.B. verschmort) wahrnehmen.\n\n4.  **Dokumentation (Offline-Workflow beachten!)**\n    *   **Fotos:** Mehrere Fotos aus verschiedenen Perspektiven machen: Gesamtansicht des dunklen Bereichs, Detailaufnahmen der Leuchte (insbesondere der beschlagenen Abdeckung), des Mastes und der Absicherung.\n    *   **Fehlerbeschreibung:** Genaue Beschreibung des Zustands: Welche Leuchte(n) sind betroffen? Welche Beobachtungen wurden gemacht (z.B. beschlagene Abdeckung, keine sichtbaren Mastschäden)?\n    *   **Standort:** Genaue Positionsbestimmung (GPS-Koordinaten, Mastnummer, Hausnummern).\n    *   **Wetter/Umgebung:** Notieren der aktuellen Wetterbedingungen (Regen, Dämmerung) und der Verkehrsbelastung.\n    *   **Offline-Speicherung:** Da die Konnektivität \"spotty\" ist, alle Daten und Fotos lokal auf dem Gerät speichern und synchronisieren, sobald eine stabile Verbindung verfügbar ist.\n\n5.  **Eskalation (Nächste Schritte einleiten)**\n    *   **Sofortige Meldung:** Nach Abschluss der Absicherung und ersten Dokumentation die Störung an die zuständige Stelle melden (z.B. Leitstelle, Einsatzleitung), unter Angabe der Dringlichkeit (hohe Verkehrsbelastung, schlechte Sicht).\n    *   **Reparaturauftrag:** Einen detaillierten Reparaturauftrag mit allen gesammelten Informationen und Fotos erstellen.\n    *   **Priorisierung:** Aufgrund der hohen Verkehrsbelastung und schlechten Sichtverhältnisse die Reparatur als hoch priorisiert einstufen.\n\nBitte halten Sie sich strikt an die Sicherheitsvorschriften und melden Sie jede Unsicherheit oder unklare Situation umgehend.",
+    "tokens_estimate_words": 433
+  },
+  "judge": {
+    "test_id": "INC-LAMP-0010-ABL-NOASSET",
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Sehr starke Antwort: Safety-first klar priorisiert, strukturierte 5-Schritte-Checkliste, expliziter Offline-Workflow (spotty connectivity), klare Eskalationslogik passend zu severity=high + traffic_exposure=high. Nutzt Kontext vollständig (Foto, Wetter, Verkehr, connectivity). Keine Asset-ID, aber das ist durch NOASSET-Szenario erwartbar."
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 9.397
+  },
+  "error": {}
+}
