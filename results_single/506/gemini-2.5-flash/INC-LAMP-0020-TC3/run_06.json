@@ -1,0 +1,203 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0020-TC3",
+  "timestamp": "2026-08-06T21:16:13",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-18T02:30:29+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme im Regen: Laterne dunkel. Mastfuß steht in stehendem Wasser. Schaltbox-Dichtung möglicherweise beeinträchtigt.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4483691318\",\n    \"latitude\": 47.856655,\n    \"longitude\": 12.129258,\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"low_power_mode\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"rain\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-18T02:30:29+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme im Regen: Laterne dunkel. Mastfuß steht in stehendem Wasser. Schaltbox-Dichtung möglicherweise beeinträchtigt.",
+        "reporter": "dispatch"
+      },
+      "asset": {
+        "asset_osm": "n4483691318",
+        "latitude": 47.856655,
+        "longitude": 12.129258,
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "low_power_mode"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "rain",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0020",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "low_power_mode",
+      "low_battery": true,
+      "weather": "rain",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 981,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt bei Nacht, Regen und stehendem Wasser am Mastfuß erfordert höchste Priorität und Vorsicht. Bitte gehen Sie wie folgt vor:\n\n**Schritt-für-Schritt-Checkliste für den Außendienst:**\n\n1.  **Absicherung (Sicherheit & Verkehrssicherung):**\n    *   **Unverzüglich:** Sichern Sie den Arbeitsbereich großräumig ab, insbesondere aufgrund der schlechten Sichtverhältnisse (Nacht, Regen) und des stehenden Wassers am Mastfuß.\n    *   **Gefahrenbereich:** Betreten Sie den Bereich um den Mastfuß mit äußerster Vorsicht. Gehen Sie von einer potenziellen elektrischen Gefahr aus (Kurzschluss, Stromschlagrisiko durch Wasser).\n    *   **Persönliche Schutzausrüstung (PSA):** Stellen Sie sicher, dass Ihre PSA (insbesondere wasserdichte und isolierende Stiefel/Kleidung) korrekt angelegt ist.\n\n2.  **Sichtprüfung (Erste Einschätzung):**\n    *   **Bestätigung Ausfall:** Verifizieren Sie den Ausfall der Straßenlampe.\n    *   **Mastfuß & Umgebung:** Prüfen Sie das Ausmaß des stehenden Wassers am Mastfuß. Suchen Sie nach sichtbaren Beschädigungen am Mast, Kabeln oder der Umgebung, die auf die Ursache des Wassereintritts hindeuten könnten.\n    *   **Schaltbox:** Begutachten Sie die Schaltbox am Mast. Ist die Dichtung sichtbar beschädigt oder sitzt sie nicht korrekt? Gibt es Anzeichen von Wassereintritt (Kondenswasser, Nässe im Inneren, Korrosion)? **Achtung:** Öffnen Sie die Schaltbox nicht, wenn Sie eine elektrische Gefahr vermuten oder nicht entsprechend qualifiziert sind.\n\n3.  **Diagnose/Beobachtung (Fehlerursache eingrenzen):**\n    *   **Wassereintritt:** Das stehende Wasser am Mastfuß und die mögliche Beeinträchtigung der Schaltbox-Dichtung sind starke Indikatoren für einen Kurzschluss oder Feuchtigkeitsschaden im System.\n    *   **Umwelteinflüsse:** Berücksichtigen Sie die aktuellen Wetterbedingungen (Regen) und die schlechte Sicht bei der Einschätzung.\n    *   **Gerätestatus:** Ihr Gerät befindet sich im \"low_power_mode\". Beachten Sie dies für die Dokumentation, es ist jedoch keine Fehlerursache für das Asset.\n\n4.  **Dokumentation (Beweissicherung & Bericht):**\n    *   **Fotos:** Nutzen Sie die bereits vorhandenen Fotos und erstellen Sie bei Bedarf weitere Detailaufnahmen (Mastfuß, Schaltbox, Umgebung, Ausmaß des Wassers).\n    *   **Zustand:** Beschreiben Sie den Zustand präzise: Ausfall der Lampe, stehendes Wasser am Mastfuß, Zustand der Schaltbox-Dichtung, weitere sichtbare Schäden.\n    *   **Messwerte (falls möglich und sicher):** Falls Sie über die nötige Qualifikation und sichere Messgeräte verfügen, prüfen Sie die Spannung am Mast (unter strengster Einhaltung der Sicherheitsvorschriften).\n\n5.  **Eskalation (Nächste Schritte):**\n    *   **Priorität:** Aufgrund der hohen Dringlichkeit (Ausfall, elektrische Gefahr durch Wasser) und der potenziellen Beschädigung der Schaltbox-Dichtung ist eine sofortige Eskalation erforderlich.\n    *   **Fachpersonal:** Fordern Sie umgehend qualifiziertes Elektrofachpersonal an, um die elektrische Anlage zu prüfen, den Fehler zu beheben und die Sicherheit wiederherzustellen.\n    *   **Sperrung:** Bleibt die Gefahr bestehen, ist der Bereich bis zum Eintreffen des Fachpersonals gesperrt zu halten.",
+    "tokens_estimate_words": 386
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 4,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Asset-ID/OSM-Referenz in Dokumentation"
+    ],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung, PSA, Wassergefahr), strukturierte 5-Schritte-Checkliste mit klarer Eskalation bei severity=high. Kontext vollständig genutzt (Regen, Nacht, stehendes Wasser, Schaltbox-Dichtung, low_power_mode korrekt als Geräte-Status erkannt). Nur minimale Lücke: Asset-ID fehlt in Dokumentations-Checkliste.",
+    "test_id": "INC-LAMP-0020-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.431
+  },
+  "error": {}
+}
