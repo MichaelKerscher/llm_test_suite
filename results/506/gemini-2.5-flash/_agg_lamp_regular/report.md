@@ -1,4 +1,5 @@
-# Aggregation Report (506/gemini-2.5-flash) [lamp]
+# Aggregation Report (gemini-2.5-flash) [lamp]
+- judge_version filter: **judge_v1_1**
 - incident filter: **regular**
 - Tests (latest runs): **150**
 - Incidents with any deltas: **30**

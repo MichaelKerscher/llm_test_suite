@@ -16,6 +16,11 @@ load_dotenv()
 ENABLE_JUDGE_DEFAULT = os.getenv("TESTSUITE_ENABLE_JUDGE", "true").lower() == "true"
 RUN_MODE_DEFAULT = os.getenv("TESTSUITE_RUN_MODE", "incident").lower()  # testcase|incident
 
+# Separate result trees per judging protocol: the single-testcase runs must not
+# accumulate into the directories holding the incident-group runs, since the two
+# are not comparable and _next_run_index() would interleave them.
+RESULTS_ROOT = os.getenv("TESTSUITE_RESULTS_ROOT", "results")
+
 
 def _normalize_client_name(name: str) -> str:
     name = (name or "").strip().lower()
@@ -26,11 +31,12 @@ def _normalize_client_name(name: str) -> str:
 
 def _result_dir_for_client(client_name: str, model: str = "") -> str:
     model_slug = (model or "unknown").replace(":", "-").replace("/", "-")
-    return f"results/{client_name}/{model_slug}"
+    return f"{RESULTS_ROOT}/{client_name}/{model_slug}"
 
 
 def _safe_json_dumps(obj) -> str:
     return json.dumps(obj, ensure_ascii=False)
+
 
 def _final_prompt_for_log(client, prompt: str, context: dict | None) -> str:
     """
@@ -47,13 +53,25 @@ def _final_prompt_for_log(client, prompt: str, context: dict | None) -> str:
             return prompt
     return prompt
 
+
+def _is_client_error_answer(answer) -> bool:
+    """
+    companygpt_client.generate() swallows exceptions and returns them as the
+    answer string. Without this check a failed request would be logged as a
+    successful response and scored by the judge.
+    """
+    return isinstance(answer, str) and answer.startswith(
+        ("[CompanyGPT ERROR]", "[CompanyGPT]", "[CompanyGPT JUDGE ERROR]")
+    )
+
+
 # ----------------------------
 # Judge JSON robustness helpers
 # ----------------------------
 def _sanitize_judge_jsonish(text: str) -> str:
     """
     Makes 'almost JSON' from LLM outputs parseable:
-    - fixes mojibake smart quotes (â€ž â€œ â€ etc.)
+    - fixes mojibake smart quotes
     - normalizes unicode quotes
     - removes BOM
     - removes common trailing commas before } or ]
@@ -86,6 +104,17 @@ def _extract_first_json_array(text: str) -> str | None:
     s = text.strip()
     l = s.find("[")
     r = s.rfind("]")
+    if l != -1 and r != -1 and r > l:
+        return s[l : r + 1]
+    return None
+
+
+def _extract_first_json_object(text: str) -> str | None:
+    if not isinstance(text, str):
+        return None
+    s = text.strip()
+    l = s.find("{")
+    r = s.rfind("}")
     if l != -1 and r != -1 and r > l:
         return s[l : r + 1]
     return None
@@ -146,7 +175,7 @@ def _repair_unescaped_quotes_in_json_strings(s: str) -> str:
     return "".join(out)
 
 
-def _try_parse_judge_array(judge_out: str) -> list[dict] | None:
+def _try_parse_judge_array(judge_out) -> list[dict] | None:
     if not judge_out:
         return None
 
@@ -188,6 +217,64 @@ def _try_parse_judge_array(judge_out: str) -> list[dict] | None:
     try:
         obj = json.loads(repaired)
         return obj if isinstance(obj, list) else None
+    except Exception:
+        return None
+
+
+def _try_parse_judge_object(judge_out) -> dict | None:
+    """
+    Single-testcase counterpart to _try_parse_judge_array.
+
+    Accepts a JSON object, or an array whose first element is the object, so
+    that a judge assistant still emitting the array schema does not silently
+    produce a record without scores.
+    """
+    def _coerce(obj):
+        if isinstance(obj, dict):
+            return obj
+        if isinstance(obj, list) and obj and isinstance(obj[0], dict):
+            return obj[0]
+        return None
+
+    if judge_out is None:
+        return None
+    if isinstance(judge_out, (dict, list)):
+        return _coerce(judge_out)
+    if not isinstance(judge_out, str):
+        return None
+
+    s = _sanitize_judge_jsonish(judge_out)
+
+    # 1) direct parse
+    try:
+        return _coerce(json.loads(s))
+    except Exception:
+        pass
+
+    # 2) array path (judge may still wrap the single evaluation in a list)
+    arr = _try_parse_judge_array(s)
+    if arr:
+        return _coerce(arr)
+
+    # 3) extract first object, repair if needed
+    candidate = _extract_first_json_object(s)
+    if candidate:
+        candidate = _sanitize_judge_jsonish(candidate)
+        try:
+            return _coerce(json.loads(candidate))
+        except Exception:
+            repaired = _sanitize_judge_jsonish(
+                _repair_unescaped_quotes_in_json_strings(candidate)
+            )
+            try:
+                return _coerce(json.loads(repaired))
+            except Exception:
+                return None
+
+    # 4) last resort: repair whole text
+    repaired = _sanitize_judge_jsonish(_repair_unescaped_quotes_in_json_strings(s))
+    try:
+        return _coerce(json.loads(repaired))
     except Exception:
         return None
 
@@ -249,8 +336,9 @@ def _norm_test_id(s: str) -> str:
 # ----------------------------
 def _build_judge_prompt_single(tc: dict, assistant_answer: str, expected_elements: str, judge_context: dict | None = None) -> str:
     user_message = tc["input"]["prompt"]
-    # Use judge_context if provided (e.g. for S0_raw/S0_unstructured where context_for_model is None)
-    # Fall back to tc["input"]["context"] for all other strategies
+    # judge_context is supplied by the caller for every strategy: the model-facing
+    # context for S0/S1/S2, the original four-dimensional context for the two
+    # unstructured variants whose model-facing context is a derived string.
     context_json = judge_context if judge_context is not None else (tc["input"].get("context") or {})
     meta = tc["input"].get("meta") or {}
     asset_type = meta.get("asset_type", "unknown")
@@ -409,7 +497,8 @@ def _apply_s2_if_strategy(tc: dict, context: dict) -> tuple[dict, dict | None]:
 
     budget_chars = int(os.getenv("S2_BUDGET_CHARS", "3500"))
 
-    # Domain dispatch: signal assets have traffic_signals/button_operated keys
+    # Domain dispatch: signal assets have traffic_signals/button_operated keys.
+    # Operates on the context as loaded, before normalize_l2() prunes null leaves.
     ctx_asset = (context or {}).get("asset") or {}
     is_signal_domain = "traffic_signals" in ctx_asset or "button_operated" in ctx_asset
     if is_signal_domain:
@@ -447,12 +536,17 @@ def _resolve_prompt_and_context(prompt: str, context: dict, strategy: str) -> tu
 
 
 def run_testcase(tc: dict, enable_judge: bool | None = None):
+    """
+    Single-testcase mode: one generation, one judge call, one log record.
+
+    Each response is judged in isolation, without the other strategy variants
+    of the same incident being present in the judge prompt.
+    """
     enable_judge = ENABLE_JUDGE_DEFAULT if enable_judge is None else enable_judge
 
     test_id = tc["test_id"]
     client_name = _normalize_client_name(tc.get("client", "506"))
 
-    # FIX: use `or` so that None from loader correctly falls back to env var
     model = tc.get("model") or os.getenv("TESTSUITE_DEFAULT_MODEL", "gpt-4.1")
 
     input_data = tc["input"]
@@ -464,8 +558,9 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
     video_path = input_data.get("video_path")
 
     strategy = _strategy_of(tc)
+    suite_version = tc.get("suite_version", "v0.2")
 
-    # Save original L2_full context for judge reference BEFORE any transformation
+    # Original L2_full context, kept for judge reference BEFORE any transformation
     original_context = dict(context) if context else {}
 
     # ---- S2 hook ----
@@ -478,6 +573,8 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
         raise ValueError(f"Unbekannter Client: '{client_name}'")
     client = CLIENTS[client_name]
 
+    result_dir = _result_dir_for_client(client_name, model)
+
     # Reconstruct the prompt as the client composes it, so the log holds the
     # string actually sent to the model (including the [CONTEXT_JSON] block).
     final_prompt = _final_prompt_for_log(client, prompt, context_for_model)
@@ -487,6 +584,12 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
     judge_temp = float(os.getenv("TESTSUITE_JUDGE_TEMPERATURE", "0.0"))
     judge_mode = os.getenv("TESTSUITE_JUDGE_MODE", "BASIC")
     judge_version = os.getenv("TESTSUITE_JUDGE_VERSION", "judge_v1_0")
+
+    media_block = {
+        "image_path": image_path,
+        "audio_path": audio_path,
+        "video_path": video_path,
+    }
 
     start = time.perf_counter()
     answer = client.generate(
@@ -500,23 +603,96 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
     )
     runtime = round(time.perf_counter() - start, 3)
 
+    # ---- generation failure: log as error, do not judge ----
+    if _is_client_error_answer(answer):
+        print(f"[ERROR] {test_id}: generation failed -> {str(answer)[:200]}")
+        log_response(
+            test_id=test_id,
+            prompt=final_prompt,
+            response_text=answer,
+            model=model,
+            client=client_name,
+            runtime_seconds=runtime,
+            input_type=input_type,
+            result_dir=result_dir,
+            run_index=None,
+            suite_version=suite_version,
+            request_params={
+                "run_mode": "testcase",
+                "assistant_source_of_truth": True,
+                "context_strategy": strategy or "UNKNOWN",
+                "user_message": input_data.get("prompt"),
+                "judge_version": None,
+                "judge_model": None,
+                "judge_temperature": None,
+                "judge_mode": None,
+                **_s2_meta_to_request_params(None),
+            },
+            judge=None,
+            input_context=context_for_model,
+            media=media_block,
+            error={"stage": "generate", "message": str(answer)},
+        )
+        return
+
+    # ---- judging ----
     judge_out = None
     if has_judge:
         expected_elements = (input_data.get("meta") or {}).get("expected_elements_short", "")
-        # For S0_raw/S0_unstructured: pass original L2_full context so judge can evaluate context usage correctly
-        judge_context = original_context if strategy in ("S0_RAW", "S0_UNSTRUCTURED") else None
-        judge_prompt = _build_judge_prompt_single(tc, answer, expected_elements, judge_context=judge_context)
-        judge_out = client.judge(
+
+        # Mirror the incident-group mode: the judge sees the context the model
+        # received, except for the two unstructured variants, whose model-facing
+        # context is a derived string rather than the structured object.
+        if strategy in ("S0_RAW", "S0_UNSTRUCTURED"):
+            judge_context = original_context
+        else:
+            judge_context = context_for_model or {}
+
+        judge_prompt = _build_judge_prompt_single(
+            tc, answer, expected_elements, judge_context=judge_context
+        )
+        judge_raw = client.judge(
             prompt=judge_prompt,
             model=judge_model,
             temperature=judge_temp,
             selected_mode=judge_mode,
             internal_system_prompt=False,
         )
-        if isinstance(judge_out, str):
-            judge_out = _sanitize_judge_jsonish(judge_out)
 
-    result_dir = _result_dir_for_client(client_name, model)
+        # Raw judge artefact per test case, mirroring the per-incident artefact
+        # of group mode, so that the repair procedure stays auditable.
+        artifact_dir = os.path.join(result_dir, test_id)
+        os.makedirs(artifact_dir, exist_ok=True)
+        artifact_path = os.path.join(artifact_dir, "judge_raw.json")
+        with open(artifact_path, "w", encoding="utf-8") as f:
+            f.write(
+                judge_raw if isinstance(judge_raw, str)
+                else json.dumps(judge_raw, ensure_ascii=False, indent=2)
+            )
+
+        if _is_client_error_answer(judge_raw):
+            print(f"[ERROR] {test_id}: judge call failed -> {str(judge_raw)[:200]}")
+            judge_out = _score_block_to_expected_schema(
+                {
+                    "test_id": test_id,
+                    "missing_elements": ["judge_call_failed"],
+                    "short_justification": "Judge-Aufruf fehlgeschlagen; Fallback gesetzt.",
+                }
+            )
+        else:
+            parsed = _try_parse_judge_object(judge_raw)
+            if parsed is None:
+                print(f"[WARN] {test_id}: judge output could not be parsed (after repair).")
+                judge_out = _score_block_to_expected_schema(
+                    {
+                        "test_id": test_id,
+                        "missing_elements": ["judge_parse_failed"],
+                        "short_justification": "Judge-Ausgabe nicht parsebar; Fallback gesetzt.",
+                    }
+                )
+            else:
+                parsed.setdefault("test_id", test_id)
+                judge_out = _score_block_to_expected_schema(parsed)
 
     # Ablation variants also pass through the policy, so their audit trail
     # must be persisted as well.
@@ -533,9 +709,10 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
         input_type=input_type,
         result_dir=result_dir,
         run_index=None,
-        suite_version=tc.get("suite_version", "v0.1"),
+        suite_version=suite_version,
         request_params={
             "run_mode": "testcase",
+            "incident_id": (input_data.get("meta") or {}).get("incident_id", "UNKNOWN"),
             "assistant_source_of_truth": True,
             "context_strategy": strategy or "UNKNOWN",
             # Kept separate from `prompt`, which now carries the composed form.
@@ -548,16 +725,16 @@ def run_testcase(tc: dict, enable_judge: bool | None = None):
         },
         judge=judge_out,
         input_context=context_for_model,
-        media={
-            "image_path": image_path,
-            "audio_path": audio_path,
-            "video_path": video_path,
-        },
+        media=media_block,
         error=None,
     )
 
 
 def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
+    """
+    Incident-group mode: all strategy variants of one incident are generated
+    first and judged together in a single judge request.
+    """
     enable_judge = ENABLE_JUDGE_DEFAULT if enable_judge is None else enable_judge
     if not testcases:
         return
@@ -572,7 +749,6 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
         raise ValueError(f"Unbekannter Client: '{client_name}'")
     client = CLIENTS[client_name]
 
-    # FIX: use `or` so that None from loader correctly falls back to env var
     default_model = testcases[0].get("model") or os.getenv("TESTSUITE_DEFAULT_MODEL", "gpt-4.1")
 
     has_judge = enable_judge and hasattr(client, "judge")
@@ -597,7 +773,6 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
         input_data = tc["input"]
         test_id = tc["test_id"]
 
-        # FIX: use `or` so that None from loader correctly falls back to default_model
         model = tc.get("model") or default_model
 
         strategy = _strategy_of(tc)
@@ -624,6 +799,9 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
         )
         runtimes[test_id] = round(time.perf_counter() - start, 3)
 
+        if _is_client_error_answer(ans):
+            print(f"[ERROR] {test_id}: generation failed -> {str(ans)[:200]}")
+
         generated.append(
             {
                 "test_id": test_id,
@@ -636,6 +814,7 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
                 "model": model,
                 "selection_meta": selection_meta,
                 "strategy": strategy,
+                "generation_failed": _is_client_error_answer(ans),
             }
         )
 
@@ -721,10 +900,10 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
                 }
             )
 
-        # Ablation variants also pass through the policy, so their audit trail
-        # must be persisted as well.
         is_s2_variant = strategy == "S2" or strategy.startswith("S2_ABL_")
         s2_params = _s2_meta_to_request_params(selection_meta if is_s2_variant else None)
+
+        gen_failed = bool(row.get("generation_failed"))
 
         log_response(
             test_id=test_id,
@@ -736,7 +915,7 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
             input_type=input_data.get("type", "text"),
             result_dir=out_dir,
             run_index=None,
-            suite_version=tc.get("suite_version", "v0.1"),
+            suite_version=tc.get("suite_version", "v0.2"),
             request_params={
                 "run_mode": "incident",
                 "incident_id": incident_id,
@@ -757,7 +936,7 @@ def run_incident_group(testcases: list[dict], enable_judge: bool | None = None):
                 "audio_path": input_data.get("audio_path"),
                 "video_path": input_data.get("video_path"),
             },
-            error=None,
+            error={"stage": "generate", "message": str(row["answer"])} if gen_failed else None,
         )
 
     if has_judge and judge_raw_clean and not judge_array:
