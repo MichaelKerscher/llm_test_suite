@@ -1,0 +1,184 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-SIGNAL-0019-TC3",
+  "timestamp": "2026-08-07T16:15:39",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Ampelphasen passen nicht zum Verkehr; Rückstau/Beinahe-Situationen. (Richtung: backward; Hauptverkehrszeit / hoher Verkehr).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"timing_issue\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-19T02:05:35+01:00\",\n    \"reporter\": \"patrol\",\n    \"photo_description\": \"Stark verkürzte Grünphase erkennbar, Fußgänger überqueren bei Rot. Sicherheitskritisch.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n6896979362\",\n    \"longitude\": 12.0934822,\n    \"latitude\": 47.8492581\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"rush_hour\",\n    \"traffic_exposure\": \"high\",\n    \"weather\": \"rain\",\n    \"noise_level\": \"medium\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\",\n    \"SICHERHEITSHINWEIS: fault_type=timing_issue / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "timing_issue",
+        "severity": "high",
+        "reported_at": "2026-01-19T02:05:35+01:00",
+        "reporter": "patrol",
+        "photo_description": "Stark verkürzte Grünphase erkennbar, Fußgänger überqueren bei Rot. Sicherheitskritisch."
+      },
+      "asset": {
+        "asset_osm": "n6896979362",
+        "longitude": 12.0934822,
+        "latitude": 47.8492581
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "rush_hour",
+        "traffic_exposure": "high",
+        "weather": "rain",
+        "noise_level": "medium"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.",
+        "SICHERHEITSHINWEIS: fault_type=timing_issue / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-SIGNAL-0019",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampelphasen passen nicht zum Verkehr; Rückstau/Beinahe-Situationen. (Richtung: backward; Hauptverkehrszeit / hoher Verkehr).",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": true,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": false,
+      "spotty": true,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": true,
+      "night": false,
+      "bad_weather": true,
+      "high_traffic": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 998,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P1",
+        "reason": "high-traffic-env"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein Ampelphasenproblem, besonders während der Hauptverkehrszeit und mit Beinahe-Situationen, erfordert schnelles und strukturiertes Handeln. Hier ist die Schritt-für-Schritt-Checkliste:\n\n**1. Absicherung (Priorität: Sicherheit und Verkehrssicherung)**\n*   **Einsatzfahrzeug positionieren:** Sichern Sie die Einsatzstelle mit eingeschalteter Warnblinkanlage ab, um den nachfolgenden Verkehr frühzeitig zu warnen.\n*   **Warneinrichtungen aufstellen:** Platzieren Sie Warndreiecke oder mobile Warnleuchten in ausreichender Entfernung vor der Kreuzung, insbesondere in der betroffenen Richtung (\"backward\").\n*   **Verkehr beobachten:** Beurteilen Sie die aktuelle Verkehrssituation. Bei akuter Gefahr oder Eskalation der Beinahe-Situationen ist eine manuelle Verkehrsregelung in Betracht zu ziehen, bis weitere Kräfte eintreffen.\n*   **Fußgänger schützen:** Besondere Aufmerksamkeit gilt den Fußgängern, die laut Beschreibung bei Rot überqueren. Sichern Sie deren Querungsbereiche zusätzlich ab oder weisen Sie sie auf die Gefahr hin.\n\n**2. Sichtprüfung**\n*   **Signalgeber:** Überprüfen Sie alle Signalgeber auf physische Beschädigungen, korrekte Ausrichtung und Funktion (keine dunklen oder flackernden Lichter).\n*   **Detektoren/Schleifen:** Falls sichtbar, kontrollieren Sie Induktionsschleifen oder andere Detektoren auf offensichtliche Beschädigungen im Fahrbahnbereich.\n*   **Umgebung:** Achten Sie auf Sichtbehinderungen, defekte Beschilderungen oder andere Faktoren, die die Verkehrssicherheit zusätzlich beeinträchtigen könnten.\n\n**3. Diagnose/Beobachtung**\n*   **Phasenablauf analysieren:** Beobachten Sie den vollständigen Ampelphasenablauf an der Kreuzung über mehrere Zyklen hinweg.\n    *   Bestätigen Sie die \"stark verkürzte Grünphase\" in der Richtung \"backward\".\n    *   Prüfen Sie, ob andere Richtungen ungewöhnlich lange Grünphasen oder andere Fehlfunktionen aufweisen.\n    *   Beurteilen Sie den Rückstau und die Beinahe-Situationen quantitativ (z.B. Länge des Rückstaus, Häufigkeit der kritischen Situationen).\n*   **Umwelteinflüsse:** Berücksichtigen Sie die aktuellen Bedingungen wie \"rush_hour\", \"high traffic exposure\", \"rain\" und \"poor_visibility\", die die Situation verschärfen.\n\n**4. Dokumentation**\n*   **Standort:** Erfassen Sie den genauen Standort (Asset-ID: `n6896979362`, Longitude: `12.0934822`, Latitude: `47.8492581`).\n*   **Fehlerbeschreibung:** Beschreiben Sie den Fehler detailliert: \"Stark verkürzte Grünphase in Richtung 'backward' während der Hauptverkehrszeit, führt zu Rückstau und Beinahe-Situationen. Fußgänger überqueren bei Rot.\"\n*   **Beweismittel:** Machen Sie Fotos oder Videos von der verkürzten Grünphase, dem Rückstau und den Fußgängern bei Rot.\n*   **Zeitstempel:** Notieren Sie den genauen Zeitpunkt der Beobachtung und der Dokumentation.\n*   **Konnektivität beachten:** Da die Gerätekonnektivität \"spotty\" ist, stellen Sie sicher, dass alle Daten lokal gespeichert und erst bei stabiler Verbindung synchronisiert werden.\n\n**5. Eskalation**\n*   **Sofortige Meldung an Leitstelle:** Kontaktieren Sie umgehend die zuständige Leitstelle/Verkehrsmanagementzentrale.\n*   **Priorisierung:** Betonen Sie die hohe Dringlichkeit und Sicherheitsrelevanz des Vorfalls (`severity: high`, \"Sicherheitskritisch\").\n*   **Informationen übermitteln:** Geben Sie alle gesammelten Informationen weiter:\n    *   Genauer Standort\n    *   Art des Fehlers (Ampelphasenproblem, verkürzte Grünphase)\n    *   Beobachtete Auswirkungen (Rückstau, Beinahe-Situationen, Fußgänger bei Rot)\n    *   Bereits getroffene Absicherungsmaßnahmen\n    *   Aktuelle Umweltbedingungen (Hauptverkehrszeit, Regen, schlechte Sicht)\n*   **Unterstützung anfordern:** Fordern Sie bei Bedarf weitere Unterstützung an (z.B. Polizei zur Verkehrsregelung, Techniker zur sofortigen Störungsbehebung).",
+    "tokens_estimate_words": 423
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit konkreten Maßnahmen, nutzt alle Kontextdaten (spotty connectivity → lokale Speicherung, severity high → sofortige Eskalation, rush_hour/rain/poor_visibility berücksichtigt), vollständige Dokumentations-Checkliste inkl. Asset-ID/GPS, keine Halluzinationen.",
+    "test_id": "INC-SIGNAL-0019-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 13.718
+  },
+  "error": {}
+}

@@ -1,0 +1,184 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-SIGNAL-0011-TC3",
+  "timestamp": "2026-08-07T15:23:06",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Gehäuse beschädigt; Teile lose. Bitte umgehend sichern. (Richtung: forward).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"physical_damage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-17T19:41:26+01:00\",\n    \"reporter\": \"patrol\",\n    \"photo_description\": \"Sichtbare Beschädigung am Signalkopf, Gehäuse geöffnet oder verformt. Kabelisolierung teilweise freiliegend.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n6896979357\",\n    \"longitude\": 12.0965134,\n    \"latitude\": 47.8512715\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"night\",\n    \"traffic_exposure\": \"medium\",\n    \"weather\": \"clear\",\n    \"noise_level\": \"low\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=spotty und device.device_state=low_battery beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\",\n    \"SICHERHEITSHINWEIS: fault_type=physical_damage / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "physical_damage",
+        "severity": "high",
+        "reported_at": "2026-01-17T19:41:26+01:00",
+        "reporter": "patrol",
+        "photo_description": "Sichtbare Beschädigung am Signalkopf, Gehäuse geöffnet oder verformt. Kabelisolierung teilweise freiliegend."
+      },
+      "asset": {
+        "asset_osm": "n6896979357",
+        "longitude": 12.0965134,
+        "latitude": 47.8512715
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "night",
+        "traffic_exposure": "medium",
+        "weather": "clear",
+        "noise_level": "low"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=spotty und device.device_state=low_battery beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.",
+        "SICHERHEITSHINWEIS: fault_type=physical_damage / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-SIGNAL-0011",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Gehäuse beschädigt; Teile lose. Bitte umgehend sichern. (Richtung: forward).",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": false,
+      "spotty": true,
+      "low_battery": true,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": true,
+      "bad_weather": false,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1039,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P3",
+        "reason": "context-weather"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Verstanden. Hier ist die Checkliste für das Vorgehen bei beschädigtem Gehäuse und losen Teilen am Signalkopf (Richtung: forward) unter Berücksichtigung der hohen Dringlichkeit und der Umgebungsbedingungen (Nacht, schlechte Sicht, freiliegende Kabelisolierung):\n\n**1. Absicherung (Priorität: Sicherheit)**\n*   **Gefahrenbereich sofort absichern:** Warnblinkanlage einschalten, Warnweste tragen, Warndreieck/Leitkegel aufstellen, um den Bereich um den beschädigten Signalkopf großräumig abzusperren.\n*   **Verkehrssicherung gewährleisten:** Bei Ausfall des Signals oder unklarer Funktion die Kreuzung als unkontrolliert betrachten und den Verkehr entsprechend regeln oder auf die Gefahrenstelle hinweisen.\n*   **Eigenschutz beachten:** Abstand zu freiliegenden Kabeln halten.\n\n**2. Sichtprüfung (Umfassende Beurteilung)**\n*   **Schadensausmaß feststellen:** Genaue Art und Umfang der Beschädigung am Gehäuse des Signalkopfes (Richtung: forward) prüfen.\n*   **Lose Teile identifizieren:** Welche Teile sind lose? Besteht akute Absturzgefahr für Verkehrsteilnehmer?\n*   **Kabelisolierung prüfen:** Bestätigen, ob Kabelisolierungen freiliegen und ob dies eine elektrische Gefahr darstellt.\n*   **Funktion des Signals:** Leuchtet das Signal noch? Zeigt es korrekte Anzeigen? Gibt es Flackerlicht oder Ausfälle?\n\n**3. Diagnose/Beobachtung (Ursachen und Auswirkungen)**\n*   **Stabilität des Signalkopfes:** Ist der gesamte Signalkopf noch stabil befestigt oder droht er herabzufallen?\n*   **Potenzielle Ursache:** Gibt es Hinweise auf die Ursache der Beschädigung (z.B. Vandalismus, Kollision, Materialermüdung)?\n*   **Auswirkungen auf andere Komponenten:** Sind angrenzende Signalgeber oder die Maststruktur ebenfalls betroffen?\n\n**4. Dokumentation (Lokal speichern)**\n*   **Fotos machen:** Mehrere Fotos aus verschiedenen Perspektiven anfertigen, die den Schaden, die losen Teile und die Absicherung dokumentieren. (Hinweis: Bei schlechter Konnektivität und niedrigem Akkustand die wichtigsten Aufnahmen priorisieren und lokal speichern.)\n*   **Schadensbericht erstellen:** Genaue Beschreibung des Schadens, der Position (Längen- und Breitengrad), der Uhrzeit der Feststellung und der getroffenen Absicherungsmaßnahmen.\n*   **Offline-Workflow:** Dokumentation lokal auf dem Gerät speichern und bei besserer Konnektivität synchronisieren.\n\n**5. Eskalation (Dringende Meldung)**\n*   **Leitstelle umgehend informieren:** Sofortige Meldung an die Leitstelle über den hochkritischen Schaden (physische Beschädigung, lose Teile, freiliegende Kabelisolierung) und die Notwendigkeit einer umgehenden Reparatur/Austausch.\n*   **Spezialisten anfordern:** Anforderung von Elektrofachkräften oder einem Reparaturteam mit entsprechender Ausrüstung zur Behebung der Gefahr.\n*   **Weitere Anweisungen einholen:** Klärung des weiteren Vorgehens und der Dauer der Absicherung mit der Leitstelle.",
+    "tokens_estimate_words": 330
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Eskalations-Triggern, vollständige Dokumentations-Checkliste inkl. Offline-Workflow (spotty connectivity), nutzt alle Kontext-Elemente (severity=high, night, poor_visibility, freiliegende Kabel, low_battery). Keine Halluzinationen, alle erwartbaren Elemente erfüllt.",
+    "test_id": "INC-SIGNAL-0011-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.926
+  },
+  "error": {}
+}
