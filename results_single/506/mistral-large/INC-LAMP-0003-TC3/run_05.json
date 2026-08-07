@@ -1,0 +1,195 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0003-TC3",
+  "timestamp": "2026-08-07T10:09:53",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe leuchtet gar nicht mehr. Meldung kam über Bürgerhinweis.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-21T22:47:36+01:00\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4427359783\",\n    \"latitude\": 47.877481,\n    \"longitude\": 12.1049944,\n    \"name\": \"Westerndorf St. Peter, Schlößlstraße\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T22:47:36+01:00",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n4427359783",
+        "latitude": 47.877481,
+        "longitude": 12.1049944,
+        "name": "Westerndorf St. Peter, Schlößlstraße",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0003",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Lampe leuchtet gar nicht mehr. Meldung kam über Bürgerhinweis.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 920,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Okay, hier ist die Schritt-für-Schritt-Checkliste für den Ausfall der Straßenlampe in Westerndorf St. Peter, Schlößlstraße, basierend auf dem Bürgerhinweis und den vorliegenden Informationen:\n\n**Priorität: Sicherheit und Verkehrssicherung!**\n\n1.  **Absicherung der Einsatzstelle**\n    *   Fahrzeug sicher abstellen, Warnblinklicht einschalten.\n    *   Warnweste anlegen.\n    *   Da es Nacht ist und die Sicht schlecht ist: Arbeitsbereich mit Taschen-/Stirnlampe ausleuchten. Ggf. Warndreieck/Leitkegel aufstellen, um Passanten und Verkehr zu warnen.\n    *   Auf potenzielle Gefahren achten (z.B. offene Kabel, instabiler Mast).\n\n2.  **Sichtprüfung der Leuchte**\n    *   **Gesamtzustand:** Ist die Leuchte mechanisch beschädigt (Glasbruch, Gehäuse, Mast)?\n    *   **Kabel:** Sind sichtbare Kabel beschädigt, abgerissen oder freiliegend?\n    *   **Mastfußkasten:** Wenn sicher zugänglich, prüfen, ob die Sicherung ausgelöst hat oder ob sichtbare Schäden vorliegen. **Vorsicht bei Arbeiten am Mastfußkasten!**\n    *   **Umgebung:** Gibt es Anzeichen für Vandalismus, Anfahren oder andere Fremdeinwirkung? Ist die Leuchte durch Bewuchs oder Schmutz verdeckt?\n    *   **Umkreis:** Leuchten andere Lampen in der Nähe? Ein Ausfall mehrerer Lampen könnte auf einen übergeordneten Stromkreisausfall hindeuten.\n\n3.  **Diagnose und Beobachtung**\n    *   **Leuchtmitteltyp:** Wenn erkennbar, den Typ des Leuchtmittels identifizieren (z.B. LED, Natriumdampf).\n    *   **Geräusche/Gerüche:** Gibt es ungewöhnliche Geräusche (Brummen, Knistern) oder Gerüche (Schmorgeruch) an der Leuchte oder im Mastfußkasten?\n    *   **Spannung:** Wenn die Situation es zulässt und die persönliche Schutzausrüstung vorhanden ist: Spannung am Leuchtenanschluss messen (Phasenprüfer/Multimeter).\n\n4.  **Dokumentation (Offline-fähig)**\n    *   Da die Konnektivität \"spotty\" ist und der Akkustand \"low_battery\":\n        *   Alle Informationen **lokal in der App** erfassen (Offline-Workflow).\n        *   **Fotos machen:** Gesamtansicht der Lampe, Detailbilder von Schäden, ggf. Mastfußkasten.\n        *   **Standort:** Die GPS-Daten (47.877481, 12.1049944) sind bekannt, diese in der Dokumentation bestätigen.\n        *   **Beschreibung:** Genaue Beschreibung des Schadens, der durchgeführten Prüfungen und der Beobachtungen.\n        *   **Uhrzeit:** Zeitpunkt der Feststellung und der durchgeführten Maßnahmen notieren.\n        *   **Synchronisation:** Die Daten später synchronisieren, sobald eine stabile Verbindung verfügbar ist und der Akku geladen wurde.\n\n5.  **Eskalation**\n    *   **Gefahr im Verzug:** Bei offenen Kabeln, umgestürztem Mast oder anderen unmittelbaren Gefahren: **Sofortige Meldung an die Leitstelle/Notdienst!**\n    *   **Komplexe Fehler:** Wenn der Fehler nicht vor Ort behoben werden kann (z.B. Erdkabelfehler, defektes Vorschaltgerät ohne Ersatzteil, fehlende Spezialwerkzeuge): Weiterleitung an die zuständige Fachabteilung oder einen Elektriker.\n    *   **Abschlussmeldung:** Nach Abschluss der Vor-Ort-Prüfung und Dokumentation den Status und die empfohlenen nächsten Schritte an die zuständige Stelle melden.",
+    "tokens_estimate_words": 358
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Eskalationstriggern, expliziter Offline-Workflow wegen spotty connectivity und low battery, vollständige Dokumentations-Checkliste inkl. GPS/Fotos/Zeitstempel, keine Halluzinationen, alle Kontextfaktoren (Nacht, poor visibility, low traffic, device state) sinnvoll integriert.",
+    "test_id": "INC-LAMP-0003-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 13.963
+  },
+  "error": {}
+}

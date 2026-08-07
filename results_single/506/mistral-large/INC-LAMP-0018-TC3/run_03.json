@@ -1,0 +1,182 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0018-TC3",
+  "timestamp": "2026-08-07T09:07:55",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Hinweis auf Steuerungsproblem: Segment fällt zeitgleich aus.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"control_box_issue\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-20T18:31:50+01:00\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n12520351647\",\n    \"latitude\": 47.8502243,\n    \"longitude\": 12.1179478\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"fog\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"medium\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "control_box_issue",
+        "severity": "medium",
+        "reported_at": "2026-01-20T18:31:50+01:00",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n12520351647",
+        "latitude": 47.8502243,
+        "longitude": 12.1179478
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "fog",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0018",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Hinweis auf Steuerungsproblem: Segment fällt zeitgleich aus.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "control_box_issue",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "fog",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 677,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein segmentweiser Ausfall deutet stark auf ein zentrales Steuerungsproblem hin. Angesichts der schlechten Sichtverhältnisse (Nacht, Nebel) ist höchste Vorsicht geboten.\n\nHier ist die Schritt-für-Schritt-Checkliste für den Einsatz vor Ort:\n\n1.  **Absicherung (Sicherheit geht vor!)**\n    *   **Eigenschutz:** Warnweste tragen, Arbeitsbereich mit Warndreieck/Blitzleuchte absichern.\n    *   **Verkehrssicherung:** Bei mittlerem Verkehrsaufkommen und schlechter Sicht prüfen, ob zusätzliche Absicherung (z.B. durch Polizei bei starker Verkehrsgefährdung) notwendig ist.\n    *   **Gefahrenbereich:** Abstand zu potenziell spannungsführenden Teilen halten.\n\n2.  **Sichtprüfung (Erste Einschätzung)**\n    *   **Steuerungsschrank:** Prüfen, ob der Schaltschrank offensteht, beschädigt ist oder Anzeichen von Vandalismus aufweist.\n    *   **Sicherungen/LS-Schalter:** Im Steuerungsschrank prüfen, ob Sicherungen ausgelöst oder Leitungsschutzschalter (LS) gefallen sind.\n    *   **Kabel/Anschlüsse:** Sichtprüfung auf offensichtliche Kabelbrüche, lose Verbindungen oder Beschädigungen im Bereich des Steuerungsschrankes.\n    *   **Umgebung:** Auffälligkeiten in der direkten Umgebung, die auf eine Störung hindeuten könnten (z.B. Bauarbeiten, Unfälle).\n\n3.  **Diagnose/Beobachtung (Fehlerursache eingrenzen)**\n    *   **Stromversorgung:** Prüfen, ob der Steuerungsschrank mit Strom versorgt wird (z.B. über Prüfgerät, falls vorhanden und sicher).\n    *   **Steuerungseinheit:** Statusanzeigen oder Fehlermeldungen an der Steuerungseinheit (z.B. SPS, Zeitschaltuhr, DALI-Controller) ablesen.\n    *   **Kommunikation:** Wenn vorhanden, Kommunikationsmodule (z.B. für Fernwartung) auf Statusleuchten prüfen.\n    *   **Fehlerbild:** Genaue Beobachtung des Ausfalls: Sind alle Leuchten im Segment komplett aus, flackern sie, oder zeigen sie ein ungewöhnliches Verhalten?\n\n4.  **Dokumentation**\n    *   **Fotos:** Detailfotos vom Steuerungsschrank (innen/außen), ausgelösten Sicherungen, Fehlermeldungen und der Gesamtsituation vor Ort machen.\n    *   **Protokoll:** Genaue Uhrzeit des Eintreffens, Beobachtungen, durchgeführte Maßnahmen und festgestellte Auffälligkeiten notieren.\n    *   **Standort:** Bestätigung der Asset-ID (`n12520351647`) und der genauen Koordinaten (`47.8502243, 12.1179478`).\n\n5.  **Eskalation**\n    *   **Sofortige Meldung:** Bei unklarer Ursache, nicht behebbarer Störung oder wenn die Verkehrssicherheit weiterhin stark beeinträchtigt ist, umgehend an die Leitstelle/Fachabteilung eskalieren.\n    *   **Spezialisten anfordern:** Wenn der Fehler auf eine komplexe Steuerungsproblematik hindeutet, die über die Möglichkeiten der Erstmaßnahme hinausgeht, Fachpersonal für Steuerungstechnik anfordern.\n    *   **Priorität:** Aufgrund der schlechten Sichtverhältnisse und der potenziellen Verkehrsgefährdung ist eine schnelle Lösung oder weitere Absicherung zwingend erforderlich.",
+    "tokens_estimate_words": 304
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert mit Absicherung bei Nebel/Nacht, strukturierte Schrittfolge (Absicherung→Diagnose→Doku→Eskalation), nutzt Kontext optimal (fog/night/medium traffic → Verkehrssicherung, online → keine Offline-Workflows nötig), vollständige Dokumentation inkl. Asset-ID/GPS, klare Eskalationstrigger bei Unklarheit/Verkehrsgefährdung.",
+    "test_id": "INC-LAMP-0018-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.997
+  },
+  "error": {}
+}

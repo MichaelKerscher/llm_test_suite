@@ -1,0 +1,196 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0030-TC3",
+  "timestamp": "2026-08-07T08:43:36",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-18T10:05:03+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerungsaufnahme: Laterne aktuell an. Mast mit leichten Verschmutzungen. Keine strukturellen Schäden erkennbar.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n11833818322\",\n    \"latitude\": 47.8537208,\n    \"longitude\": 12.136073\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"medium\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-18T10:05:03+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerungsaufnahme: Laterne aktuell an. Mast mit leichten Verschmutzungen. Keine strukturellen Schäden erkennbar.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n11833818322",
+        "latitude": 47.8537208,
+        "longitude": 12.136073
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0030",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "intermittent",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1136,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein sporadischer Fehler an einer Straßenlampe erfordert eine systematische Vorgehensweise. Hier ist eine Schritt-für-Schritt-Checkliste für den Außendienst, die Sicherheit und Verkehrssicherung priorisiert:\n\n**Checkliste für sporadischen Lampenfehler (Lampe war aus, ist jetzt an)**\n\n**1. Absicherung der Einsatzstelle**\n*   **Verkehrssicherung:** Bei Arbeiten im öffentlichen Verkehrsraum umgehend geeignete Warnkleidung tragen und die Arbeitsstelle gemäß den Vorschriften (z.B. RSA) absichern (Warnbake, Leitkegel, Blitzleuchte).\n*   **Persönliche Schutzausrüstung (PSA):** Helm, Sicherheitsschuhe, Handschuhe und ggf. weitere PSA anlegen.\n*   **Gefahrenbereich:** Sicherstellen, dass keine Gefahr für Passanten oder den Verkehr besteht.\n\n**2. Sichtprüfung (bei aktuell leuchtender Lampe)**\n*   **Allgemeinzustand:**\n    *   Ist der Mast stabil? (Laut Foto: keine strukturellen Schäden erkennbar).\n    *   Sind Kabel sichtbar beschädigt oder freiliegend?\n    *   Gibt es Anzeichen von Vandalismus oder mechanischer Beschädigung an Leuchtenkopf oder Mast?\n    *   Sind die Verschmutzungen am Mast (laut Foto) relevant für die Funktion oder nur optischer Natur?\n*   **Leuchtenkopf:**\n    *   Ist die Abdeckung intakt?\n    *   Sind Fremdkörper (z.B. Nester, Laub) im Leuchtenkopf sichtbar?\n    *   Gibt es Anzeichen von Überhitzung (Verfärbungen, Schmelzspuren)?\n*   **Umgebung:**\n    *   Gibt es in der Nähe Bäume oder Sträucher, die die Lampe verdecken oder bei Wind Kontakt haben könnten?\n    *   Sind andere Lampen in der Umgebung betroffen oder zeigen ähnliche Symptome?\n\n**3. Diagnose und Beobachtung (Fokus auf sporadischen Fehler)**\n*   **Schaltzeiten:** Prüfen, ob die Lampe zu den erwarteten Zeiten schaltet. (Annahme: Die Lampe war während der Dämmerung aus und ist jetzt wieder an, was auf ein Problem mit der Schaltuhr oder dem Dämmerungsschalter hindeuten könnte).\n*   **Dämmerungsschalter/Steuerung:**\n    *   Wenn vorhanden: Dämmerungsschalter auf Verschmutzung oder Beschädigung prüfen.\n    *   Wenn zentral gesteuert: Prüfen, ob die Lampe auf manuelle Schaltbefehle reagiert (falls über das System möglich).\n*   **Wackelkontakt/Verbindungen:**\n    *   Sichtprüfung der Zugentlastungen und Klemmen im Mastfuß und im Leuchtenkopf (nur nach Freischaltung!).\n    *   Leichte Bewegung am Mast oder Leuchtenkopf kann manchmal einen Wackelkontakt provozieren (Vorsicht!).\n*   **Spannungsmessung (falls möglich und sicher):**\n    *   Spannung am Leuchtenanschluss messen, wenn der Fehler auftritt (oder simuliert werden kann).\n    *   Stromaufnahme messen.\n*   **Fehlerprotokoll der Lampe (falls Smart-Lampe):** Wenn die Lampe über eine Smart-City-Anbindung verfügt, das Fehlerprotokoll auslesen. (Laut Kontext ist die Konnektivität des Techniker-Geräts \"spotty\", nicht unbedingt die der Lampe selbst).\n\n**4. Dokumentation**\n*   **App/Formular:** Alle Beobachtungen, durchgeführten Prüfungen und Messwerte detailliert in der Außendienst-App oder auf dem entsprechenden Formular festhalten.\n*   **Fotos:** Zusätzliche Fotos von Auffälligkeiten machen (z.B. beschädigte Kabel, verschmutzter Dämmerungsschalter). Das vorhandene Dämmerungsfoto ist bereits ein guter Startpunkt.\n*   **Konnektivität beachten:** Da die Konnektivität \"spotty\" ist, sicherstellen, dass die Dokumentation offlinefähig ist und später synchronisiert wird. Fotos lokal speichern.\n*   **Standort:** Die genaue Position (Latitude: 47.8537208, Longitude: 12.136073, OSM: n11833818322) bestätigen.\n*   **Zeitpunkt:** Den genauen Zeitpunkt der Beobachtung und der durchgeführten Maßnahmen notieren.\n\n**5. Eskalation**\n*   **Keine eindeutige Ursache gefunden:** Wenn trotz gründlicher Prüfung keine eindeutige Ursache für den sporadischen Fehler gefunden werden kann, den Vorfall als \"sporadisch, Ursache unklar\" dokumentieren und zur weiteren Beobachtung oder für eine detailliertere Analyse durch einen Spezialisten eskalieren.\n*   **Sicherheitsrisiko:** Bei Feststellung eines unmittelbaren Sicherheitsrisikos (z.B. freiliegende Kabel, Mastbruchgefahr) sofort die Lampe außer Betrieb nehmen (freischalten) und die Gefahrenstelle absichern. Umgehende Meldung an die zuständige Stelle für eine Notfallreparatur.\n*   **Wiederkehrender Fehler:** Wenn der Fehler nach einer Reparatur erneut auftritt, ist eine tiefergehende Analyse (z.B. Austausch von Komponenten, Überprüfung der Zuleitung) erforderlich.",
+    "tokens_estimate_words": 528
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 4,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert, strukturierte Schrittfolge mit Fokus auf sporadischen Fehler (Dämmerungsschalter/Steuerung), expliziter Offline-Workflow bei spotty connectivity, umfassende Dokumentation inkl. Asset-ID/GPS, klare Eskalationskriterien. Minimaler Abzug bei H wegen leicht umfangreicher Struktur, aber alle Schritte sind umsetzbar und priorisiert.",
+    "test_id": "INC-LAMP-0030-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.32
+  },
+  "error": {}
+}
