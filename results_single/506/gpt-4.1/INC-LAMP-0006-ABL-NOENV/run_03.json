@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0006-ABL-NOENV",
+  "timestamp": "2026-08-08T21:11:31",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-19T01:52:56+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Aufnahme bei Sturm/Dämmerung: Laterne dunkel, Mast leicht geneigt. Schaltbox-Deckel leicht geöffnet – mögliche Sturmeinwirkung.\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n7230270217\",\n    \"latitude\": 47.8493667,\n    \"longitude\": 12.0941951,\n    \"name\": \"Rosenheim, Äußere Münchener Straße/Aicherpark\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"low_battery\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-19T01:52:56+01:00",
+        "photo_available": true,
+        "photo_description": "Aufnahme bei Sturm/Dämmerung: Laterne dunkel, Mast leicht geneigt. Schaltbox-Deckel leicht geöffnet – mögliche Sturmeinwirkung.",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n7230270217",
+        "latitude": 47.8493667,
+        "longitude": 12.0941951,
+        "name": "Rosenheim, Äußere Münchener Straße/Aicherpark",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "low_battery"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0006-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1047,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die dunkle Straßenlampe und das Gefühl der Unsicherheit erfordern ein schnelles und strukturiertes Vorgehen. Die leichte Neigung des Mastes und der offene Schaltkasten sind kritische Hinweise.\n\nHier ist Ihre Schritt-für-Schritt-Checkliste:\n\n### 1. Absicherung und Verkehrssicherung (Priorität: Hoch)\n*   **Gefahrenbereich absperren:** Sichern Sie den Bereich um die Straßenlampe großräumig ab, insbesondere aufgrund des leicht geneigten Mastes und des offenen Schaltkastens. Verwenden Sie hierfür Warndreiecke, Warnbaken oder Absperrband.\n*   **Passanten fernhalten:** Stellen Sie sicher, dass sich keine Personen dem Mast oder dem Schaltkasten nähern.\n*   **Verkehrssicherheit gewährleisten:** Falls die Lampe an einer verkehrsreichen Stelle steht, prüfen Sie, ob zusätzliche Maßnahmen zur Verkehrssicherung (z.B. Warnleuchten, temporäre Beschilderung) erforderlich sind, um Unfälle zu vermeiden.\n\n### 2. Sichtprüfung (Ohne direkten Kontakt zum Asset)\n*   **Gesamtzustand des Mastes:** Prüfen Sie die Neigung des Mastes genauer. Gibt es Risse im Fundament oder am Mast selbst?\n*   **Schaltkasten:** Begutachten Sie den offenen Deckel des Schaltkastens. Sind Kabel sichtbar oder beschädigt? Gibt es Anzeichen von Wassereintritt oder Kurzschluss (z.B. Brandspuren)?\n*   **Umgebung:** Suchen Sie nach weiteren Sturmschäden in der unmittelbaren Umgebung, die die Ursache sein könnten (z.B. umgestürzte Bäume, herabgefallene Äste, beschädigte Leitungen).\n*   **Leuchtmittel/Leuchtenkopf:** Ist äußerlich eine Beschädigung am Leuchtenkopf oder Glas erkennbar?\n\n### 3. Diagnose/Beobachtung\n*   **Fehlerursache eingrenzen:** Basierend auf der Sichtprüfung:\n    *   **Mechanische Beschädigung:** Die Mastneigung und der offene Schaltkasten deuten stark auf Sturmeinwirkung oder Vandalismus hin.\n    *   **Elektrischer Fehler:** Ein offener Schaltkasten birgt die Gefahr eines Kurzschlusses oder einer Unterbrechung der Stromzufuhr.\n*   **Keine eigenmächtigen Reparaturversuche:** Führen Sie keine Reparaturen am Schaltkasten oder Mast durch, da dies lebensgefährlich sein kann.\n\n### 4. Dokumentation (Offline-Workflow beachten!)\n*   **Fotos:** Machen Sie detaillierte Fotos vom geneigten Mast, dem offenen Schaltkasten, eventuellen Kabelschäden und der gesamten Situation vor Ort. Nutzen Sie die bereits vorhandene Aufnahme als Referenz, aber erstellen Sie aktuelle Bilder.\n*   **Notizen:** Halten Sie alle Beobachtungen schriftlich fest:\n    *   Genaue Uhrzeit der Feststellung.\n    *   Beschreibung der Absicherungsmaßnahmen.\n    *   Detaillierte Beschreibung der Schäden (Mastneigung, Zustand des Schaltkastens, sichtbare Kabel, Umgebungsschäden).\n    *   Wetterbedingungen zum Zeitpunkt der Feststellung (relevant für Sturmschäden).\n*   **Offline-Speicherung:** Da Ihr Gerät offline ist, stellen Sie sicher, dass alle Fotos und Notizen lokal auf Ihrem Gerät gespeichert werden und später synchronisiert werden können.\n\n### 5. Eskalation (Priorität: Hoch)\n*   **Sofortige Meldung:** Informieren Sie umgehend die zuständige Leitstelle oder den Bereitschaftsdienst.\n*   **Dringlichkeit betonen:** Weisen Sie explizit auf die hohe Dringlichkeit hin, insbesondere wegen:\n    *   **Gefahr durch Strom:** Offener Schaltkasten.\n    *   **Strukturelle Gefahr:** Leicht geneigter Mast.\n    *   **Verkehrssicherheit:** Unsicherer Bereich.\n    *   **Dunkelheit:** Seit 90 Minuten dunkel, was die Unsicherheit verstärkt.\n*   **Standortdaten übermitteln:** Geben Sie die genauen Koordinaten (47.8493667, 12.0941951) und die Asset-Bezeichnung \"Rosenheim, Äußere Münchener Straße/Aicherpark\" durch.\n*   **Folgeauftrag anfordern:** Bitten Sie um Entsendung eines Fachpersonals zur Behebung der Störung und zur Sicherung des Mastes/Schaltkastens.",
+    "tokens_estimate_words": 449
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absperrung, Passanten fernhalten), strukturierte Schrittfolge mit klaren Eskalations-Triggern (offener Schaltkasten, geneigter Mast), Offline-Workflow explizit berücksichtigt (lokale Speicherung, spätere Sync), vollständige Dokumentations-Checkliste (Fotos, Notizen, Koordinaten, Asset-ID), nutzt alle Context-Elemente korrekt (severity=high, photo_available, connectivity=offline, Sturm-Hinweis aus photo_description), keine Halluzinationen.",
+    "test_id": "INC-LAMP-0006-ABL-NOENV"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.2
+  },
+  "error": {}
+}

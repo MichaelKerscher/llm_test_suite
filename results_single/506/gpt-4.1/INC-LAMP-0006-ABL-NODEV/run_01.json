@@ -1,0 +1,191 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0006-ABL-NODEV",
+  "timestamp": "2026-08-08T20:09:55",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-19T01:52:56+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Aufnahme bei Sturm/Dämmerung: Laterne dunkel, Mast leicht geneigt. Schaltbox-Deckel leicht geöffnet – mögliche Sturmeinwirkung.\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n7230270217\",\n    \"latitude\": 47.8493667,\n    \"longitude\": 12.0941951,\n    \"name\": \"Rosenheim, Äußere Münchener Straße/Aicherpark\",\n    \"lit\": \"yes\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"storm\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-19T01:52:56+01:00",
+        "photo_available": true,
+        "photo_description": "Aufnahme bei Sturm/Dämmerung: Laterne dunkel, Mast leicht geneigt. Schaltbox-Deckel leicht geöffnet – mögliche Sturmeinwirkung.",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n7230270217",
+        "latitude": 47.8493667,
+        "longitude": 12.0941951,
+        "name": "Rosenheim, Äußere Münchener Straße/Aicherpark",
+        "lit": "yes"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "storm",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0006-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NODEV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "unknown",
+      "device_state": "unknown",
+      "low_battery": false,
+      "weather": "storm",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 782,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Hier ist eine Schritt-für-Schritt-Checkliste für den Vor-Ort-Einsatz:\n\n**Vorfall: Straßenlampe dunkel, Bereich unsicher (Rosenheim, Äußere Münchener Straße/Aicherpark)**\n\n**Priorität: Sicherheit und Verkehrssicherung!**\n\n1.  **Absicherung (Unverzüglich durchführen!)**\n    *   **Gefahrenbereich absichern:** Aufgrund des leicht geneigten Mastes, des geöffneten Schaltbox-Deckels, der schlechten Sichtverhältnisse und des Sturms besteht akute Gefahr. Sperren Sie den Bereich großräumig ab, um Passanten und Verkehr zu schützen.\n    *   **Warnblinklicht/Sondersignale:** Fahrzeug gut sichtbar positionieren, Warnblinklicht einschalten. Ggf. zusätzliche Warnleuchten/Pylonen aufstellen.\n    *   **Persönliche Schutzausrüstung (PSA):** Warnkleidung tragen, um die eigene Sicherheit im Verkehr zu gewährleisten.\n\n2.  **Sichtprüfung (Aus sicherer Entfernung, wenn möglich)**\n    *   **Mast:** Zustand des Mastes prüfen (Neigung, Beschädigungen, Risse im Fundament).\n    *   **Leuchtenkopf:** Sichtbare Beschädigungen an der Leuchte selbst (Glasbruch, lose Teile).\n    *   **Schaltbox:** Zustand des geöffneten Deckels und der sichtbaren Komponenten im Inneren (Kabel, Sicherungen). **Keine direkten Berührungen vornehmen!**\n    *   **Umgebung:** Gibt es weitere offensichtliche Ursachen (z.B. umgestürzte Bäume, beschädigte Kabel in der Nähe)?\n\n3.  **Diagnose/Beobachtung (Nur aus sicherer Entfernung)**\n    *   **Ursachenvermutung:** Basierend auf der Sichtprüfung: Ist der Ausfall wahrscheinlich sturmbedingt (geneigter Mast, offene Schaltbox)? Könnte es ein Kurzschluss oder eine mechanische Beschädigung sein?\n    *   **Weitere Beobachtungen:** Gibt es Geräusche (Knister, Brummen)? Riecht es verbrannt?\n\n4.  **Dokumentation**\n    *   **Fotos:** Da ein Foto verfügbar ist, prüfen Sie, ob es die aktuelle Situation ausreichend abbildet. Machen Sie bei Bedarf weitere Fotos vom abgesicherten Bereich, dem geneigten Mast und der geöffneten Schaltbox.\n    *   **Notizen:**\n        *   Genaue Uhrzeit der Feststellung.\n        *   Beschreibung der Absicherungsmaßnahmen.\n        *   Detaillierte Beschreibung der Sichtprüfung (Mastneigung, Zustand Schaltbox, Leuchtenkopf).\n        *   Vermutete Ursache.\n        *   Wetterbedingungen (Sturm, Dämmerung, schlechte Sicht).\n        *   Verkehrsaufkommen.\n\n5.  **Eskalation**\n    *   **Sofortige Meldung an die Leitstelle/Fachabteilung:** Aufgrund der hohen Dringlichkeit (Sicherheitsrisiko durch geneigten Mast, offene Schaltbox, unsicherer Bereich bei schlechter Sicht und hohem Verkehrsaufkommen) ist eine sofortige Eskalation erforderlich.\n    *   **Gefahrenmeldung:** Betonen Sie die akute Gefahr für die öffentliche Sicherheit und den Verkehr.\n    *   **Anforderung von Fachpersonal:** Fordern Sie umgehend Elektrofachkräfte und ggf. einen Statiker oder Tiefbau-Spezialisten an, um den Mast zu sichern und die Stromversorgung zu prüfen/reparieren.\n    *   **Polizei/Feuerwehr:** Bei akuter und unkontrollierbarer Gefahr für Leib und Leben oder den Straßenverkehr ist die Hinzuziehung von Polizei oder Feuerwehr zu prüfen.\n\n**Wichtiger Hinweis:** Unter keinen Umständen selbst Reparaturen oder Eingriffe an der Elektrik vornehmen! Ihre Hauptaufgabe ist die Absicherung und Dokumentation.",
+    "tokens_estimate_words": 363
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Eskalations-Triggern bei severity=high. Nutzt alle Kontext-Elemente (Sturm, geneigter Mast, offene Schaltbox, dusk, high traffic) präzise für Sicherheitsentscheidungen. Dokumentation vollständig, keine Halluzinationen.",
+    "test_id": "INC-LAMP-0006-ABL-NODEV"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 9.099
+  },
+  "error": {}
+}
