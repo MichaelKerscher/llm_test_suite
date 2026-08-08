@@ -1,0 +1,184 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-SIGNAL-0020-TC3",
+  "timestamp": "2026-08-07T23:59:16",
+  "client": "506",
+  "model": "gpt-4.1",
+  "input": {
+    "type": "text",
+    "prompt": "Signalgeber/Mast beschädigt oder locker. Mögliche Gefahrenstelle. (Richtung: forward).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"physical_damage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-19T17:37:57+01:00\",\n    \"reporter\": \"patrol\",\n    \"photo_description\": \"Gehäuse beschädigt, Signalkopf leicht versetzt. Kein Kabel freiliegend.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n6887356444\",\n    \"longitude\": 12.0913487,\n    \"latitude\": 47.8486952\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"night\",\n    \"traffic_exposure\": \"medium\",\n    \"weather\": \"clear\",\n    \"noise_level\": \"medium\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\",\n    \"SICHERHEITSHINWEIS: fault_type=physical_damage / severity=medium → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "physical_damage",
+        "severity": "medium",
+        "reported_at": "2026-01-19T17:37:57+01:00",
+        "reporter": "patrol",
+        "photo_description": "Gehäuse beschädigt, Signalkopf leicht versetzt. Kein Kabel freiliegend."
+      },
+      "asset": {
+        "asset_osm": "n6887356444",
+        "longitude": 12.0913487,
+        "latitude": 47.8486952
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "night",
+        "traffic_exposure": "medium",
+        "weather": "clear",
+        "noise_level": "medium"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.",
+        "SICHERHEITSHINWEIS: fault_type=physical_damage / severity=medium → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-SIGNAL-0020",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Signalgeber/Mast beschädigt oder locker. Mögliche Gefahrenstelle. (Richtung: forward).",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": false,
+      "high_severity": false,
+      "photo_description": true,
+      "offline": false,
+      "spotty": true,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": true,
+      "bad_weather": false,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 991,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P3",
+        "reason": "context-weather"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein beschädigter Signalgeber/Mast stellt eine potenzielle Gefahr dar. Hier ist eine Schritt-für-Schritt-Checkliste für das Vorgehen vor Ort, unter Berücksichtigung der gemeldeten Situation (physischer Schaden, Signalgeber leicht versetzt, Nacht, schlechte Sicht, mittleres Verkehrsaufkommen):\n\n**Schritt-für-Schritt-Checkliste:**\n\n1.  **Absicherung (Sofortmaßnahmen)**\n    *   **Gefahrenbereich absichern:** Unverzüglich die Unfallstelle großräumig mit Warndreiecken, Warnleuchten und/oder Blitzleuchten absichern.\n    *   **Verkehrsfluss beobachten:** Bei mittlerem Verkehrsaufkommen und schlechter Sicht ist besondere Vorsicht geboten. Prüfen, ob eine manuelle Verkehrsregelung oder eine temporäre Sperrung notwendig ist, um die Sicherheit zu gewährleisten.\n    *   **Eigenschutz:** Persönliche Schutzausrüstung (Warnweste, Helm) tragen.\n\n2.  **Sichtprüfung (Erste Einschätzung)**\n    *   **Schadensausmaß:** Bestätigen Sie die Beschreibung \"Gehäuse beschädigt, Signalkopf leicht versetzt\".\n    *   **Stabilität des Mastes/Signalgebers:** Ist der Mast selbst stabil oder besteht die Gefahr des Umkippens? Ist der Signalgeber noch sicher am Mast befestigt oder droht er herabzufallen?\n    *   **Kabel/Leitungen:** Bestätigen Sie, dass keine Kabel freiliegen. Prüfen Sie dennoch auf weitere sichtbare Beschädigungen an der Verkabelung.\n    *   **Funktion des Signalgebers:** Leuchtet der Signalgeber noch korrekt? Gibt es Ausfälle oder Fehlfunktionen (z.B. Dauerrot, Dunkel)?\n    *   **Umgebung:** Sind weitere Objekte (z.B. Schilder, andere Masten) betroffen oder beschädigt?\n\n3.  **Diagnose/Beobachtung**\n    *   **Verkehrsbeeinflussung:** Wie wirkt sich der versetzte Signalkopf auf die Sichtbarkeit für die Verkehrsteilnehmer aus? Ist die Signalwirkung noch eindeutig?\n    *   **Ursache (falls erkennbar):** Gibt es Hinweise auf die Ursache des Schadens (z.B. Anfahrtsschaden, Vandalismus, Materialermüdung)?\n    *   **Signalzustand:** Wenn der Signalgeber nicht mehr korrekt funktioniert oder dunkel ist, behandeln Sie die Kreuzung als ungesichert.\n\n4.  **Dokumentation**\n    *   **Fotos:** Machen Sie detaillierte Fotos vom Schaden, der Absicherung und der Gesamtsituation aus verschiedenen Perspektiven.\n    *   **Notizen:** Halten Sie alle Beobachtungen schriftlich fest: genaue Uhrzeit, Art des Schadens, Zustand des Signalgebers, durchgeführte Absicherungsmaßnahmen, Verkehrsbedingungen (Nacht, schlechte Sicht, mittleres Verkehrsaufkommen).\n    *   **Offline-Workflow:** Da die Konnektivität \"spotty\" ist, stellen Sie sicher, dass alle Daten lokal auf Ihrem Gerät gespeichert werden und synchronisieren Sie diese, sobald eine stabile Verbindung verfügbar ist.\n\n5.  **Eskalation**\n    *   **Leitstelle informieren:** Kontaktieren Sie umgehend die Leitstelle.\n    *   **Informationen übermitteln:** Geben Sie eine präzise Beschreibung der Lage:\n        *   Standort (Asset-OSM: n6887356444, Longitude: 12.0913487, Latitude: 47.8486952)\n        *   Art des Schadens (\"Signalgeber/Mast beschädigt oder locker, Gehäuse beschädigt, Signalkopf leicht versetzt, kein Kabel freiliegend\")\n        *   Dringlichkeit (Severity: medium, mögliche Gefahrenstelle)\n        *   Durchgeführte Absicherungsmaßnahmen\n        *   Funktionszustand des Signalgebers (z.B. \"Signalgeber leuchtet, aber versetzt\" oder \"Signalgeber dunkel\")\n        *   Empfehlung für weitere Schritte (z.B. sofortige Reparatur, temporäre Verkehrsregelung, Sperrung)\n    *   **Anforderung von Unterstützung:** Fordern Sie bei Bedarf zusätzliche Kräfte zur Verkehrsregelung oder zur schnellen Reparatur an.",
+    "tokens_estimate_words": 394
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Prüfpunkten, Eskalation detailliert beschrieben, Offline-Workflow explizit adressiert (spotty connectivity), alle Kontextdaten korrekt genutzt (Asset-ID, GPS, severity, visibility, traffic), umfassende Dokumentations-Checkliste. Keine Halluzinationen, alle Empfehlungen kontextgerecht.",
+    "test_id": "INC-SIGNAL-0020-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 7.711
+  },
+  "error": {}
+}
