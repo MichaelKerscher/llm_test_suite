@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0004-ABL-NOENV",
+  "timestamp": "2026-08-08T18:35:08",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-16T11:25:07+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Laterne komplett dunkel, Mast aufrecht. Foto bei Nebel und Nacht: keine sichtbare Beschädigung erkennbar, aber Leuchtmittel ohne Funktion.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n12551286240\",\n    \"latitude\": 47.8298471,\n    \"longitude\": 12.1275622,\n    \"name\": \"Happinger Hof\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-16T11:25:07+01:00",
+        "photo_available": true,
+        "photo_description": "Laterne komplett dunkel, Mast aufrecht. Foto bei Nebel und Nacht: keine sichtbare Beschädigung erkennbar, aber Leuchtmittel ohne Funktion.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n12551286240",
+        "latitude": 47.8298471,
+        "longitude": 12.1275622,
+        "name": "Happinger Hof",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0004-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 90 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1018,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Die dunkle Straßenlampe und die als unsicher empfundene Umgebung erfordern ein schnelles und strukturiertes Vorgehen. Hier ist eine Schritt-für-Schritt-Checkliste für den Außendienst:\n\n**Checkliste für den Vor-Ort-Einsatz: Dunkle Straßenlampe (Happinger Hof)**\n\n1.  **Absicherung der Einsatzstelle (Priorität: Sicherheit & Verkehrssicherung)**\n    *   **Gefahrenbereich absichern:** Sofortige Maßnahmen zur Sicherung des Bereichs ergreifen, um Passanten und Verkehrsteilnehmer zu schützen. Dazu gehören:\n        *   Aufstellen von Warnschildern (z.B. \"Achtung Baustelle\", \"Gefahrenbereich\").\n        *   Einrichten einer Absperrung (z.B. mit Warnkegeln, Flatterband), um den direkten Zugang zur dunklen Lampe zu verhindern.\n        *   Bei Bedarf: Anforderung der Polizei zur Verkehrsregelung, falls die Situation dies erfordert (z.B. bei starkem Verkehr oder unübersichtlicher Stelle).\n    *   **Persönliche Schutzausrüstung (PSA):** Sicherstellen, dass die eigene PSA (Warnweste, Sicherheitsschuhe, etc.) korrekt getragen wird.\n    *   **Beleuchtung:** Eigene Beleuchtung (Taschenlampe, Stirnlampe) nutzen, um den Arbeitsbereich auszuleuchten und die eigene Sichtbarkeit zu erhöhen, insbesondere da die Straßenlampe dunkel ist.\n\n2.  **Sichtprüfung der Straßenlampe und Umgebung**\n    *   **Mast und Leuchtenkopf:**\n        *   Ist der Mast intakt oder gibt es sichtbare Beschädigungen (Anfahrschäden, Korrosion, Risse)?\n        *   Ist der Leuchtenkopf vorhanden und unbeschädigt?\n        *   Hängen Kabel lose herunter oder sind andere Teile defekt?\n    *   **Umgebung:**\n        *   Gibt es Anzeichen für Vandalismus oder Manipulation an der Lampe oder dem Schaltkasten?\n        *   Liegen Äste oder andere Gegenstände auf der Lampe oder den Zuleitungen?\n        *   Gibt es Wasseransammlungen im Bereich des Mastfußes oder des Schaltkastens?\n    *   **Leuchtmittel:** Obwohl die Lampe dunkel ist, prüfen, ob das Leuchtmittel (falls sichtbar) physisch intakt erscheint oder offensichtlich zerstört ist.\n    *   **Schaltkasten/Sicherung:** Falls zugänglich und sicher: Sichtprüfung des zugehörigen Schaltkastens auf offene Türen, sichtbare Schäden oder ausgelöste Sicherungen. **Keine eigenmächtigen Schaltversuche ohne entsprechende Berechtigung und Absicherung!**\n\n3.  **Diagnose/Beobachtung**\n    *   **Ausfallmuster:** Die Lampe ist seit ca. 90 Minuten dunkel. Handelt es sich um einen Einzelausfall oder sind weitere Lampen in der Umgebung ebenfalls betroffen? (Dies könnte auf einen übergeordneten Stromausfall oder eine defekte Sicherung hindeuten).\n    *   **Gerätezustand (Techniker-Gerät):** Das Techniker-Gerät ist \"ok\", aber die Konnektivität ist \"spotty\". Dies bedeutet, dass Online-Funktionen eingeschränkt sein könnten.\n    *   **Foto:** Ein Foto ist vorhanden (\"Laterne komplett dunkel, Mast aufrecht. Foto bei Nebel und Nacht: keine sichtbare Beschädigung erkennbar, aber Leuchtmittel ohne Funktion.\"). Dies bestätigt den Zustand des Leuchtmittels.\n\n4.  **Dokumentation (Offline-Workflow beachten!)**\n    *   **Vollständige Erfassung:** Alle Beobachtungen und durchgeführten Maßnahmen detailliert im System erfassen.\n    *   **Bestehendes Foto nutzen:** Das bereits vorhandene Foto des Bürgers dem Vorfall zuordnen. Bei Bedarf weitere Fotos von der Absicherung und eventuellen Schäden machen.\n    *   **Offline-Modus:** Da die Konnektivität \"spotty\" ist, sicherstellen, dass alle Daten lokal auf dem Gerät gespeichert werden und eine Synchronisation erfolgt, sobald eine stabile Verbindung verfügbar ist.\n    *   **Standort:** Bestätigung des Standorts (Happinger Hof, n12551286240, 47.8298471, 12.1275622).\n    *   **Zeitstempel:** Genaue Uhrzeit der Feststellung und der durchgeführten Maßnahmen dokumentieren.\n\n5.  **Eskalation und weitere Schritte**\n    *   **Meldung an die Leitstelle/Fachabteilung:** Umgehende Meldung des Vorfalls mit allen gesammelten Informationen und der Einschätzung der Gefahrenlage.\n    *   **Priorisierung:** Aufgrund der Dunkelheit und der als unsicher empfundenen Umgebung sollte dieser Vorfall als hoch priorisiert eingestuft werden.\n    *   **Fachpersonal anfordern:** Anforderung von Elektrofachkräften zur Fehlerbehebung (z.B. Leuchtmittelwechsel, Überprüfung der Elektrik, Sicherungswechsel).\n    *   **Information an den Bürger:** Falls möglich und sinnvoll, dem meldenden Bürger eine Rückmeldung über die eingeleiteten Maßnahmen geben.\n    *   **Wiederherstellung der Sicherheit:** Die Absicherung bleibt bestehen, bis die Gefahr behoben und die Lampe wieder funktionsfähig ist oder eine dauerhafte Lösung implementiert wurde.\n\n**Annahme:** Die Angabe \"Leuchtmittel ohne Funktion\" im Foto deutet stark auf einen Defekt des Leuchtmittels selbst oder der zugehörigen Vorschaltgeräte hin. Ein umfassenderer Stromausfall im Bereich des Happinger Hofs würde wahrscheinlich weitere Lampen betreffen.",
+    "tokens_estimate_words": 572
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Eskalations-Triggern, vollständige Dokumentations-Checkliste inkl. Offline-Workflow (spotty connectivity erkannt und berücksichtigt), keine Halluzinationen, alle Kontext-Elemente sinnvoll integriert.",
+    "test_id": "INC-LAMP-0004-ABL-NOENV"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.41
+  },
+  "error": {}
+}

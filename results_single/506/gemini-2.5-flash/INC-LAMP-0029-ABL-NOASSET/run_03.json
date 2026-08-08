@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0029-ABL-NOASSET",
+  "timestamp": "2026-08-08T19:00:48",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 15 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-15T12:53:33+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme: Laterne dunkel, Pang/Cafe-Bereich unbeleuchtet. Mast ohne erkennbare Beschädigung, Schaltbox geschlossen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"medium\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-15T12:53:33+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme: Laterne dunkel, Pang/Cafe-Bereich unbeleuchtet. Mast ohne erkennbare Beschädigung, Schaltbox geschlossen.",
+        "reporter": "dispatch"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0029-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Straßenlampe ist dunkel seit etwa 15 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1055,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Eine dunkle Straßenlampe, besonders nachts und in einem Bereich, der als unsicher empfunden wird, erfordert schnelles und strukturiertes Handeln. Priorisieren Sie stets Ihre eigene Sicherheit und die der Verkehrsteilnehmer.\n\nHier ist Ihre Schritt-für-Schritt-Checkliste:\n\n### **1. Absicherung der Einsatzstelle**\n*   **Eigenschutz:** Tragen Sie immer Warnkleidung (z.B. Warnweste).\n*   **Verkehrssicherung:** Sichern Sie den Bereich um die dunkle Straßenlampe umgehend ab. Nutzen Sie hierfür Warndreiecke, Warnleuchten oder Blitzleuchten, um andere Verkehrsteilnehmer auf die Gefahrenstelle aufmerksam zu machen.\n*   **Gefahrenbereich:** Halten Sie ausreichend Abstand zur Anlage, bis die Situation geklärt ist.\n\n### **2. Sichtprüfung (aus sicherem Abstand)**\n*   **Umfeld:** Prüfen Sie, ob weitere Lampen in der Nähe ebenfalls dunkel sind. Dies gibt Hinweise auf die Art des Fehlers (Einzelausfall vs. Stromkreisausfall).\n*   **Mast und Leuchtenkopf:** Suchen Sie nach offensichtlichen Beschädigungen am Mast, am Leuchtenkopf oder an sichtbaren Kabeln (z.B. Vandalismus, Anfahrtschäden, Sturmschäden). Laut Beschreibung ist der Mast ohne erkennbare Beschädigung.\n*   **Schaltkasten/Sicherungskasten:** Überprüfen Sie, ob der zugehörige Schaltkasten geschlossen und unbeschädigt ist. Laut Beschreibung ist die Schaltbox geschlossen.\n*   **Umwelteinflüsse:** Achten Sie auf ungewöhnliche Gerüche (z.B. Brandgeruch) oder Geräusche (z.B. Knistern, Summen).\n\n### **3. Diagnose/Beobachtung**\n*   **Fehlerbild:** Bestätigen Sie, dass die Lampe vollständig dunkel ist und nicht nur flackert oder schwach leuchtet.\n*   **Zeitliche Beobachtung:** Notieren Sie, dass die Lampe seit etwa 15 Minuten dunkel ist.\n*   **Weitere Beobachtungen:** Gibt es in der unmittelbaren Umgebung andere Auffälligkeiten, die mit dem Ausfall in Verbindung stehen könnten (z.B. Bauarbeiten, offene Verteilerkästen)?\n\n### **4. Dokumentation (Offline-Workflow beachten!)**\n*   **Fotos:** Erstellen Sie aussagekräftige Fotos der Situation. Da bereits ein Foto verfügbar ist, prüfen Sie, ob weitere Perspektiven oder Details hilfreich wären.\n*   **Standort:** Notieren Sie den genauen Standort der defekten Straßenlampe (Adresse, Mastnummer, GPS-Koordinaten).\n*   **Feststellungen:** Dokumentieren Sie alle Beobachtungen aus der Sichtprüfung und Diagnose detailliert (z.B. \"Lampe X, Mast Y, vollständig dunkel, keine sichtbaren Schäden an Mast/Leuchtenkopf, Schaltkasten geschlossen, keine weiteren Ausfälle in der Nähe\").\n*   **Geräte-Konnektivität:** Da Ihr Gerät offline ist, stellen Sie sicher, dass alle Daten lokal gespeichert werden und eine Synchronisation erfolgt, sobald eine Verbindung wiederhergestellt ist.\n\n### **5. Eskalation**\n*   **Meldung an die Leitstelle/Disposition:** Informieren Sie umgehend die Leitstelle über den Ausfall und Ihre Feststellungen.\n*   **Priorität:** Betonen Sie die hohe Dringlichkeit aufgrund der Dunkelheit und des Unsicherheitsgefühls im Bereich.\n*   **Nächste Schritte:** Besprechen Sie mit der Leitstelle die weiteren Maßnahmen. Je nach Art des Fehlers kann dies die Entsendung eines Elektrikers, eines Wartungsteams oder die Information des Energieversorgers bedeuten.\n*   **Verbleib:** Klären Sie, ob Sie vor Ort bleiben sollen, bis weitere Hilfe eintrifft, oder ob Sie die Einsatzstelle nach erfolgter Absicherung verlassen können.",
+    "tokens_estimate_words": 421
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Eskalations-Triggern, expliziter Offline-Workflow integriert, vollständige Dokumentations-Checkliste, nutzt alle Context-Signale korrekt (night/poor_visibility/medium traffic → Verkehrssicherung, offline → lokale Speicherung, severity high → sofortige Eskalation). Keine Halluzinationen, alle Elemente fallbezogen und umsetzbar.",
+    "test_id": "INC-LAMP-0029-ABL-NOASSET"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.845
+  },
+  "error": {}
+}

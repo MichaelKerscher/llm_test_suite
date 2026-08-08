@@ -1,0 +1,164 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0008-ABL-NOENV",
+  "timestamp": "2026-08-08T18:08:27",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"low\",\n    \"reported_at\": \"2026-01-20T08:57:46+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme im Nebel: Laterne dunkel, Umgebungsbereich nicht beleuchtet. Mastfuß mit sichtbarer Korrosion, Bodenplatte locker.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n13293341689\",\n    \"latitude\": 47.8571756,\n    \"longitude\": 12.1302583\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_power_mode\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "low",
+        "reported_at": "2026-01-20T08:57:46+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme im Nebel: Laterne dunkel, Umgebungsbereich nicht beleuchtet. Mastfuß mit sichtbarer Korrosion, Bodenplatte locker.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n13293341689",
+        "latitude": 47.8571756,
+        "longitude": 12.1302583
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_power_mode"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0008-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "low",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "low_power_mode",
+      "low_battery": true,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 976,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt erfordert umgehende Aufmerksamkeit. Hier ist die Schritt-für-Schritt-Checkliste für die Prüfung vor Ort, unter Berücksichtigung der gemeldeten Korrosion am Mastfuß und der lockeren Bodenplatte:\n\n**Checkliste für den Außendienst**\n\n1.  **Absicherung der Einsatzstelle (Priorität: Sicherheit & Verkehrssicherung)**\n    *   **Gefahrenbereich absichern:** Sofortige Absicherung des Bereichs um den defekten Mast, insbesondere aufgrund der gemeldeten Korrosion und der lockeren Bodenplatte. Dies kann durch Warnkegel, Absperrband oder andere geeignete Mittel erfolgen, um Passanten und Verkehrsteilnehmer zu schützen.\n    *   **Warnung:** Gegebenenfalls Passanten auf die Gefahr hinweisen.\n    *   **Elektrische Gefahr prüfen:** Vor jeglicher Berührung des Mastes oder der Leuchte eine erste Einschätzung einer möglichen elektrischen Gefahr vornehmen (z.B. sichtbare Kabelbrüche, Funkenbildung). Bei Verdacht auf Stromschlaggefahr Abstand halten und sofortige Eskalation einleiten.\n\n2.  **Sichtprüfung (Umfassende Begutachtung)**\n    *   **Leuchte:** Zustand der Leuchte prüfen (Glasbruch, Gehäuseschäden, sichtbare Defekte). Bestätigen, dass die Leuchte dunkel ist.\n    *   **Mast:** Den gesamten Mast auf weitere Korrosion, Risse, Verformungen oder andere strukturelle Schäden untersuchen. Die gemeldete Korrosion am Mastfuß und die lockere Bodenplatte sind kritisch und erfordern eine genaue Begutachtung der Standfestigkeit.\n    *   **Kabel/Anschlüsse:** Sichtprüfung der Zuleitungen und Anschlüsse am Mastfuß und an der Leuchte auf Beschädigungen, lose Verbindungen oder Witterungseinflüsse.\n    *   **Umgebung:** Den Bereich um den Mast auf Anzeichen von Erdarbeiten, Vandalismus oder anderen äußeren Einflüssen prüfen, die den Ausfall verursacht haben könnten.\n\n3.  **Diagnose/Beobachtung (Fehlerursachen eingrenzen)**\n    *   **Stromversorgung:** Wenn gefahrlos möglich, prüfen, ob die Sicherung im Mastkasten ausgelöst hat.\n    *   **Leuchtmittel/Vorschaltgerät:** Anzeichen für einen Defekt des Leuchtmittels oder des Vorschaltgeräts suchen (z.B. Geruch, sichtbare Beschädigung).\n    *   **Strukturelle Integrität:** Aufgrund der gemeldeten Korrosion und lockeren Bodenplatte ist die Standfestigkeit des Mastes kritisch. Eine genaue Einschätzung der Gefahr des Umstürzens ist hierbei essenziell.\n\n4.  **Dokumentation (Präzise und Offline-fähig)**\n    *   **Fotos:** Mehrere Fotos aus verschiedenen Perspektiven anfertigen. Besonderes Augenmerk auf die Korrosion am Mastfuß, die lockere Bodenplatte, die dunkle Leuchte und eventuelle weitere Schäden legen.\n    *   **Notizen:** Detaillierte Notizen zum Zustand, den Beobachtungen und den durchgeführten Maßnahmen machen.\n        *   Datum, Uhrzeit, genaue Position (GPS-Koordinaten sind vorhanden: 47.8571756, 12.1302583).\n        *   Beschreibung des Schadens (dunkle Leuchte, Korrosion Mastfuß, lockere Bodenplatte).\n        *   Art der Absicherung.\n        *   Erste Einschätzung der Ursache.\n    *   **Offline-Workflow:** Da die Konnektivität \"spotty\" ist und sich das Gerät im \"low_power_mode\" befindet, sicherstellen, dass alle Daten (Fotos, Notizen) lokal auf dem Gerät gespeichert werden können und eine Synchronisation erfolgt, sobald eine stabile Verbindung verfügbar ist.\n\n5.  **Eskalation (Priorität: Sicherheit & Behebung)**\n    *   **Sofortige Eskalation bei Gefahr:** Bei unmittelbarer Gefahr durch den Mast (z.B. drohender Umsturz, offene elektrische Leitungen) ist eine sofortige Eskalation an die zuständige Leitstelle/Notdienst erforderlich.\n    *   **Meldung:** Erstellung eines detaillierten Störungsberichts mit allen gesammelten Informationen und Fotos.\n    *   **Priorisierung:** Aufgrund der strukturellen Mängel (Korrosion, lockere Bodenplatte) sollte die Behebung dieses Vorfalls eine hohe Priorität erhalten, um die Verkehrssicherung zu gewährleisten.\n\n**Annahme:** Die \"Laterne\" ist eine Straßenlampe. Die Prüfung erfolgt durch einen Techniker vor Ort.",
+    "tokens_estimate_words": 461
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung, elektrische Gefahr), strukturierte Schrittfolge mit klaren Eskalations-Triggern, nutzt Kontext optimal (spotty connectivity → Offline-Workflow explizit, GPS-Koordinaten, Foto-Details aus photo_description), vollständige Dokumentations-Checkliste, keine Halluzinationen.",
+    "test_id": "INC-LAMP-0008-ABL-NOENV"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.497
+  },
+  "error": {}
+}

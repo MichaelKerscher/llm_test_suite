@@ -1,0 +1,151 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0012-ABL-NOENV",
+  "timestamp": "2026-08-08T18:43:14",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 20 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-21T15:41:46+01:00\",\n    \"reporter\": \"patrol\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n12520338291\",\n    \"latitude\": 47.8505506,\n    \"longitude\": 12.1178456\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"low_power_mode\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-21T15:41:46+01:00",
+        "reporter": "patrol"
+      },
+      "asset": {
+        "asset_osm": "n12520338291",
+        "latitude": 47.8505506,
+        "longitude": 12.1178456
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "low_power_mode"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0012-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Straßenlampe ist dunkel seit etwa 20 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "low_power_mode",
+      "low_battery": true,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": false,
+      "photo_description": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 681,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Hier ist eine Schritt-für-Schritt-Checkliste für den Vor-Ort-Einsatz:\n\n**Priorität: Sicherheit und Verkehrssicherung!**\n\n1.  **Absicherung der Einsatzstelle:**\n    *   **Gefahrenbereich sichern:** Unmittelbar vor Ort prüfen, ob eine akute Gefahr für Passanten oder den Verkehr besteht (z.B. herabhängende Teile, Stolperfallen).\n    *   **Verkehrssicherung einrichten:** Falls erforderlich, den Bereich gemäß den Vorschriften für Arbeitsstellen an Straßen absichern (Warnleuchten, Warndreiecke, Absperrband). Eigene Sicherheit gewährleisten (Warnweste tragen).\n\n2.  **Sichtprüfung der Straßenlampe und Umgebung:**\n    *   **Lampe selbst:** Ist die Leuchteinheit beschädigt (Glasbruch, Gehäuse offen)? Sind Kabel sichtbar oder beschädigt?\n    *   **Mast:** Ist der Mast stabil, weist er Risse, Korrosion oder Anfahrspuren auf?\n    *   **Umgebung:** Gibt es Anzeichen für Vandalismus, Bauarbeiten in der Nähe, die eine Beschädigung verursacht haben könnten? Sind andere Lampen in der unmittelbaren Umgebung ebenfalls dunkel?\n    *   **Schaltkasten/Verteiler:** Falls zugänglich und sicher, eine Sichtprüfung auf offene Türen, Beschädigungen oder ungewöhnliche Gerüche vornehmen.\n\n3.  **Diagnose/Beobachtung:**\n    *   **Stromversorgung:** Ist die Lampe komplett aus oder flackert sie? Ein kurzes Aussetzen und Wiederkehren könnte auf einen Wackelkontakt oder eine Überlastung hindeuten.\n    *   **Zeitschaltung/Dämmerungsschalter:** Prüfen, ob die Lampe eventuell durch eine Fehlfunktion der Zeitschaltung oder des Dämmerungsschalters nicht aktiviert wird (obwohl es dunkel ist).\n    *   **Gerät (Techniker-Smartphone/App):** Da die Konnektivität \"spotty\" ist und der Gerätezustand \"low_power_mode\" anzeigt, ist ein Offline-Workflow erforderlich. Keine Online-Abfragen versuchen.\n\n4.  **Dokumentation (Offline-Workflow):**\n    *   **Fotos:** Mehrere Fotos der defekten Lampe und der Umgebung machen (Gesamtaufnahme, Detailaufnahmen von Schäden). Diese werden lokal auf dem Gerät gespeichert.\n    *   **Notizen:** Alle Beobachtungen, die Art des Schadens, die durchgeführten Sicherungsmaßnahmen und die genaue Position (Asset-ID: n12520338291, Koordinaten: 47.8505506, 12.1178456) detailliert im Offline-Modus der App festhalten.\n    *   **Zeitpunkt:** Den genauen Zeitpunkt der Feststellung und der durchgeführten Maßnahmen notieren.\n    *   **Synchronisation:** Sobald wieder eine stabile Verbindung besteht, die gesammelten Daten und Fotos synchronisieren.\n\n5.  **Eskalation:**\n    *   **Bei akuter Gefahr:** Wenn eine unmittelbare Gefahr für Personen oder Verkehr besteht, sofort die zuständige Leitstelle oder den Notdienst informieren.\n    *   **Standard-Eskalation:** Nach der Sicherung und Dokumentation den Vorfall gemäß den internen Richtlinien an die zuständige Fachabteilung (z.B. Elektriker, Wartungsteam) weiterleiten. Die Dringlichkeit ist aufgrund der Dunkelheit und des Unsicherheitsgefühls hoch.\n    *   **Rückmeldung:** Dem Melder (Patrol) eine kurze Rückmeldung geben, dass der Vorfall aufgenommen und die ersten Schritte eingeleitet wurden.",
+    "tokens_estimate_words": 352
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert, strukturierte Schrittfolge mit klaren Stop-Conditions, Offline-Workflow explizit integriert (spotty connectivity erkannt), vollständige Dokumentations-Checkliste inkl. Asset-ID/GPS, differenzierte Eskalationslogik passend zu severity=medium. Keine Halluzinationen, alle Kontextinformationen korrekt genutzt.",
+    "test_id": "INC-LAMP-0012-ABL-NOENV"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 8.939
+  },
+  "error": {}
+}
