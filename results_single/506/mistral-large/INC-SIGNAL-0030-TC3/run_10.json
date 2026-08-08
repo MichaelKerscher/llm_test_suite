@@ -1,0 +1,183 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-SIGNAL-0030-TC3",
+  "timestamp": "2026-08-08T13:34:52",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Kurzzeitige Aussetzer/Neustarts vermutet; Verhalten inkonsistent. (Richtung: backward).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-20T04:16:40+01:00\",\n    \"reporter\": \"citizen\",\n    \"photo_available\": false\n  },\n  \"asset\": {\n    \"asset_osm\": \"n12872023045\",\n    \"longitude\": 12.1183214,\n    \"latitude\": 47.8585403\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"normal_visibility\",\n    \"time_of_day\": \"day\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\",\n    \"weather\": \"clear\"\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-20T04:16:40+01:00",
+        "reporter": "citizen",
+        "photo_available": false
+      },
+      "asset": {
+        "asset_osm": "n12872023045",
+        "longitude": 12.1183214,
+        "latitude": 47.8585403
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "normal_visibility",
+        "time_of_day": "day",
+        "traffic_exposure": "high",
+        "noise_level": "high",
+        "weather": "clear"
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-SIGNAL-0030",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Kurzzeitige Aussetzer/Neustarts vermutet; Verhalten inkonsistent. (Richtung: backward).",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": false,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": true,
+      "high_severity": false,
+      "photo_description": false,
+      "offline": false,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": false,
+      "rush_hour": false,
+      "night": false,
+      "bad_weather": false,
+      "high_traffic": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 453,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P1",
+        "reason": "high-traffic-env"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P2",
+        "reason": "photo-flag"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P3",
+        "reason": "context-weather"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein Bürger meldet inkonsistentes Verhalten und kurzzeitige Aussetzer/Neustarts bei einer Anlage (vermutlich Ampel oder Straßenlampe) an der Position 47.8585403, 12.1183214 (OSM n12872023045). Die Meldung erfolgte am 20.01.2026 um 04:16 Uhr, es gibt kein Foto. Das Gerät ist laut System online und der Gerätestatus ist \"ok\", was auf ein lokales Problem hindeutet. Die Sicht ist normal, es ist Tag, und die Umgebung hat hohes Verkehrsaufkommen und hohen Lärmpegel bei klarem Wetter. Die Angabe \"Richtung: backward\" muss vor Ort präzisiert werden.\n\n**Vorgehen bei inkonsistentem Verhalten/Neustarts (Priorität: Sicherheit und Verkehrssicherung):**\n\n1.  **Absicherung der Einsatzstelle:**\n    *   Unmittelbare Gefahrenanalyse: Besteht eine akute Gefahr für Verkehrsteilnehmer oder Passanten durch die Fehlfunktion?\n    *   Verkehrssicherung einrichten: Warnblinkanlage am Fahrzeug, Warnweste tragen, ggf. Warndreieck/Leitkegel aufstellen, um den Arbeitsbereich abzusichern und den fließenden Verkehr zu warnen.\n    *   Bei Ampelanlagen: Prüfen, ob die Anlage komplett ausgefallen ist oder Fehlfunktionen zeigt, die zu gefährlichen Situationen führen könnten (z.B. Dauergrün in alle Richtungen, Dunkelphase). Ggf. Polizei informieren zur Verkehrsregelung.\n\n2.  **Sichtprüfung:**\n    *   **Umfeld:** Beschädigungen an Masten, Kabeln, Schaltschränken oder Fundamenten? Anzeichen von Vandalismus oder Unfallschäden?\n    *   **Anlage selbst:**\n        *   **Ampel:** Alle Signalgeber auf Funktion prüfen. Zeigt ein Signalgeber die \"backward\"-Richtung an? Gibt es flackernde, dunkle oder falsch schaltende Leuchten? Sind die Optiken sauber und unbeschädigt?\n        *   **Straßenlampe:** Leuchtmittel auf Flackern, Ausfall oder ungewöhnliches Lichtverhalten prüfen.\n    *   **Kabel und Anschlüsse:** Sichtbare Beschädigungen an Zuleitungen oder im Bereich des Mastfußes/Schaltschrankes?\n    *   **Schaltschrank:** Ist die Tür geschlossen und verriegelt? Anzeichen von Überhitzung (Geruch, Verfärbungen)?\n\n3.  **Diagnose/Beobachtung:**\n    *   **Verhalten protokollieren:** Das inkonsistente Verhalten genau beobachten und dokumentieren. Wie oft treten die Aussetzer/Neustarts auf? Wie lange dauern sie? Betreffen sie die gesamte Anlage oder nur einzelne Komponenten?\n    *   **\"Richtung: backward\" klären:** Was genau bedeutet die Angabe \"backward\" in diesem Kontext? Betrifft es eine spezifische Fahrtrichtung, einen bestimmten Signalgeber oder eine Rückmeldung?\n    *   **Umwelteinflüsse:** Gibt es einen Zusammenhang mit externen Faktoren (z.B. Erschütterungen durch Schwerlastverkehr, Wind, Feuchtigkeit)? (Aktuell ist klares Wetter, aber frühere Ereignisse könnten relevant sein).\n    *   **Gerätestatus:** Obwohl das System \"online\" und \"ok\" meldet, kann ein lokaler Fehler vorliegen. Prüfen, ob die Steuerungseinheit vor Ort Fehlercodes anzeigt oder ungewöhnliche Geräusche macht.\n\n4.  **Dokumentation:**\n    *   **Fotos:** Detailfotos von Beschädigungen, Fehlfunktionen und der Gesamtsituation machen.\n    *   **Protokoll:** Datum, Uhrzeit, genaue Position, festgestellte Mängel, beobachtetes Verhalten, durchgeführte Maßnahmen zur Absicherung.\n    *   **Bürgermeldung:** Bezug zur ursprünglichen Meldung herstellen und die Beobachtungen des Bürgers (inkonsistent, Neustarts, backward) bestätigen oder präzisieren.\n\n5.  **Eskalation:**\n    *   **Bei akuter Gefahr:** Sofortige Meldung an die Leitstelle/zuständige Fachabteilung zur Priorisierung der Reparatur oder zur Anforderung weiterer Unterstützung (z.B. Elektriker, Verkehrsregelung).\n    *   **Bei komplexen Fehlern:** Wenn die Ursache nicht sofort ersichtlich ist oder eine Reparatur vor Ort nicht möglich ist, detaillierte Fehlerbeschreibung und Dokumentation an die Fachabteilung weiterleiten für eine tiefere Analyse und Reparaturplanung.\n    *   **Wiederherstellung:** Nach Behebung des Fehlers die Funktion der Anlage prüfen und die Verkehrssicherung aufheben.",
+    "tokens_estimate_words": 460
+  },
+  "judge": {
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 5,
+      "K": 4
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Klärung 'backward' könnte präziser sein",
+      "Spezifische Diagnose-Tools nicht erwähnt"
+    ],
+    "short_justification": "Sehr gute Antwort mit klarer Safety-First-Struktur, detaillierter Dokumentation und passender Eskalationslogik. Kontext wird gut genutzt (high traffic, severity medium, online status). Kleine Abzüge bei K, da 'backward' spekulativ interpretiert wird, aber insgesamt sehr praxisnah und umsetzbar.",
+    "test_id": "INC-SIGNAL-0030-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.53
+  },
+  "error": {}
+}

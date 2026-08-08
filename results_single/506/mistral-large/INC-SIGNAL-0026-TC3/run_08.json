@@ -1,0 +1,183 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-SIGNAL-0026-TC3",
+  "timestamp": "2026-08-08T12:16:58",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet. (Richtung: forward).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"low\",\n    \"reported_at\": \"2026-01-17T22:55:52+01:00\",\n    \"reporter\": \"citizen\",\n    \"photo_available\": false\n  },\n  \"asset\": {\n    \"asset_osm\": \"n6896979346\",\n    \"longitude\": 12.1127302,\n    \"latitude\": 47.8532378\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"night\",\n    \"traffic_exposure\": \"low\",\n    \"weather\": \"fog\",\n    \"noise_level\": \"medium\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=offline und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "low",
+        "reported_at": "2026-01-17T22:55:52+01:00",
+        "reporter": "citizen",
+        "photo_available": false
+      },
+      "asset": {
+        "asset_osm": "n6896979346",
+        "longitude": 12.1127302,
+        "latitude": 47.8532378
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "night",
+        "traffic_exposure": "low",
+        "weather": "fog",
+        "noise_level": "medium"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=offline und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-SIGNAL-0026",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampel funktioniert aktuell, aber wiederholt Ausfälle gemeldet. (Richtung: forward).",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": false,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": true,
+      "high_severity": false,
+      "photo_description": false,
+      "offline": true,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": true,
+      "bad_weather": true,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 701,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P2",
+        "reason": "photo-flag"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Hier ist eine Schritt-für-Schritt-Checkliste für den Außendienst bei gemeldeten, wiederkehrenden Ampelausfällen, unter Berücksichtigung der aktuellen Bedingungen (Nacht, Nebel, schlechte Sicht, geringes Verkehrsaufkommen) und der Offline-Konnektivität Ihres Geräts:\n\n**Checkliste für Ampelstörung (intermittierend)**\n\n**1. Absicherung der Einsatzstelle (Priorität: Sicherheit & Verkehrssicherung)**\n*   **Warnkleidung:** Persönliche Schutzausrüstung (PSA) anlegen (Warnweste, ggf. Helm).\n*   **Fahrzeugpositionierung:** Einsatzfahrzeug sicher und gut sichtbar abstellen, Warnblinkanlage einschalten.\n*   **Gefahrenbereich absichern:** Bei Bedarf Warndreiecke oder Blitzleuchten aufstellen, um den Verkehr frühzeitig zu warnen, insbesondere bei schlechter Sicht durch Nebel.\n*   **Verkehrsbeobachtung:** Trotz geringen Verkehrsaufkommens stets den Verkehr im Blick behalten.\n\n**2. Sichtprüfung und erste Beobachtung**\n*   **Gesamtzustand:** Optische Kontrolle der Ampelanlage und des Umfelds auf offensichtliche Schäden (z.B. angefahrene Masten, lose Kabel, Vandalismus).\n*   **Fehlerbild beobachten:** Da der Fehler intermittierend auftritt, die Ampel über einen längeren Zeitraum (min. 15-30 Minuten) beobachten.\n    *   Tritt der Ausfall in der gemeldeten Richtung (\"forward\") auf?\n    *   Welches Fehlerbild zeigt sich genau (z.B. Dunkelphase, Dauerrot, falsche Schaltfolge)?\n    *   Gibt es Auffälligkeiten an den Signalgebern (z.B. Flackern, schwache Leuchtkraft)?\n*   **Umwelteinflüsse:** Prüfen, ob aktuelle Umwelteinflüsse (Nebel, Feuchtigkeit) den Fehler begünstigen könnten.\n\n**3. Diagnose und Ursachenforschung**\n*   **Steuerung:** Wenn möglich und sicher, Zugang zum Steuergerät verschaffen.\n*   **Fehlerspeicher:** Fehlerspeicher der Ampelsteuerung auslesen, falls zugänglich und das Gerät dies unterstützt.\n*   **Spannungsversorgung:** Prüfen der Spannungsversorgung und der Sicherungen.\n*   **Kabelverbindungen:** Sichtprüfung der Kabel und Steckverbindungen auf Korrosion oder Beschädigung.\n*   **Komponentenprüfung:** Wenn der Fehler während der Beobachtung auftritt, versuchen, die betroffene Komponente (z.B. Signalgeber, Detektor) zu identifizieren.\n\n**4. Dokumentation (Offline-Workflow beachten)**\n*   **Lokal speichern:** Da die Konnektivität offline ist, alle Informationen detailliert auf Ihrem Gerät lokal erfassen.\n*   **Standard-Protokoll:** Füllen Sie das standardisierte Störungsprotokoll vollständig aus:\n    *   Datum, Uhrzeit des Eintreffens und Verlassens der Einsatzstelle.\n    *   Genaue Standortdaten (Längen- und Breitengrad sind bereits bekannt: 12.1127302, 47.8532378).\n    *   Beschreibung des Fehlerbildes (was wurde beobachtet?).\n    *   Durchgeführte Maßnahmen.\n    *   Festgestellte Ursachen (falls identifiziert).\n    *   Benötigte Ersatzteile/Materialien.\n    *   Fotos: Machen Sie aussagekräftige Fotos von der Anlage, eventuellen Schäden und der Umgebung, auch wenn kein Foto vom Bürger vorliegt.\n*   **Spätere Synchronisation:** Stellen Sie sicher, dass die Daten bei der nächsten verfügbaren Verbindung synchronisiert werden.\n\n**5. Eskalation und weitere Schritte**\n*   **Behebung vor Ort:** Wenn der Fehler identifiziert und mit vorhandenen Mitteln behoben werden kann, führen Sie die Reparatur unter Einhaltung aller Sicherheitsvorschriften durch.\n*   **Keine Behebung möglich / Wiederauftreten:**\n    *   Wenn der Fehler nicht behoben werden kann oder die Ursache unklar bleibt, informieren Sie die Leitstelle über den aktuellen Status und die Notwendigkeit weiterer Maßnahmen (z.B. Spezialisten anfordern, Ersatzteile bestellen).\n    *   Bei anhaltender Gefahr für den Verkehr (z.B. dauerhafter Ausfall, gefährliche Schaltfehler) muss die Ampel außer Betrieb genommen und der Verkehr entsprechend geregelt (z.B. durch mobile Ampeln oder Verkehrsposten) oder die Anlage als Störung gemeldet werden, um eine schnellere Priorisierung zu gewährleisten.\n*   **Rückmeldung:** Geben Sie der Leitstelle eine klare Einschätzung der Verkehrssicherheit.",
+    "tokens_estimate_words": 462
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Beobachtungs- und Diagnose-Anweisungen für intermittierenden Fehler, expliziter Offline-Workflow mit lokaler Dokumentation und Synchronisation, umfassende Dokumentations-Checkliste inkl. GPS-Koordinaten, klare Eskalationslogik bei Nicht-Behebbarkeit, nutzt alle Kontextinformationen (Nebel/Sicht, Nacht, geringer Verkehr, offline, intermittent fault) sinnvoll und korrekt.",
+    "test_id": "INC-SIGNAL-0026-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.229
+  },
+  "error": {}
+}

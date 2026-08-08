@@ -1,0 +1,183 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-SIGNAL-0010-TC3",
+  "timestamp": "2026-08-08T08:53:22",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Ampel scheint auf Rot zu „hängen“. Kein Umschalten beobachtet.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"signal_stuck\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-18T04:09:32+01:00\",\n    \"reporter\": \"internal\",\n    \"photo_description\": \"Dauerhaft rote Phase erkennbar, kein Phasenwechsel sichtbar. Staubildung an Kreuzung.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n35664963\",\n    \"longitude\": 12.1169259,\n    \"latitude\": 47.8519399\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"day\",\n    \"traffic_exposure\": \"medium\",\n    \"weather\": \"storm\",\n    \"noise_level\": \"medium\"\n  },\n  \"_guardrail_notes\": [\n    \"SICHERHEITSHINWEIS: fault_type=signal_stuck / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "signal_stuck",
+        "severity": "high",
+        "reported_at": "2026-01-18T04:09:32+01:00",
+        "reporter": "internal",
+        "photo_description": "Dauerhaft rote Phase erkennbar, kein Phasenwechsel sichtbar. Staubildung an Kreuzung."
+      },
+      "asset": {
+        "asset_osm": "n35664963",
+        "longitude": 12.1169259,
+        "latitude": 47.8519399
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "day",
+        "traffic_exposure": "medium",
+        "weather": "storm",
+        "noise_level": "medium"
+      },
+      "_guardrail_notes": [
+        "SICHERHEITSHINWEIS: fault_type=signal_stuck / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-SIGNAL-0010",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampel scheint auf Rot zu „hängen“. Kein Umschalten beobachtet.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": true,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": false,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": false,
+      "bad_weather": true,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 764,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Eine Ampel, die auf Rot hängt und nicht umschaltet, stellt eine hohe Gefahr dar. Hier ist die Checkliste für das Vorgehen vor Ort:\n\n**Checkliste: Ampel hängt auf Rot**\n\n1.  **Absicherung der Gefahrenstelle (Priorität: Sicherheit & Verkehrssicherung)**\n    *   **Sofortmaßnahmen:** Unverzügliche Absicherung der Kreuzung gemäß UVV (Unfallverhütungsvorschriften) und StVO (Straßenverkehrs-Ordnung).\n    *   **Warnung:** Warndreieck/Warnleuchten aufstellen, Warnblinkanlage einschalten.\n    *   **Verkehrsleitung:** Bei Bedarf und Möglichkeit den Verkehr regeln, bis weitere Kräfte eintreffen.\n    *   **Persönliche Schutzausrüstung:** Warnweste tragen, auf den fließenden Verkehr achten, besonders bei schlechter Sicht und Sturm.\n\n2.  **Sichtprüfung und erste Diagnose**\n    *   **Bestätigung des Fehlers:** Ist die Rotphase tatsächlich dauerhaft aktiv? Betrifft es alle Fahrtrichtungen oder nur eine?\n    *   **Umgebung:** Gibt es sichtbare Beschädigungen an der Ampelanlage (Mast, Kabel, Signalgeber)?\n    *   **Stromversorgung:** Sind Sicherungen ausgelöst oder gibt es Anzeichen für einen Stromausfall im Bereich der Ampel?\n    *   **Steuergerät:** Sind am Steuergerät (falls zugänglich und sicher) Auffälligkeiten erkennbar (Fehlermeldungen, ungewöhnliche Geräusche)?\n    *   **Wetterbedingungen:** Berücksichtigen Sie die aktuellen Bedingungen (Sturm, schlechte Sicht) bei der Beurteilung möglicher Ursachen und der Gefahrenlage.\n\n3.  **Beobachtung des Verkehrsflusses**\n    *   **Staubildung:** Wie stark ist die Staubildung an der Kreuzung?\n    *   **Verhalten der Verkehrsteilnehmer:** Wie reagieren Autofahrer, Radfahrer und Fußgänger auf die dauerhaft rote Ampel? Kommt es zu gefährlichen Situationen?\n\n4.  **Dokumentation**\n    *   **Zeitpunkt:** Genaue Uhrzeit der Feststellung und der durchgeführten Maßnahmen.\n    *   **Fehlerbeschreibung:** Detaillierte Beschreibung des beobachteten Fehlers (\"Dauerhaft rote Phase, kein Phasenwechsel sichtbar\").\n    *   **Fotos:** Aussagekräftige Fotos der Ampelanlage und der Verkehrssituation.\n    *   **Umgebungsbedingungen:** Notieren Sie Wetter, Sicht und Verkehrsaufkommen.\n    *   **Maßnahmen:** Dokumentieren Sie alle getroffenen Absicherungs- und Diagnosemaßnahmen.\n\n5.  **Eskalation**\n    *   **Leitstelle/Bereitschaftsdienst:** Umgehende Meldung an die zuständige Leitstelle oder den technischen Bereitschaftsdienst.\n    *   **Priorität:** Betonen Sie die hohe Dringlichkeit aufgrund der akuten Verkehrsgefährdung.\n    *   **Informationen:** Geben Sie alle gesammelten Informationen (Standort, Fehlerbeschreibung, durchgeführte Maßnahmen, Beobachtungen) präzise weiter.\n    *   **Anweisungen abwarten:** Warten Sie auf weitere Anweisungen und bleiben Sie, wenn sicher möglich, vor Ort, bis Ablösung eintrifft oder die Gefahr gebannt ist.\n\n**Wichtiger Hinweis:** Bei \"signal_stuck\" ist die sofortige Absicherung der Kreuzung absolut entscheidend, um Unfälle zu vermeiden. Die Eskalation an die Leitstelle muss priorisiert werden.",
+    "tokens_estimate_words": 337
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Eskalations-Triggern, umfassende Dokumentations-Checkliste, nutzt Kontext optimal (severity=high, storm, poor_visibility, traffic_exposure=medium). Keine Halluzinationen, alle kritischen Elemente abgedeckt.",
+    "test_id": "INC-SIGNAL-0010-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 7.583
+  },
+  "error": {}
+}

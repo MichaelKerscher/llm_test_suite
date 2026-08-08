@@ -1,0 +1,183 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-SIGNAL-0010-TC3",
+  "timestamp": "2026-08-08T09:31:33",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Ampel scheint auf Rot zu „hängen“. Kein Umschalten beobachtet.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"signal_stuck\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-18T04:09:32+01:00\",\n    \"reporter\": \"internal\",\n    \"photo_description\": \"Dauerhaft rote Phase erkennbar, kein Phasenwechsel sichtbar. Staubildung an Kreuzung.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n35664963\",\n    \"longitude\": 12.1169259,\n    \"latitude\": 47.8519399\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"day\",\n    \"traffic_exposure\": \"medium\",\n    \"weather\": \"storm\",\n    \"noise_level\": \"medium\"\n  },\n  \"_guardrail_notes\": [\n    \"SICHERHEITSHINWEIS: fault_type=signal_stuck / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "signal_stuck",
+        "severity": "high",
+        "reported_at": "2026-01-18T04:09:32+01:00",
+        "reporter": "internal",
+        "photo_description": "Dauerhaft rote Phase erkennbar, kein Phasenwechsel sichtbar. Staubildung an Kreuzung."
+      },
+      "asset": {
+        "asset_osm": "n35664963",
+        "longitude": 12.1169259,
+        "latitude": 47.8519399
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "day",
+        "traffic_exposure": "medium",
+        "weather": "storm",
+        "noise_level": "medium"
+      },
+      "_guardrail_notes": [
+        "SICHERHEITSHINWEIS: fault_type=signal_stuck / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-SIGNAL-0010",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampel scheint auf Rot zu „hängen“. Kein Umschalten beobachtet.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": false,
+      "button_failure": false,
+      "signal_stuck": true,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": false,
+      "spotty": false,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": false,
+      "night": false,
+      "bad_weather": true,
+      "high_traffic": false
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 764,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P2",
+        "reason": "device-status"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P3",
+        "reason": "env-context"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein \"Hängenbleiben\" der Ampel auf Rot ist eine kritische Störung mit hoher Priorität, insbesondere bei den gemeldeten Wetter- und Sichtverhältnissen (\"Sturm\", \"schlechte Sicht\") und der bereits beobachteten Staubildung. Die Sicherheit der Verkehrsteilnehmer hat oberste Priorität.\n\nHier ist die Schritt-für-Schritt-Checkliste für das Vorgehen vor Ort:\n\n---\n\n**Checkliste: Ampelstörung (Dauerrot)**\n\n**1. Absicherung der Einsatzstelle (Sofortmaßnahmen)**\n*   **Unverzügliche Gefahrenabsicherung:** Sichern Sie die Kreuzung umgehend ab.\n    *   Fahrzeug mit Warnblinklicht gut sichtbar positionieren.\n    *   Warnweste anlegen.\n    *   Warndreieck und/oder Leitkegel zur frühzeitigen Warnung des Verkehrs aufstellen.\n*   **Verkehrsbeobachtung:** Beurteilen Sie den Verkehrsfluss und die Staubildung.\n*   **Erste Meldung an Leitstelle:** Informieren Sie die Leitstelle über Ihre Ankunft, die aktuelle Situation (Dauerrot, Staubildung, Wetter) und die eingeleiteten Absicherungsmaßnahmen. Fordern Sie bei Bedarf umgehend Unterstützung durch Polizei zur Verkehrsregelung an.\n\n**2. Sichtprüfung (Äußere Kontrolle)**\n*   **Alle Signalgeber prüfen:** Gehen Sie alle Fahrtrichtungen ab und prüfen Sie jeden einzelnen Signalgeber der Kreuzung.\n    *   Bestätigt sich das Dauerrot an allen betroffenen Signalen?\n    *   Gibt es weitere Auffälligkeiten (z.B. dunkle Signale, flackernde Lichter, beschädigte Optiken)?\n*   **Kabel und Anschlüsse:** Prüfen Sie sichtbare Kabel und Anschlüsse auf Beschädigungen, insbesondere durch den Sturm (z.B. abgerissene Leitungen, lockere Verbindungen).\n*   **Schaltkasten:** Prüfen Sie den Ampel-Schaltkasten auf äußere Beschädigungen, offene Türen oder Vandalismus.\n*   **Umgebung:** Achten Sie auf Hindernisse (z.B. umgestürzte Bäume, große Äste), die die Sichtbarkeit der Ampel beeinträchtigen könnten.\n\n**3. Diagnose/Beobachtung (Fehleranalyse)**\n*   **Phasenwechsel beobachten:** Beobachten Sie die Ampelanlage über einen längeren Zeitraum (mindestens 5-10 Minuten), um sicherzustellen, dass tatsächlich kein Phasenwechsel stattfindet.\n*   **Schaltkasten (falls sicher zugänglich):**\n    *   Öffnen Sie den Schaltkasten (nur wenn Sie dazu berechtigt und geschult sind und die Sicherheit gewährleistet ist).\n    *   Prüfen Sie Sicherungen.\n    *   Lesen Sie eventuell vorhandene Fehlercodes am Steuergerät ab.\n    *   Beachten Sie, dass das Gerät laut Systemmeldung \"online\" und \"ok\" ist, was auf ein internes Logik- oder Softwareproblem hindeuten könnte, anstatt eines kompletten Ausfalls.\n*   **Stromversorgung:** Prüfen Sie, falls möglich und sicher, ob die Anlage mit Strom versorgt wird.\n\n**4. Dokumentation**\n*   **Zeitstempel:** Notieren Sie genaue Uhrzeiten für Feststellung, Absicherung und weitere Maßnahmen.\n*   **Fehlerbeschreibung:** Detaillierte Beschreibung des Fehlerbildes (welche Ampeln, welche Fahrtrichtungen sind betroffen, Dauerrot, Staubildung).\n*   **Fotos:** Machen Sie aussagekräftige Fotos von der Situation (Ampelzustand, Staubildung, Absicherung).\n*   **Fehlercodes:** Dokumentieren Sie alle abgelesenen Fehlercodes.\n*   **Umgebungsbedingungen:** Halten Sie die Wetterbedingungen (\"Sturm\"), Sichtverhältnisse (\"schlechte Sicht\") und die Verkehrssituation (\"Staubildung\") fest.\n*   **Durchgeführte Maßnahmen:** Notieren Sie alle Schritte, die Sie unternommen haben.\n\n**5. Eskalation**\n*   **Dauerhafte Kommunikation mit Leitstelle:** Halten Sie die Leitstelle kontinuierlich über den Fortschritt und die festgestellten Probleme auf dem Laufenden.\n*   **Anforderung Fachpersonal:** Fordern Sie umgehend qualifiziertes Fachpersonal für die Ampelstörung an.\n*   **Keine eigenmächtigen Reparaturen:** Führen Sie keine Reparaturen durch, die über Ihre Kompetenzen hinausgehen oder die Sicherheit gefährden könnten, ohne explizite Anweisung der Leitstelle. Ihre Hauptaufgabe ist die Absicherung und Informationsbeschaffung.\n*   **Verkehrsregelung:** Bleiben Sie vor Ort und überwachen Sie die Absicherung und den Verkehr, bis die Störung behoben ist oder die Verkehrsregelung durch die Polizei übernommen wurde.",
+    "tokens_estimate_words": 483
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Eskalations-Triggern, umfassende Dokumentations-Checkliste, nutzt Kontext optimal (severity=high, storm, poor_visibility, traffic_exposure, connectivity=online). Keine Halluzinationen, alle erwartbaren Elemente erfüllt.",
+    "test_id": "INC-SIGNAL-0010-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 16.582
+  },
+  "error": {}
+}

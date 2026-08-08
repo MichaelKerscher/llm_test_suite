@@ -1,0 +1,184 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-SIGNAL-0019-TC3",
+  "timestamp": "2026-08-08T12:07:54",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Ampelphasen passen nicht zum Verkehr; Rückstau/Beinahe-Situationen. (Richtung: backward; Hauptverkehrszeit / hoher Verkehr).\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"timing_issue\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-19T02:05:35+01:00\",\n    \"reporter\": \"patrol\",\n    \"photo_description\": \"Stark verkürzte Grünphase erkennbar, Fußgänger überqueren bei Rot. Sicherheitskritisch.\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n6896979362\",\n    \"longitude\": 12.0934822,\n    \"latitude\": 47.8492581\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"visibility\": \"poor_visibility\",\n    \"time_of_day\": \"rush_hour\",\n    \"traffic_exposure\": \"high\",\n    \"weather\": \"rain\",\n    \"noise_level\": \"medium\"\n  },\n  \"_guardrail_notes\": [\n    \"HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.\",\n    \"SICHERHEITSHINWEIS: fault_type=timing_issue / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren.\"\n  ]\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "timing_issue",
+        "severity": "high",
+        "reported_at": "2026-01-19T02:05:35+01:00",
+        "reporter": "patrol",
+        "photo_description": "Stark verkürzte Grünphase erkennbar, Fußgänger überqueren bei Rot. Sicherheitskritisch."
+      },
+      "asset": {
+        "asset_osm": "n6896979362",
+        "longitude": 12.0934822,
+        "latitude": 47.8492581
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "visibility": "poor_visibility",
+        "time_of_day": "rush_hour",
+        "traffic_exposure": "high",
+        "weather": "rain",
+        "noise_level": "medium"
+      },
+      "_guardrail_notes": [
+        "HINWEIS: device.connectivity=spotty und device.device_state=ok beziehen sich auf das Technikgerät (Smartphone/Tablet), NICHT auf die Ampelanlage selbst. Offline-Workflow anpassen: Dokumentation lokal, spätere Synchronisation.",
+        "SICHERHEITSHINWEIS: fault_type=timing_issue / severity=high → Sofortige Absicherung der Kreuzung erforderlich. Bei signal_dark: Kreuzung wie unbeschrankt behandeln. Eskalation an Leitstelle priorisieren."
+      ]
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-SIGNAL-0019",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2",
+    "user_message": "Ampelphasen passen nicht zum Verkehr; Rückstau/Beinahe-Situationen. (Richtung: backward; Hauptverkehrszeit / hoher Verkehr).",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "signal-s2-v2",
+    "s2_guardrails_version": "signal-guard-v1",
+    "s2_trigger_signals": {
+      "safety_critical": true,
+      "timing_issue": true,
+      "button_failure": false,
+      "signal_stuck": false,
+      "intermittent": false,
+      "high_severity": true,
+      "photo_description": true,
+      "offline": false,
+      "spotty": true,
+      "low_battery": false,
+      "poor_visibility": true,
+      "rush_hour": true,
+      "night": false,
+      "bad_weather": true,
+      "high_traffic": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 998,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P1",
+        "reason": "fault-classification"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P1",
+        "reason": "severity-routing"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P1",
+        "reason": "timestamp"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P1",
+        "reason": "source-context"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.visibility",
+        "prio": "P1",
+        "reason": "safety-visibility"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "operational-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "safety-traffic"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "weather-safety"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P1",
+        "reason": "high-traffic-env"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "offline-workflow"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "device-constraint"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P2",
+        "reason": "asset-id"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P2",
+        "reason": "gps"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P2",
+        "reason": "gps"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein Problem mit den Ampelphasen, insbesondere während der Hauptverkehrszeit und mit hoher Schwere, erfordert sofortiges Handeln. Die Sicherheit und Verkehrssicherung haben hier oberste Priorität.\n\n**Vorgehensweise bei Ampelstörung (Timing-Problem):**\n\n1.  **Absicherung der Gefahrenstelle:**\n    *   **Unverzüglich:** Sichern Sie den Bereich um die betroffene Kreuzung großräumig ab.\n    *   **Warnhinweise:** Stellen Sie Warnschilder (z.B. \"Achtung Störung\", \"Ampel außer Betrieb\") und Warnbaken auf, um Verkehrsteilnehmer auf die Gefahrensituation hinzuweisen.\n    *   **Verkehrsleitung:** Bei Bedarf und Möglichkeit, leiten Sie den Verkehr manuell oder weisen Sie auf alternative Routen hin, um Rückstau und Beinahe-Situationen zu minimieren.\n    *   **Eigenschutz:** Achten Sie stets auf Ihre eigene Sicherheit im fließenden Verkehr.\n\n2.  **Sichtprüfung der Anlage:**\n    *   **Physischer Zustand:** Überprüfen Sie alle Ampelköpfe auf sichtbare Beschädigungen (z.B. Vandalismus, Unfallschäden, lose Kabel).\n    *   **Leuchtmittel:** Kontrollieren Sie, ob alle Leuchtmittel korrekt funktionieren und keine Ausfälle oder Flackern zu erkennen sind.\n    *   **Signalgeber:** Achten Sie auf ungewöhnliche Anzeigen oder Fehlfunktionen der Signalgeber (z.B. Dauerrot, Dauergrün, Dunkelschaltung).\n    *   **Detektoren:** Prüfen Sie, ob Induktionsschleifen oder Kameras (falls vorhanden) physisch intakt sind und nicht verdeckt werden.\n\n3.  **Diagnose und Beobachtung des Fehlerbildes:**\n    *   **Phasenablauf:** Beobachten Sie den gesamten Phasenablauf der Ampelanlage über mehrere Zyklen hinweg.\n    *   **Grünzeiten:** Bestätigen Sie die Beobachtung der \"stark verkürzten Grünphase\" für die betroffene Richtung.\n    *   **Verkehrsfluss:** Analysieren Sie, wie sich die fehlerhaften Phasen auf den Verkehrsfluss auswirken (Rückstau, Beinahe-Situationen, Fußgängerquerungen bei Rot).\n    *   **Querende Verkehre:** Prüfen Sie, ob andere Verkehrsströme (querende Richtungen, Fußgänger) ebenfalls betroffen sind oder ungewöhnliche Grünzeiten erhalten.\n    *   **Uhrzeit/Verkehrsaufkommen:** Bestätigen Sie, dass das Problem primär während der Hauptverkehrszeit bei hohem Verkehrsaufkommen auftritt.\n    *   **Umwelteinflüsse:** Berücksichtigen Sie die aktuellen Umweltbedingungen (Regen, schlechte Sicht), die die Situation zusätzlich erschweren können.\n\n4.  **Dokumentation:**\n    *   **Vor Ort (Offline):** Aufgrund der \"spotty connectivity\" ist eine lokale, detaillierte Dokumentation unerlässlich.\n    *   **Datum/Uhrzeit:** Genaue Angabe von Datum und Uhrzeit der Feststellung und Beobachtung.\n    *   **Standort:** Präzise Angabe des Standorts (asset_osm: n6896979362, Longitude: 12.0934822, Latitude: 47.8492581).\n    *   **Fehlerbeschreibung:** Detaillierte Beschreibung des beobachteten Fehlers (z.B. \"Grünphase Richtung 'backward' nur X Sekunden, führt zu Rückstau von Y Metern, Z Beinahe-Unfälle beobachtet\").\n    *   **Fotos/Videos:** Machen Sie Fotos oder Videos, die die verkürzte Grünphase, den Rückstau und die gefährlichen Situationen dokumentieren.\n    *   **Maßnahmen:** Notieren Sie alle durchgeführten Absicherungsmaßnahmen.\n    *   **Reporter:** Halten Sie fest, dass der Vorfall von der \"patrol\" gemeldet wurde.\n    *   **Synchronisation:** Sobald Konnektivität wiederhergestellt ist, synchronisieren Sie die gesammelten Daten umgehend mit dem System.\n\n5.  **Eskalation:**\n    *   **Priorität:** Aufgrund der hohen Schwere (\"severity: high\") und der Sicherheitsrelevanz ist eine sofortige Eskalation zwingend erforderlich.\n    *   **Leitstelle/Fachabteilung:** Informieren Sie umgehend die zuständige Leitstelle oder die Fachabteilung für Verkehrstechnik über den Vorfall.\n    *   **Dringlichkeit:** Betonen Sie die Dringlichkeit der Störungsbehebung und die potenziellen Gefahren für den Verkehr.\n    *   **Bereitschaftsdienst:** Fordern Sie bei Bedarf den Bereitschaftsdienst zur sofortigen Fehlerbehebung an.\n    *   **Status-Updates:** Bleiben Sie in Kontakt mit der Leitstelle, bis die Störung behoben ist oder weitere Anweisungen erfolgen.\n\n**Annahme:** Die \"spotty connectivity\" bezieht sich auf Ihr mobiles Endgerät, nicht auf die Ampelanlage selbst. Die Ampelanlage wird als \"device_state: ok\" beschrieben, was sich auf den technischen Zustand des Geräts (nicht des Timings) beziehen könnte. Das Timing-Problem ist ein Konfigurations- oder Softwarefehler, kein Hardwaredefekt des Geräts selbst.",
+    "tokens_estimate_words": 511
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Eskalations-Triggern, vollständige Dokumentations-Checkliste inkl. Offline-Workflow bei spotty connectivity, nutzt alle Kontext-Elemente (severity=high, rush_hour, poor visibility, rain, traffic_exposure=high) korrekt und ohne Halluzinationen.",
+    "test_id": "INC-SIGNAL-0019-TC3"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 10.654
+  },
+  "error": {}
+}
