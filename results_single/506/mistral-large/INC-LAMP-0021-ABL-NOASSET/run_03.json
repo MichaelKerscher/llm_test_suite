@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0021-ABL-NOASSET",
+  "timestamp": "2026-08-08T23:04:11",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Kurze Aussetzer und Flackern, mögliche Kontaktprobleme.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"flicker\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-19T01:30:45+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme bei Regen: Leuchtmittel flackert sichtbar (Mehrfachbelichtung). Mastarm-Anschluss mit sichtbarer Oxidation.\",\n    \"reporter\": \"patrol\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"rain\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "flicker",
+        "severity": "medium",
+        "reported_at": "2026-01-19T01:30:45+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme bei Regen: Leuchtmittel flackert sichtbar (Mehrfachbelichtung). Mastarm-Anschluss mit sichtbarer Oxidation.",
+        "reporter": "patrol"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "rain",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0021-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Kurze Aussetzer und Flackern, mögliche Kontaktprobleme.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "flicker",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "rain",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1049,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Hier ist eine Schritt-für-Schritt-Checkliste für den Vor-Ort-Einsatz bei gemeldeten Aussetzern und Flackern einer Straßenlampe, unter Berücksichtigung der aktuellen Bedingungen (Nacht, Regen, schlechte Sicht, geringer Verkehr und sichtbare Oxidation am Mastarm-Anschluss):\n\n### Checkliste: Störung an Straßenlampe (Flackern, Kontaktprobleme)\n\n**Priorität: Sicherheit und Verkehrssicherung!**\n\n1.  **Absicherung der Einsatzstelle**\n    *   **Warnblinkanlage** des Einsatzfahrzeugs einschalten.\n    *   **Sicherheitsweste** tragen und auf gute Sichtbarkeit achten.\n    *   **Warndreieck/Leitkegel** gemäß den Vorschriften aufstellen, insbesondere bei schlechter Sicht und Regen, um den Arbeitsbereich zu sichern und andere Verkehrsteilnehmer zu warnen.\n    *   **Abstand** zu potenziell spannungsführenden Teilen halten.\n    *   Auf den **Verkehr** achten, auch wenn er gering ist.\n\n2.  **Sichtprüfung und erste Beobachtung**\n    *   **Leuchtmittel:** Bestätigen Sie das Flackern. Beobachten Sie die Art des Flackerns (Häufigkeit, Intensität, vollständiges Aussetzen).\n    *   **Mastarm-Anschluss:** Prüfen Sie den Bereich des Mastarm-Anschlusses auf die bereits gemeldete **Oxidation**. Achten Sie auf weitere Anzeichen von Korrosion, Feuchtigkeitseintritt, lose oder beschädigte Kabelverbindungen.\n    *   **Kabel und Zuleitungen:** Überprüfen Sie die sichtbaren Kabel auf äußere Beschädigungen, Scheuerstellen, Quetschungen oder Risse.\n    *   **Leuchtengehäuse:** Suchen Sie nach Rissen, Brüchen oder Anzeichen von Wassereintritt.\n    *   **Umgebung:** Gibt es äußere Einflüsse wie herabhängende Äste, Vandalismus oder Anfahrtschäden am Mast?\n    *   **Wettereffekte:** Beachten Sie, dass Regen und Feuchtigkeit die Symptome (Flackern, Kurzschlüsse) verstärken können.\n\n3.  **Diagnose und weiterführende Beobachtung**\n    *   **Systematische Beobachtung:** Tritt das Flackern konstant auf oder nur sporadisch? Gibt es einen Zusammenhang mit Erschütterungen (z.B. durch vorbeifahrende Fahrzeuge)?\n    *   **Keine eigenmächtigen Messungen:** Führen Sie unter diesen Bedingungen (Regen, sichtbare Oxidation, potenzielle Kontaktprobleme) keine eigenmächtigen elektrischen Messungen durch, es sei denn, Sie sind entsprechend geschult, ausgerüstet und die Sicherheit ist zu 100% gewährleistet. **Die Sicherheit hat oberste Priorität!**\n\n4.  **Dokumentation (Offline-Workflow beachten!)**\n    *   Da die Konnektivität \"spotty\" ist, nutzen Sie den **Offline-Workflow** Ihres Geräts.\n    *   **Fotos:** Machen Sie detaillierte Fotos:\n        *   Gesamtaufnahme der Leuchte und des Mastes.\n        *   Nahaufnahmen des flackernden Leuchtmittels (falls möglich, um das Phänomen festzuhalten).\n        *   **Besonders wichtig:** Detaillierte Fotos der sichtbaren Oxidation und eventueller weiterer Beschädigungen am Mastarm-Anschluss und den Kabeln.\n    *   **Detaillierte Beschreibung:** Erfassen Sie alle Beobachtungen präzise:\n        *   Genaue Ortsangabe (Mastnummer, Straße).\n        *   Zeitpunkt der Feststellung.\n        *   Art und Dauer des Flackerns.\n        *   Alle festgestellten Mängel (Oxidation, lose Kabel, Beschädigungen).\n        *   Die aktuellen Wetterbedingungen (Regen, Nacht, schlechte Sicht).\n        *   Bereits durchgeführte Absicherungsmaßnahmen.\n    *   **Lokal speichern:** Stellen Sie sicher, dass alle Daten und Fotos lokal auf Ihrem Gerät gespeichert werden.\n\n5.  **Eskalation**\n    *   **Sofortige Meldung an Fachabteilung/Bereitschaftsdienst:** Aufgrund der sichtbaren Oxidation am Mastarm-Anschluss und des Flackerns besteht ein potenzielles Sicherheitsrisiko (Stromschlag, Brandgefahr, Ausfall der Beleuchtung). Eine schnelle Behebung durch qualifiziertes Fachpersonal ist erforderlich.\n    *   **Gefahrenmeldung:** Bei akuter Gefahr (z.B. offene, spannungsführende Kabel, starker Funkenflug, Rauch) sofort den Bereich großräumig absperren und den Notdienst (Feuerwehr, Störungsdienst des Energieversorgers) informieren.\n    *   **Synchronisation:** Sobald wieder eine stabile Konnektivität besteht, synchronisieren Sie die lokal gespeicherten Daten mit dem zentralen System.",
+    "tokens_estimate_words": 456
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert, strukturierte Schrittfolge mit klaren Stop-Conditions (keine eigenmächtigen Messungen bei Oxidation/Regen), Offline-Workflow explizit integriert (spotty connectivity), detaillierte Dokumentations-Checkliste, angemessene Eskalation bei medium severity + Oxidation. Alle Kontext-Elemente (Nacht, Regen, Oxidation, spotty connectivity, photo_available) sinnvoll genutzt, keine Halluzinationen.",
+    "test_id": "INC-LAMP-0021-ABL-NOASSET"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 15.342
+  },
+  "error": {}
+}

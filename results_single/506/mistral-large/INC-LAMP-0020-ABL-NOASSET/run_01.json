@@ -1,0 +1,175 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0020-ABL-NOASSET",
+  "timestamp": "2026-08-08T22:00:24",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-18T02:30:29+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme im Regen: Laterne dunkel. Mastfuß steht in stehendem Wasser. Schaltbox-Dichtung möglicherweise beeinträchtigt.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"low_power_mode\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"rain\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-18T02:30:29+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme im Regen: Laterne dunkel. Mastfuß steht in stehendem Wasser. Schaltbox-Dichtung möglicherweise beeinträchtigt.",
+        "reporter": "dispatch"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "low_power_mode"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "rain",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0020-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "low_power_mode",
+      "low_battery": true,
+      "weather": "rain",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 884,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt, besonders bei Nacht und Regen, erfordert sofortige und sorgfältige Prüfung. Die Sicherheit hat hier oberste Priorität, insbesondere aufgrund der Hinweise auf stehendes Wasser am Mastfuß und eine potenziell beeinträchtigte Schaltkasten-Dichtung.\n\nHier ist Ihre Schritt-für-Schritt-Checkliste für den Einsatz vor Ort:\n\n### **Checkliste: Dunkler Abschnitt – Straßenbeleuchtung**\n\n**1. Absicherung (Sicherheit & Verkehrssicherung)**\n*   **Gefahrenbereich absichern:** Unmittelbar nach Ankunft den Bereich um die betroffene Leuchte und den Schaltkasten großräumig absichern (Warnleuchten, Warndreiecke, ggf. Absperrband), um Passanten und Verkehr zu schützen.\n*   **Persönliche Schutzausrüstung (PSA):** Sicherstellen, dass die vollständige PSA (Warnkleidung, Sicherheitsschuhe, Schutzhandschuhe, ggf. Helm und Feuchtigkeitsschutz) korrekt getragen wird.\n*   **Stromschlaggefahr prüfen:** Aufgrund des stehenden Wassers und der potenziell defekten Dichtung am Schaltkasten ist höchste Vorsicht geboten. Vor jeglicher Berührung die Stromfreiheit prüfen, falls möglich und sicher. Bei Unsicherheit oder sichtbaren Schäden an Kabeln/Schaltkasten: **Keine eigenmächtigen Eingriffe vornehmen!**\n\n**2. Sichtprüfung (Erste Einschätzung)**\n*   **Umfeld:**\n    *   Bestätigen Sie die Lichtverhältnisse (Nacht) und Wetterbedingungen (Regen, stehendes Wasser).\n    *   Prüfen Sie, ob nur eine Leuchte oder ein ganzer Abschnitt betroffen ist.\n    *   Gibt es sichtbare Schäden an anderen Infrastrukturen (z.B. umgestürzte Bäume, Unfallspuren)?\n*   **Leuchte:**\n    *   Ist die Leuchte selbst intakt (Glas, Gehäuse)?\n    *   Sind Kabel sichtbar beschädigt oder hängen sie lose?\n*   **Mast:**\n    *   Gibt es sichtbare Beschädigungen am Mast (Korrosion, Risse, Anfahrtschäden)?\n    *   **Mastfuß:** Bestätigen Sie das stehende Wasser. Wie hoch steht es? Gibt es Anzeichen für einen Wassereintritt in den Mast?\n*   **Schaltkasten/Anschlusskasten:**\n    *   **Dichtung:** Prüfen Sie die Dichtung des Schaltkastens auf sichtbare Beschädigungen, Risse oder ob sie lose ist.\n    *   Gibt es Anzeichen für Wassereintritt (Kondenswasser, Feuchtigkeit, Rostspuren im Inneren oder an der Außenseite)?\n    *   Sind die Kabelzuführungen intakt und trocken?\n\n**3. Diagnose/Beobachtung (Ursachenforschung)**\n*   **Stromversorgung:**\n    *   Wenn sicher zugänglich: Prüfen Sie die Sicherungen im Schaltkasten. Ist eine Sicherung ausgelöst?\n    *   Gibt es Anzeichen für einen Kurzschluss (Brandgeruch, Schmauchspuren)?\n*   **Feuchtigkeit:**\n    *   Die Kombination aus stehendem Wasser und potenziell defekter Schaltkasten-Dichtung ist ein starker Hinweis auf einen Kurzschluss oder Erdschluss durch Feuchtigkeit.\n    *   Beobachten Sie, ob das Wasser abläuft oder sich sammelt.\n*   **Geräusche/Gerüche:** Achten Sie auf ungewöhnliche Geräusche (Brummen, Knistern) oder Gerüche (verbrannter Kunststoff, Ozon).\n\n**4. Dokumentation**\n*   **Fotos:** Machen Sie detaillierte Fotos von:\n    *   Der Gesamtsituation (dunkler Abschnitt).\n    *   Der betroffenen Leuchte und dem Mast.\n    *   Dem stehenden Wasser am Mastfuß.\n    *   Dem Schaltkasten, insbesondere der Dichtung und Anzeichen von Wassereintritt.\n    *   Jeglichen sichtbaren Schäden oder Auffälligkeiten.\n*   **Bericht:** Erfassen Sie präzise folgende Informationen:\n    *   Datum, Uhrzeit des Einsatzes.\n    *   Genaue Standortbeschreibung.\n    *   Festgestellte Wetter- und Umgebungsbedingungen.\n    *   Detaillierte Beschreibung der Beobachtungen (siehe Sichtprüfung und Diagnose).\n    *   Durchgeführte Absicherungsmaßnahmen.\n    *   Angaben zu ausgelösten Sicherungen oder anderen elektrischen Auffälligkeiten.\n    *   Ihre Einschätzung zur Ursache (z.B. \"vermutlich Kurzschluss durch Wassereintritt\").\n\n**5. Eskalation**\n*   **Bei akuter Gefahr:** Wenn eine unmittelbare Stromschlaggefahr besteht, Kabel offenliegen oder der Schaltkasten stark beschädigt ist und Wasser führt:\n    *   **Sofortige Meldung an die Leitstelle/Einsatzleitung** mit Priorität \"Gefahr im Verzug\".\n    *   **Ggf. Feuerwehr/Netzbetreiber informieren**, um den Bereich stromlos zu schalten.\n    *   **Absicherung aufrechterhalten** und den Bereich nicht verlassen, bis Fachpersonal eintrifft.\n*   **Bei komplexen Fehlern/Reparaturen:** Wenn die Ursache nicht sofort behoben werden kann (z.B. defektes Kabel, Wassereintritt in den Mast, defekter Schaltkasten):\n    *   **Meldung an die zuständige Fachabteilung/Elektriker** zur weiteren Fehlerbehebung und Reparatur.\n    *   Übermittlung der vollständigen Dokumentation (Fotos, Bericht).\n*   **Abschluss:** Bestätigen Sie der Leitstelle den Abschluss Ihrer Maßnahmen und die erfolgte Eskalation.",
+    "tokens_estimate_words": 548
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung, PSA, Stromschlaggefahr), strukturierte Checkliste mit klaren Schritten, nutzt alle Kontextinformationen (Nacht, Regen, stehendes Wasser, Dichtung), detaillierte Dokumentationspunkte und mehrstufige Eskalationslogik passend zu severity=high. Keine Halluzinationen, keine irrelevanten Teile.",
+    "test_id": "INC-LAMP-0020-ABL-NOASSET"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 14.04
+  },
+  "error": {}
+}

@@ -1,0 +1,178 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0010-ABL-NOASSET",
+  "timestamp": "2026-08-08T21:50:08",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang Rosenheim, Stadtmitte; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-21T09:52:03+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerungsaufnahme im Regen: Laterne dunkel, Umgebung abgedunkelt. Mast ohne erkennbare Beschädigung, Leuchtmittelabdeckung leicht beschlagen.\",\n    \"reporter\": \"internal\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"rain\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-21T09:52:03+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerungsaufnahme im Regen: Laterne dunkel, Umgebung abgedunkelt. Mast ohne erkennbare Beschädigung, Leuchtmittelabdeckung leicht beschlagen.",
+        "reporter": "internal"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "rain",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0010-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Dunkler Abschnitt entlang Rosenheim, Stadtmitte; bitte prüfen.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "rain",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1072,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt in Rosenheim, Stadtmitte, erfordert umgehende Prüfung. Angesichts der hohen Dringlichkeit, der Dämmerung und des Regens ist die Verkehrssicherung von höchster Priorität.\n\nHier ist die Schritt-für-Schritt-Checkliste für den Außendienst:\n\n**1. Absicherung (Priorität: Sicherheit & Verkehrssicherung)**\n*   **Gefahrenbereich sichern:** Unverzüglich Warnblinklicht einschalten, Warnweste tragen und den Arbeitsbereich gemäß UVV (Unfallverhütungsvorschriften) und StVO (Straßenverkehrs-Ordnung) absichern (z.B. Warndreieck, Blitzleuchten, Leitkegel), insbesondere aufgrund des hohen Verkehrsaufkommens und der schlechten Sichtverhältnisse.\n*   **Eigenschutz gewährleisten:** Auf den fließenden Verkehr achten und sich nur in gesicherten Bereichen aufhalten.\n\n**2. Sichtprüfung (Umfassende Begutachtung)**\n*   **Betroffene Leuchte(n):** Bestätigen, dass die Laterne dunkel ist.\n*   **Mast und Leuchtenkopf:** Den Mast auf sichtbare Beschädigungen prüfen (wie bereits im Vorbericht erwähnt, scheint der Mast unbeschädigt zu sein, dies ist jedoch vor Ort zu verifizieren). Die Leuchtmittelabdeckung auf stärkere Beschlagenheit, Risse oder andere Defekte untersuchen.\n*   **Umgebung:** Prüfen, ob nur diese eine Leuchte oder ein ganzer Abschnitt betroffen ist. Sind benachbarte Leuchten ebenfalls dunkel oder flackern sie?\n*   **Kabel und Anschlüsse:** Wenn zugänglich und sicher, eine Sichtprüfung der Kabelzuführung und des Anschlussbereichs auf offensichtliche Beschädigungen (z.B. Marderbisse, Vandalismus) durchführen.\n\n**3. Diagnose/Beobachtung (Fehlerursachenforschung)**\n*   **Schaltkasten/Sicherung:** Falls sicher zugänglich und autorisiert, den zugehörigen Schaltkasten auf ausgelöste Sicherungen oder Schutzschalter prüfen.\n*   **Leuchtmittel:** Bei Verdacht auf defektes Leuchtmittel oder Vorschaltgerät: Gibt es Anzeichen für Überhitzung, Geruch oder sichtbare Defekte am Leuchtmittel selbst?\n*   **Sensorik:** Falls vorhanden, die Funktion von Dämmerungsschaltern oder Bewegungsmeldern prüfen.\n*   **Stromversorgung:** Ist die Stromversorgung im gesamten Abschnitt unterbrochen oder nur an dieser einen Leuchte?\n\n**4. Dokumentation (Lückenlose Erfassung)**\n*   **Fotos:** Aktuelle Fotos der Situation anfertigen (Gesamtansicht des dunklen Bereichs, Detailaufnahmen der betroffenen Leuchte, eventueller Beschädigungen). Beachten Sie, dass bereits ein Foto vorliegt, aber die aktuelle Situation neu dokumentiert werden muss.\n*   **Befunde:** Alle Beobachtungen und durchgeführten Prüfschritte detailliert festhalten (z.B. \"Laterne X dunkel, Mast unbeschädigt, Leuchtmittelabdeckung stark beschlagen, Sicherung Y ausgelöst\").\n*   **Umgebungsbedingungen:** Wetter (Regen), Sicht (Dämmerung), Verkehrsaufkommen (hoch) und genaue Uhrzeit notieren.\n*   **Offline-Workflow:** Da die Konnektivität vor Ort fleckig sein kann, sicherstellen, dass alle Daten und Fotos lokal auf dem Gerät gespeichert und später synchronisiert werden.\n\n**5. Eskalation (Maßnahmen einleiten)**\n*   **Sofortmaßnahmen:** Falls eine unmittelbare Gefahr besteht (z.B. offene Kabel, umsturzgefährdeter Mast), umgehend den Netzbetreiber oder die zuständige Notfallstelle informieren.\n*   **Reparaturauftrag:** Basierend auf der Diagnose einen detaillierten Reparaturauftrag erstellen.\n    *   **Einfacher Defekt (z.B. Leuchtmittel):** Wenn möglich und sicher, direkt beheben.\n    *   **Komplexer Defekt (z.B. Kabelschaden, Vorschaltgerät, Stromausfall im Abschnitt):** Fachpersonal mit entsprechender Qualifikation und Ausrüstung anfordern.\n*   **Meldung:** Den Vorfall und die eingeleiteten Maßnahmen intern melden.",
+    "tokens_estimate_words": 409
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 4,
+      "S": 5,
+      "D": 4,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Asset-ID/Standort-Koordinaten explizit erwähnen"
+    ],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Eskalations-Triggern, Offline-Workflow explizit adressiert, alle Kontextfaktoren (spotty connectivity, high traffic, rain, dusk, photo_available) sinnvoll integriert. Dokumentation umfassend, nur Asset-ID könnte expliziter sein.",
+    "test_id": "INC-LAMP-0010-ABL-NOASSET"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.99
+  },
+  "error": {}
+}

@@ -1,0 +1,179 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0008-ABL-NODEV",
+  "timestamp": "2026-08-08T22:19:57",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"low\",\n    \"reported_at\": \"2026-01-20T08:57:46+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme im Nebel: Laterne dunkel, Umgebungsbereich nicht beleuchtet. Mastfuß mit sichtbarer Korrosion, Bodenplatte locker.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n13293341689\",\n    \"latitude\": 47.8571756,\n    \"longitude\": 12.1302583\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"fog\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "low",
+        "reported_at": "2026-01-20T08:57:46+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme im Nebel: Laterne dunkel, Umgebungsbereich nicht beleuchtet. Mastfuß mit sichtbarer Korrosion, Bodenplatte locker.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n13293341689",
+        "latitude": 47.8571756,
+        "longitude": 12.1302583
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "fog",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0008-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NODEV",
+    "user_message": "Dunkler Abschnitt entlang dem Standort; bitte prüfen.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "low",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "unknown",
+      "device_state": "unknown",
+      "low_battery": false,
+      "weather": "fog",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 706,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Vielen Dank für die Meldung des dunklen Abschnitts. Hier ist die Checkliste für die Überprüfung vor Ort, unter Berücksichtigung der gemeldeten Details:\n\n**Vorfall:** Ausfall einer Straßenlaterne, gemeldet am 20.01.2026 um 08:57 Uhr.\n**Standort:** Breitengrad 47.8571756, Längengrad 12.1302583 (Asset OSM: n13293341689).\n**Umgebung:** Nacht, Nebel, schlechte Sicht, geringes Verkehrsaufkommen, geringe Lärmbelästigung.\n**Zusätzliche Hinweise:** Foto vorhanden mit Beschreibung \"Nachtaufnahme im Nebel: Laterne dunkel, Umgebungsbereich nicht beleuchtet. Mastfuß mit sichtbarer Korrosion, Bodenplatte locker.\"\n\n---\n\n**Checkliste für den Außendienst:**\n\n1.  **Absicherung (Sicherheit & Verkehrssicherung):**\n    *   Bei Ankunft: Unmittelbare Gefahren (z.B. lose Teile, Stromschlaggefahr) prüfen.\n    *   Absicherung der Arbeitsstelle gemäß UVV und StVO, insbesondere bei schlechter Sicht durch Nebel und Dunkelheit. Warnleuchten und Warndreiecke aufstellen.\n    *   Persönliche Schutzausrüstung (PSA) tragen.\n\n2.  **Sichtprüfung (Erste Einschätzung):**\n    *   **Bestätigung des Ausfalls:** Ist die Laterne tatsächlich dunkel? Sind weitere Leuchten im Umfeld betroffen?\n    *   **Umgebungsbereich:** Entspricht die Situation der Fotobeschreibung (\"Laterne dunkel, Umgebungsbereich nicht beleuchtet\")?\n    *   **Mastfuß und Bodenplatte:** Überprüfung der gemeldeten Korrosion am Mastfuß und der lockeren Bodenplatte. Besteht hier eine unmittelbare Gefahr (Standsicherheit)?\n    *   **Kabel und Anschlüsse:** Sind offensichtliche Beschädigungen an Kabeln oder Zugängen sichtbar (z.B. Vandalismus, Anfahrschäden)?\n    *   **Leuchtmittel/Abdeckung:** Ist das Leuchtmittel intakt oder beschädigt? Ist die Abdeckung unversehrt?\n\n3.  **Diagnose/Beobachtung (Ursachenforschung):**\n    *   **Stromversorgung:**\n        *   Sicherung im Schaltkasten prüfen (falls zugänglich und autorisiert).\n        *   Spannungsmessung am Leuchtenkopf oder im Mast (falls möglich und sicher).\n        *   Funktionstest des Dämmerungsschalters/Zeitschaltuhr (falls vorhanden).\n    *   **Leuchtmittel:** Defekt des Leuchtmittels oder des Vorschaltgeräts.\n    *   **Kabelbruch:** Indizien für einen Kabelbruch im Mast oder Erdreich.\n    *   **Mastzustand:** Detaillierte Begutachtung der Korrosion und der Bodenplatte. Einschätzung der Standsicherheit des Mastes.\n\n4.  **Dokumentation:**\n    *   **Fotos:** Aktuelle Fotos vom Zustand der Laterne, des Mastfußes, der Bodenplatte und der Umgebung machen.\n    *   **Befunde:** Alle Beobachtungen und Messergebnisse detailliert festhalten (z.B. Art des Defekts, Zustand der Komponenten, festgestellte Gefahren).\n    *   **Maßnahmen:** Dokumentation der durchgeführten Absicherungsmaßnahmen und Erstdiagnosen.\n    *   **GPS-Koordinaten:** Genaue Position der betroffenen Laterne bestätigen.\n\n5.  **Eskalation:**\n    *   **Unmittelbare Gefahr:** Bei festgestellter akuter Gefahr (z.B. Umsturzgefahr des Mastes, offene Stromleitungen) sofort den Bereich großräumig absperren und die zuständige Leitstelle/Notdienst informieren.\n    *   **Reparatur:** Wenn eine Reparatur vor Ort nicht möglich ist (z.B. Spezialwerkzeug, Ersatzteile nicht verfügbar, komplexer Defekt), detaillierten Reparaturauftrag mit allen gesammelten Informationen erstellen und an die Fachabteilung weiterleiten.\n    *   **Priorität:** Aufgrund der schlechten Sichtverhältnisse (Nacht, Nebel) und der potenziellen Gefahr durch Korrosion am Mastfuß ist eine zügige Behebung des Ausfalls und eine Prüfung der Standsicherheit erforderlich.",
+    "tokens_estimate_words": 388
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Checkliste mit klaren Eskalationstriggern (Umsturzgefahr, offene Leitungen), vollständige Dokumentation inkl. GPS/Fotos/Befunde, nutzt alle Kontextinformationen präzise (Nebel/Nacht → Sichtverhältnisse, Korrosion/lockere Platte → Standsicherheit, photo_available → neue Fotos), keine Halluzinationen.",
+    "test_id": "INC-LAMP-0008-ABL-NODEV"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 9.305
+  },
+  "error": {}
+}

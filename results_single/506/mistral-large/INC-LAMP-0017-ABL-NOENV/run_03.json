@@ -1,0 +1,178 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0017-ABL-NOENV",
+  "timestamp": "2026-08-08T23:00:12",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang Schönau; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-15T10:17:54+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerungsaufnahme bei Regen: gesamter Straßenabschnitt dunkel. Mehrere Masten sichtbar, alle ohne Licht. Kein einzelner Schaden erkennbar.\",\n    \"reporter\": \"citizen\"\n  },\n  \"asset\": {\n    \"asset_osm\": \"n4446442023\",\n    \"latitude\": 47.8227101,\n    \"longitude\": 12.1125581,\n    \"name\": \"Schönau\",\n    \"lit\": \"yes\"\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"low_power_mode\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "medium",
+        "reported_at": "2026-01-15T10:17:54+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerungsaufnahme bei Regen: gesamter Straßenabschnitt dunkel. Mehrere Masten sichtbar, alle ohne Licht. Kein einzelner Schaden erkennbar.",
+        "reporter": "citizen"
+      },
+      "asset": {
+        "asset_osm": "n4446442023",
+        "latitude": 47.8227101,
+        "longitude": 12.1125581,
+        "name": "Schönau",
+        "lit": "yes"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "low_power_mode"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0017-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOENV",
+    "user_message": "Dunkler Abschnitt entlang Schönau; bitte prüfen.",
+    "judge_version": "judge_v1_1_single",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "low_power_mode",
+      "low_battery": true,
+      "weather": "unknown",
+      "poor_visibility": false,
+      "time_of_day": "unknown",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 847,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "asset.asset_osm",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "asset.latitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.longitude",
+        "prio": "P0",
+        "reason": "location"
+      },
+      {
+        "path": "asset.name",
+        "prio": "P0",
+        "reason": "identity"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "asset.lit",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": []
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt in Schönau wurde am 15. Januar 2026 gemeldet. Bitte beachten Sie, dass dieser Vorfall bereits vor längerer Zeit gemeldet wurde. Es ist wichtig zu prüfen, ob die Störung noch aktuell ist oder ob es sich um einen neuen Vorfall handelt.\n\nHier ist eine praxisnahe Schritt-für-Schritt-Checkliste für den Einsatz vor Ort, um die Sicherheit zu gewährleisten und die Ursache des Stromausfalls im gesamten Straßenabschnitt zu ermitteln:\n\n**Checkliste für den Außendienst: Dunkler Abschnitt Schönau**\n\n1.  **Absicherung (Priorität: Sicherheit und Verkehrssicherung)**\n    *   Fahrzeug sicher abstellen, Warnblinkanlage einschalten.\n    *   Warndreieck/Warnleuchten aufstellen, um den Arbeitsbereich abzusichern und andere Verkehrsteilnehmer frühzeitig zu warnen.\n    *   Persönliche Schutzausrüstung (PSA) anlegen (Warnweste, Sicherheitsschuhe, ggf. Helm).\n    *   Bei Dunkelheit: Zusätzliche Beleuchtung des Arbeitsbereichs sicherstellen.\n\n2.  **Sichtprüfung (Gesamter Abschnitt)**\n    *   **Umfeld:** Gibt es offensichtliche Schäden an der Infrastruktur (z.B. umgefahrene Masten, beschädigte Kabel, offene Verteilerkästen)? (Laut ursprünglicher Meldung war kein einzelner Schaden erkennbar, dies sollte aber erneut geprüft werden).\n    *   **Masten/Leuchten:** Sind alle Leuchten im betroffenen Abschnitt dunkel? (Bestätigt durch \"gesamter Straßenabschnitt dunkel\").\n    *   **Steuerung/Verteiler:** Lokalisieren Sie den nächstgelegenen Schalt- oder Verteilerkasten für die Straßenbeleuchtung in diesem Bereich. Prüfen Sie, ob dieser zugänglich und unbeschädigt ist.\n    *   **Anzeichen für Vandalismus:** Achten Sie auf Manipulationen oder Beschädigungen an Kabeln, Masten oder Schaltkästen.\n\n3.  **Diagnose/Beobachtung**\n    *   **Schaltkastenprüfung:**\n        *   Sichtprüfung der Sicherungen und Schutzschalter im Schaltkasten. Sind Sicherungen ausgelöst oder Schalter in der \"Aus\"-Position?\n        *   Falls ja, versuchen Sie, den Schalter wieder einzuschalten. Bleibt er drin oder löst er sofort wieder aus? (Vorsicht bei wiederholtem Auslösen – deutet auf Kurzschluss hin).\n    *   **Spannungsmessung (falls qualifiziert und sicher):**\n        *   Messen Sie die Spannung am Eingang des Schaltkastens, um festzustellen, ob die Hauptstromversorgung anliegt.\n        *   Messen Sie die Spannung an den Abgängen zu den Leuchtenkreisen.\n    *   **Fehlerbild:** Bestätigt sich, dass der *gesamte* Abschnitt dunkel ist, deutet dies auf eine zentrale Störung (z.B. Hauptsicherung, Kabelbruch vor der Verteilung) und nicht auf Einzelleuchtenfehler hin.\n\n4.  **Dokumentation**\n    *   **Aktuelle Fotos:** Machen Sie aktuelle Fotos des betroffenen Abschnitts und relevanter Details (z.B. Schaltkasten, Schäden).\n    *   **Befunde:** Notieren Sie detailliert alle Beobachtungen und Messergebnisse (z.B. \"Hauptsicherung ausgelöst\", \"keine Spannung am Verteiler\", \"Kabelbruch sichtbar\").\n    *   **Maßnahmen:** Dokumentieren Sie alle durchgeführten Schritte (z.B. \"Sicherung wieder eingeschaltet, hält\", \"Schaltkasten geöffnet und geprüft\").\n    *   **Uhrzeit/Datum:** Halten Sie den genauen Zeitpunkt der Prüfung fest.\n    *   **Standort:** Bestätigen Sie die genaue Position (GPS-Koordinaten, Mastnummern).\n\n5.  **Eskalation**\n    *   **Sofortige Meldung:** Bei größeren Schäden, unklarer Ursache oder wenn die Störung nicht sofort behoben werden kann: Melden Sie den Vorfall umgehend an die zuständige Leitstelle/Fachabteilung.\n    *   **Spezialisten anfordern:** Wenn die Ursache ein komplexer Kabelfehler, ein Hauptstromausfall oder ein Defekt an der Steuerung ist, fordern Sie ein spezialisiertes Team an.\n    *   **Absicherung belassen:** Falls der Fehler nicht sofort behoben werden kann, stellen Sie sicher, dass der Bereich weiterhin ausreichend abgesichert ist, bis die Reparatur erfolgt.\n\nBitte klären Sie, ob die ursprüngliche Meldung vom Januar 2026 noch relevant ist oder ob es sich um eine neue Störung handelt.",
+    "tokens_estimate_words": 479
+  },
+  "judge": {
+    "scores": {
+      "R": 4,
+      "H": 4,
+      "S": 5,
+      "D": 4,
+      "K": 3
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [
+      "Ticket-ID/Asset-ID explizit erwähnen",
+      "Low-Power-Mode des Geräts berücksichtigen"
+    ],
+    "short_justification": "Sehr strukturierte, praxisnahe Antwort mit klarer Safety-First-Priorisierung und sinnvoller Eskalationslogik. Nutzt Foto-Beschreibung und severity=medium gut. Zeitstempel-Hinweis ist sinnvoll, aber device.device_state=low_power_mode wird nicht berücksichtigt (könnte Batterie-Schonung beeinflussen). Keine Halluzinationen erkennbar.",
+    "test_id": "INC-LAMP-0017-ABL-NOENV"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.688
+  },
+  "error": {}
+}
