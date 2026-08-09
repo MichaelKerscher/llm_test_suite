@@ -1,0 +1,177 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0029-ABL-NOASSET",
+  "timestamp": "2026-08-08T18:29:25",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 15 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-15T12:53:33+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme: Laterne dunkel, Pang/Cafe-Bereich unbeleuchtet. Mast ohne erkennbare Beschädigung, Schaltbox geschlossen.\",\n    \"reporter\": \"dispatch\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"clear\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"medium\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-15T12:53:33+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme: Laterne dunkel, Pang/Cafe-Bereich unbeleuchtet. Mast ohne erkennbare Beschädigung, Schaltbox geschlossen.",
+        "reporter": "dispatch"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "clear",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "medium",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0029-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Straßenlampe ist dunkel seit etwa 15 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1_single_fullref",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "clear",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1055,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": [],
+    "judge_reference_context": "full_l2"
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Eine ausgefallene Straßenlampe, besonders nachts und in einem Bereich, der als unsicher empfunden wird, erfordert schnelles und strukturiertes Vorgehen. Hier ist eine Schritt-für-Schritt-Checkliste für den Außendienst:\n\n### Checkliste: Ausfall Straßenlampe (Nacht, hohe Dringlichkeit)\n\n1.  **Absicherung des Bereichs**\n    *   **Priorität:** Unverzüglich die Unfallstelle absichern, um Gefahren für Verkehrsteilnehmer und sich selbst zu minimieren.\n    *   **Maßnahmen:**\n        *   Warnblinkanlage des Einsatzfahrzeugs einschalten.\n        *   Warnweste anlegen.\n        *   Warndreieck/Blitzleuchten gemäß Vorschrift aufstellen, um den Arbeitsbereich kenntlich zu machen und den Verkehr zu warnen.\n        *   Bei Bedarf: Zusätzliche Absperrungen oder Verkehrsleiteinrichtungen anbringen, insbesondere wenn der Bereich stark frequentiert ist oder die Sicht extrem eingeschränkt ist.\n\n2.  **Sichtprüfung (ohne direkten Kontakt)**\n    *   **Ziel:** Erste Einschätzung der Lage und möglicher Ursachen aus sicherer Entfernung.\n    *   **Maßnahmen:**\n        *   **Lampe/Leuchtenkopf:** Ist der Leuchtenkopf intakt? Sind Beschädigungen (z.B. Glasbruch, herabhängende Teile) erkennbar?\n        *   **Mast:** Ist der Mast stabil? Sind sichtbare Beschädigungen, Risse, Korrosion oder Anfahrspuren vorhanden? (Laut Foto: Mast ohne erkennbare Beschädigung).\n        *   **Kabel/Zuleitungen:** Sind sichtbare Kabelbeschädigungen, offene Verteilerkästen oder Manipulationen am Mastfuß erkennbar? (Laut Foto: Schaltbox geschlossen).\n        *   **Umgebung:** Gibt es Anzeichen für Vandalismus, Unfälle oder andere externe Einflüsse?\n\n3.  **Diagnose/Beobachtung**\n    *   **Ziel:** Eingrenzung der Fehlerursache.\n    *   **Maßnahmen:**\n        *   **Schaltkasten/Sicherung:** Falls gefahrlos zugänglich und autorisiert: Prüfen, ob eine Sicherung ausgelöst hat oder der Schutzschalter gefallen ist. (Hinweis: Nur bei klarer Autorisierung und Einhaltung der Sicherheitsvorschriften!)\n        *   **Wärmeentwicklung/Geruch:** Auf ungewöhnliche Gerüche (z.B. Brandgeruch) oder sichtbare Rauchentwicklung achten.\n        *   **Weitere Lampen:** Sind benachbarte Straßenlampen ebenfalls ausgefallen oder nur diese eine? Dies kann auf einen lokalen Fehler oder einen Fehler im Stromkreis hindeuten.\n\n4.  **Dokumentation**\n    *   **Ziel:** Lückenlose Erfassung des Zustands und der durchgeführten Maßnahmen.\n    *   **Maßnahmen:**\n        *   **Foto:** Ein aktuelles Foto der Situation machen, auch wenn bereits ein Foto vorliegt. (Laut Kontext: Foto vorhanden, \"Nachtaufnahme: Laterne dunkel, Pang/Cafe-Bereich unbeleuchtet. Mast ohne erkennbare Beschädigung, Schaltbox geschlossen.\").\n        *   **Standort:** Genaue Positionsdaten (GPS) erfassen.\n        *   **Uhrzeit:** Zeitpunkt der Feststellung und der durchgeführten Maßnahmen notieren.\n        *   **Beobachtungen:** Alle unter Punkt 2 und 3 gemachten Beobachtungen detailliert festhalten.\n        *   **Maßnahmen:** Dokumentieren, welche Absicherungsmaßnahmen getroffen wurden.\n        *   **Gerätezustand:** Da das Techniker-Gerät offline sein kann, sicherstellen, dass alle Daten lokal gespeichert und später synchronisiert werden.\n\n5.  **Eskalation**\n    *   **Ziel:** Einleitung weiterer Schritte zur Fehlerbehebung und Wiederherstellung der Sicherheit.\n    *   **Maßnahmen:**\n        *   **Meldung:** Umgehende Meldung an die zuständige Leitstelle/Fachabteilung mit allen gesammelten Informationen.\n        *   **Dringlichkeit:** Die hohe Dringlichkeit (Nacht, unsicherer Bereich, schlechte Sicht) explizit hervorheben.\n        *   **Anforderung:** Bei Bedarf Unterstützung anfordern (z.B. Elektriker, weiteres Absicherungspersonal, Polizei bei Vandalismus).\n        *   **Folgeauftrag:** Klärung des weiteren Vorgehens (z.B. Reparaturauftrag, temporäre Beleuchtung).",
+    "tokens_estimate_words": 408
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung Schritt 1), strukturierte Schrittfolge mit klaren Maßnahmen, explizite Eskalation bei high severity/night, vollständige Dokumentations-Checkliste inkl. Offline-Workflow-Hinweis, nutzt alle Kontext-Elemente (Foto, GPS, offline, night, medium traffic) korrekt ohne Halluzinationen.",
+    "test_id": "INC-LAMP-0029-ABL-NOASSET"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 8.867
+  },
+  "error": {}
+}

@@ -1,0 +1,177 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0024-ABL-NOASSET",
+  "timestamp": "2026-08-08T18:24:33",
+  "client": "506",
+  "model": "gemini-2.5-flash",
+  "input": {
+    "type": "text",
+    "prompt": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"intermittent\",\n    \"severity\": \"medium\",\n    \"reported_at\": \"2026-01-19T09:52:16+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Nachtaufnahme bei Sturm: Laterne aktuell an (nach gemeldetem Ausfall). Mastarm mit Sturmspuren, Schaltbox äußerlich geschlossen.\",\n    \"reporter\": \"citizen\"\n  },\n  \"device\": {\n    \"connectivity\": \"offline\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"night\",\n    \"weather\": \"storm\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"high\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "intermittent",
+        "severity": "medium",
+        "reported_at": "2026-01-19T09:52:16+01:00",
+        "photo_available": true,
+        "photo_description": "Nachtaufnahme bei Sturm: Laterne aktuell an (nach gemeldetem Ausfall). Mastarm mit Sturmspuren, Schaltbox äußerlich geschlossen.",
+        "reporter": "citizen"
+      },
+      "device": {
+        "connectivity": "offline",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "night",
+        "weather": "storm",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "high"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0024-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Lampe war vorhin aus, ist jetzt wieder an. Sporadischer Fehler.",
+    "judge_version": "judge_v1_1_single_fullref",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "medium",
+      "fault_type": "intermittent",
+      "offline": true,
+      "spotty": false,
+      "connectivity": "offline",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "storm",
+      "poor_visibility": true,
+      "time_of_day": "night",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1066,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": [],
+    "judge_reference_context": "full_l2"
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein sporadischer Fehler erfordert eine besonders sorgfältige Vorgehensweise. Priorisieren Sie stets Ihre eigene Sicherheit und die der Verkehrsteilnehmer, insbesondere unter den gegebenen Bedingungen (Nacht, Sturm, schlechte Sicht, hohes Verkehrsaufkommen).\n\n**Schritt-für-Schritt-Checkliste:**\n\n1.  **Absicherung:**\n    *   **Persönliche Schutzausrüstung (PSA):** Vollständig anlegen (Warnkleidung, Helm, Sicherheitsschuhe, ggf. Gehörschutz).\n    *   **Arbeitsbereich sichern:** Großräumige Absicherung der Einsatzstelle gemäß UVV und örtlichen Vorschriften (Warnleuchten, Warndreiecke, Leitkegel). Besondere Vorsicht bei hohem Verkehrsaufkommen und schlechter Sicht.\n    *   **Gefahrenbeurteilung:** Auf herabfallende Äste, lose Teile am Mast oder in der Umgebung achten.\n\n2.  **Sichtprüfung (ohne direkten Kontakt):**\n    *   **Gesamtanlage:** Überprüfen Sie den Mastarm und die Leuchte auf sichtbare Sturmschäden (Verbiegungen, Risse, lose Teile).\n    *   **Schaltbox:** Prüfen Sie die äußere Schaltbox auf Beschädigungen, offene Klappen oder Anzeichen von Wassereintritt, auch wenn sie äußerlich geschlossen erscheint.\n    *   **Kabel/Anschlüsse:** Suchen Sie nach offensichtlich beschädigten oder durchhängenden Kabeln im sichtbaren Bereich.\n    *   **Leuchtmittel:** Beobachten Sie die Leuchte auf Flackern, unregelmäßiges Brennen oder ungewöhnliche Geräusche.\n\n3.  **Diagnose/Beobachtung (wenn sicher):**\n    *   **Intermittierender Fehler:** Da die Lampe aktuell an ist, liegt ein sporadischer Fehler vor. Versuchen Sie, den Fehler zu provozieren (z.B. durch leichtes Rütteln am Mast, falls sicher und ohne Risiko möglich), um lose Kontakte zu identifizieren.\n    *   **Schaltkasten (nur bei Freischaltung und Sicherheit):** Wenn gefahrlos möglich und freigeschaltet, öffnen Sie den Schaltkasten und prüfen Sie auf lose Klemmen, Korrosion, Feuchtigkeit oder Brandspuren.\n    *   **Umwelteinflüsse:** Berücksichtigen Sie Windlast und Feuchtigkeit als mögliche Ursachen für sporadische Ausfälle.\n\n4.  **Dokumentation:**\n    *   **Offline-Erfassung:** Da Ihr Gerät offline ist, dokumentieren Sie alle Beobachtungen, durchgeführten Schritte und den aktuellen Zustand der Anlage detailliert lokal.\n    *   **Fotos:** Machen Sie aussagekräftige Fotos (auch wenn bereits eines vorliegt) von der Gesamtanlage, eventuellen Schäden, der Schaltbox und dem Leuchtmittel. Speichern Sie diese lokal.\n    *   **Fehlerbeschreibung:** Beschreiben Sie den Fehler präzise (sporadisch, wann aufgetreten, wann wieder an).\n    *   **Umgebungsbedingungen:** Notieren Sie die Wetterbedingungen (Sturm), Sichtverhältnisse und Verkehrsaufkommen zum Zeitpunkt der Prüfung.\n\n5.  **Eskalation:**\n    *   **Keine eindeutige Ursache gefunden:** Wenn die Ursache des sporadischen Fehlers nicht eindeutig identifiziert und behoben werden kann, ist eine Eskalation erforderlich.\n    *   **Sicherheitsrisiko:** Bei weiterhin bestehendem Sicherheitsrisiko (z.B. lose Teile, Gefahr durch Strom) oder wenn eine Reparatur vor Ort nicht möglich ist, ist umgehend zu eskalieren.\n    *   **Fachpersonal anfordern:** Fordern Sie bei Bedarf spezialisiertes Fachpersonal oder eine Hebebühne an, um schwer zugängliche Bereiche zu prüfen oder Reparaturen durchzuführen.\n    *   **Synchronisation:** Sobald wieder Online-Verbindung besteht, synchronisieren Sie alle gesammelten Daten und Fotos.",
+    "tokens_estimate_words": 387
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (PSA, Absicherung bei Sturm/Nacht/hohem Verkehr), strukturierte Schrittfolge mit klaren Eskalations-Triggern für sporadischen Fehler, vollständige Offline-Dokumentation explizit adressiert, nutzt alle Kontextdaten (storm, night, high traffic, offline, photo) präzise und ohne Halluzinationen.",
+    "test_id": "INC-LAMP-0024-ABL-NOASSET"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 12.527
+  },
+  "error": {}
+}
