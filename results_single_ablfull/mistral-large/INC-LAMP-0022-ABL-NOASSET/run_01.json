@@ -1,0 +1,176 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0022-ABL-NOASSET",
+  "timestamp": "2026-08-08T22:02:38",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Straßenlampe ist dunkel seit etwa 10 Minuten. Bereich wirkt unsicher.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-21T18:35:50+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Schneefall/Dämmerung: Laterne dunkel, Mastarm mit Schneeauflage. Leuchtmittelabdeckung beschlagen. Bereich ohne Beleuchtung.\",\n    \"reporter\": \"citizen\"\n  },\n  \"device\": {\n    \"connectivity\": \"online\",\n    \"device_state\": \"low_battery\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"snow\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"low\",\n    \"noise_level\": \"low\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-21T18:35:50+01:00",
+        "photo_available": true,
+        "photo_description": "Schneefall/Dämmerung: Laterne dunkel, Mastarm mit Schneeauflage. Leuchtmittelabdeckung beschlagen. Bereich ohne Beleuchtung.",
+        "reporter": "citizen"
+      },
+      "device": {
+        "connectivity": "online",
+        "device_state": "low_battery"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "snow",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "low",
+        "noise_level": "low"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0022-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Straßenlampe ist dunkel seit etwa 10 Minuten. Bereich wirkt unsicher.",
+    "judge_version": "judge_v1_1_single_fullref",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": false,
+      "connectivity": "online",
+      "device_state": "low_battery",
+      "low_battery": true,
+      "weather": "snow",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 879,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": [],
+    "judge_reference_context": "full_l2"
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Eine dunkle Straßenlampe, besonders in einem als unsicher empfundenen Bereich bei Dämmerung und Schneefall, erfordert sofortiges und strukturiertes Vorgehen. Hier ist die Schritt-für-Schritt-Checkliste:\n\n**Checkliste: Ausfall Straßenlampe (Dunkel)**\n\n1.  **Absicherung (Priorität: Sicherheit & Verkehrssicherung)**\n    *   **Eigenschutz:** Warnweste anlegen, auf den Verkehr achten (auch wenn \"low traffic\" gemeldet, bei schlechter Sicht ist Vorsicht geboten).\n    *   **Gefahrenbereich:** Ist der Bereich durch den Ausfall tatsächlich unsicher (z.B. Stolperfallen, unübersichtliche Kreuzung)?\n    *   **Provisorische Absicherung:** Falls nötig, den Bereich provisorisch absichern (z.B. Warndreieck, Blitzleuchte im Fahrzeug, falls vorhanden), um Passanten und Verkehrsteilnehmer zu schützen.\n    *   **Beleuchtung:** Eigene Taschenlampe/Stirnlampe zur Ausleuchtung des Arbeitsbereichs nutzen.\n\n2.  **Sichtprüfung (Umfeld & Lampe)**\n    *   **Umfeld:**\n        *   Gibt es sichtbare Schäden an der Lampe oder am Mast (z.B. Vandalismus, Anfahrschäden)?\n        *   Sind andere Lampen in der Nähe ebenfalls dunkel oder flackern sie? (Hinweis auf Stromkreisfehler).\n        *   Gibt es Hindernisse (Äste, Schneeansammlungen) die das Licht blockieren könnten, auch wenn die Lampe funktionieren würde?\n    *   **Lampe selbst (von unten/aus sicherer Entfernung):**\n        *   **Schneeauflage/Beschlag:** Wie in der Fotobeschreibung erwähnt, prüfen, ob Schnee auf dem Mastarm liegt oder die Leuchtmittelabdeckung beschlagen ist. Dies kann die Lichtabgabe stark reduzieren oder blockieren.\n        *   **Sichtbare Defekte:** Ist das Leuchtmittelglas intakt? Sind Kabel sichtbar beschädigt oder hängen herunter?\n        *   **Geruch/Geräusche:** Gibt es ungewöhnliche Gerüche (z.B. verschmort) oder Geräusche (z.B. Brummen, Knistern)?\n\n3.  **Diagnose/Beobachtung**\n    *   **Ausfallmuster:** Ist die Lampe komplett dunkel oder flackert sie?\n    *   **Umwelteinflüsse:** Bei Schneefall und Dämmerung kann die Sicht zusätzlich stark beeinträchtigt sein. Die gemeldete \"low_battery\" des Techniker-Geräts ist für die Lampendiagnose irrelevant, aber wichtig für die Dokumentation.\n    *   **Mögliche Ursachen (erste Einschätzung):**\n        *   Leuchtmittelausfall (häufigste Ursache).\n        *   Sicherung ausgelöst (z.B. durch Kurzschluss, Überspannung).\n        *   Kabelbruch oder lose Verbindung.\n        *   Fehler im Vorschaltgerät/Betriebsgerät.\n        *   Schaltuhr/Lichtsensor-Defekt (unwahrscheinlich, wenn andere Lampen im gleichen Bereich leuchten).\n        *   Starke Schneeauflage, die das Licht blockiert (prüfen, ob dies die alleinige Ursache ist oder ob die Lampe zusätzlich defekt ist).\n\n4.  **Dokumentation**\n    *   **Vorfall-Details:** Genaue Uhrzeit der Feststellung, Standort (Mastnummer, Adresse).\n    *   **Beobachtungen:** Alle Feststellungen aus der Sichtprüfung und Diagnose detailliert festhalten (z.B. \"Lampe komplett dunkel\", \"Schneeauflage auf Mastarm\", \"keine sichtbaren Schäden am Mast\").\n    *   **Fotos:** Falls möglich und sicher, Fotos vom Zustand der Lampe und des Umfelds machen (die Meldung besagt, ein Foto ist bereits vorhanden, aber ein aktuelles kann hilfreich sein). Beachten Sie den Ladezustand Ihres Geräts (`device_state: \"low_battery\"`) und priorisieren Sie die wichtigsten Aufnahmen.\n    *   **Maßnahmen:** Welche Absicherungsmaßnahmen wurden getroffen?\n    *   **Eigene Einschätzung:** Kurze Bewertung der Situation und der vermuteten Ursache.\n\n5.  **Eskalation**\n    *   **Dringlichkeit:** Aufgrund der hohen Schwere (\"severity: high\") und der Unsicherheit des Bereichs ist eine schnelle Behebung erforderlich.\n    *   **Meldung:** Umgehende Meldung an die zuständige Stelle (z.B. Bereitschaftsdienst, Netzbetreiber, interne Fachabteilung) mit allen gesammelten Informationen.\n    *   **Anforderung:** Klare Anforderung von Unterstützung oder Reparatur, ggf. mit Hinweis auf die Notwendigkeit einer schnellen Behebung aufgrund der Sicherheitslage.\n    *   **Nächste Schritte:** Erfragen, wann mit einer Behebung zu rechnen ist und ob weitere Maßnahmen von Ihrer Seite erforderlich sind.\n\n**Wichtiger Hinweis:** Führen Sie keine Reparaturen durch, für die Sie nicht qualifiziert oder autorisiert sind, insbesondere wenn es um elektrische Anlagen geht. Ihre Hauptaufgabe ist die Absicherung, Diagnose und Dokumentation.",
+    "tokens_estimate_words": 508
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": false,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Warnweste, Absicherung), strukturierte 5-Schritte-Checkliste mit klaren Stop-Conditions, nutzt Kontext optimal (Schneefall/Dämmerung/severity high/photo_description), umfassende Dokumentation inkl. Asset-Details, sofortige Eskalation bei high severity, keine Halluzinationen.",
+    "test_id": "INC-LAMP-0022-ABL-NOASSET"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.934
+  },
+  "error": {}
+}

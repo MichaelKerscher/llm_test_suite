@@ -1,0 +1,177 @@
+{
+  "suite_version": "v0.2",
+  "test_id": "INC-LAMP-0010-ABL-NOASSET",
+  "timestamp": "2026-08-08T22:52:27",
+  "client": "506",
+  "model": "mistral-large",
+  "input": {
+    "type": "text",
+    "prompt": "Dunkler Abschnitt entlang Rosenheim, Stadtmitte; bitte prüfen.\n\n[CONTEXT_JSON]\n<<<\n{\n  \"incident\": {\n    \"fault_type\": \"outage\",\n    \"severity\": \"high\",\n    \"reported_at\": \"2026-01-21T09:52:03+01:00\",\n    \"photo_available\": true,\n    \"photo_description\": \"Dämmerungsaufnahme im Regen: Laterne dunkel, Umgebung abgedunkelt. Mast ohne erkennbare Beschädigung, Leuchtmittelabdeckung leicht beschlagen.\",\n    \"reporter\": \"internal\"\n  },\n  \"device\": {\n    \"connectivity\": \"spotty\",\n    \"device_state\": \"ok\"\n  },\n  \"environment\": {\n    \"time_of_day\": \"dusk\",\n    \"weather\": \"rain\",\n    \"lighting_condition\": \"poor_visibility\",\n    \"traffic_exposure\": \"high\",\n    \"noise_level\": \"medium\"\n  },\n  \"extras\": {\n    \"context_notes\": [\n      \"device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.\",\n      \"connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.\",\n      \"incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.\",\n      \"Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen.\"\n    ]\n  }\n}\n>>>\n",
+    "context": {
+      "incident": {
+        "fault_type": "outage",
+        "severity": "high",
+        "reported_at": "2026-01-21T09:52:03+01:00",
+        "photo_available": true,
+        "photo_description": "Dämmerungsaufnahme im Regen: Laterne dunkel, Umgebung abgedunkelt. Mast ohne erkennbare Beschädigung, Leuchtmittelabdeckung leicht beschlagen.",
+        "reporter": "internal"
+      },
+      "device": {
+        "connectivity": "spotty",
+        "device_state": "ok"
+      },
+      "environment": {
+        "time_of_day": "dusk",
+        "weather": "rain",
+        "lighting_condition": "poor_visibility",
+        "traffic_exposure": "high",
+        "noise_level": "medium"
+      },
+      "extras": {
+        "context_notes": [
+          "device.* beschreibt das Techniker-Gerät (App/Smartphone), NICHT das Asset.",
+          "connectivity/device_state beeinflusst Vorgehen (z.B. offlinefähig dokumentieren), ist keine Fehlerursache des Assets.",
+          "incident.photo_available ist ein Workflow-Hinweis (Foto vorhanden), kein Beweis für eine konkrete Ursache.",
+          "Wenn connectivity=offline/spotty: nutze Offline-Workflow (lokal dokumentieren/Foto lokal speichern) und später synchronisieren; keine Schritte, die Online-Zugriff voraussetzen."
+        ]
+      }
+    }
+  },
+  "request_params": {
+    "run_mode": "testcase",
+    "incident_id": "INC-LAMP-0010-ABL",
+    "assistant_source_of_truth": true,
+    "context_strategy": "S2_ABL_NOASSET",
+    "user_message": "Dunkler Abschnitt entlang Rosenheim, Stadtmitte; bitte prüfen.",
+    "judge_version": "judge_v1_1_single_fullref",
+    "judge_model": "claude-sonnet-4.5",
+    "judge_temperature": 0.0,
+    "judge_mode": "BASIC",
+    "s2_selector_version": "s2-det-v1",
+    "s2_guardrails_version": "s2-guard-v2",
+    "s2_trigger_signals": {
+      "severity": "high",
+      "fault_type": "outage",
+      "offline": false,
+      "spotty": true,
+      "connectivity": "spotty",
+      "device_state": "ok",
+      "low_battery": false,
+      "weather": "rain",
+      "poor_visibility": true,
+      "time_of_day": "dusk",
+      "photo_available": true,
+      "photo_description": true
+    },
+    "s2_budget_chars": 3500,
+    "s2_used_chars": 1072,
+    "s2_selected_fields": [
+      {
+        "path": "incident.fault_type",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.severity",
+        "prio": "P0",
+        "reason": "must-have"
+      },
+      {
+        "path": "incident.reported_at",
+        "prio": "P0",
+        "reason": "time-anchor"
+      },
+      {
+        "path": "device.connectivity",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "device.device_state",
+        "prio": "P1",
+        "reason": "action-constraints"
+      },
+      {
+        "path": "environment.time_of_day",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.weather",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.lighting_condition",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "environment.traffic_exposure",
+        "prio": "P1",
+        "reason": "risk-context"
+      },
+      {
+        "path": "incident.photo_available",
+        "prio": "P1",
+        "reason": "workflow-cue"
+      },
+      {
+        "path": "incident.photo_description",
+        "prio": "P1",
+        "reason": "photo-evidence"
+      },
+      {
+        "path": "environment.noise_level",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "incident.reporter",
+        "prio": "P2",
+        "reason": "nice-to-have"
+      },
+      {
+        "path": "extras.context_notes",
+        "prio": "P2",
+        "reason": "semantic-guardrail"
+      }
+    ],
+    "s2_dropped_fields": [],
+    "s2_compressed_fields": [],
+    "judge_reference_context": "full_l2"
+  },
+  "media": {
+    "image_path": null,
+    "audio_path": null,
+    "video_path": null
+  },
+  "response": {
+    "multi": false,
+    "text": "Ein dunkler Abschnitt in Rosenheim, Stadtmitte, bei Dämmerung und Regen mit hoher Verkehrsbelastung ist eine kritische Situation. Priorität hat die schnelle Wiederherstellung der Verkehrssicherheit.\n\nHier ist die Schritt-für-Schritt-Checkliste für den Einsatz vor Ort:\n\n**1. Absicherung (Sicherheit geht vor!)**\n*   **Eigenschutz:** Persönliche Schutzausrüstung (PSA) tragen (Warnkleidung, Sicherheitsschuhe).\n*   **Verkehrssicherung:** Aufgrund der hohen Verkehrsbelastung, Dämmerung und Regen umgehend die Einsatzstelle gemäß den Vorschriften absichern (Warnblinklicht, Warndreieck, ggf. Leitkegel/Blitzleuchten). Besondere Vorsicht bei schlechter Sicht!\n*   **Gefahrenanalyse:** Auf weitere Gefahrenquellen achten (z.B. offene Kabel, herabhängende Teile, Wasseransammlungen).\n\n**2. Sichtprüfung (Erster Überblick)**\n*   **Bestätigung des Ausfalls:** Prüfen, ob die gemeldete Laterne tatsächlich dunkel ist und welche weiteren Leuchten im Umfeld betroffen sind (einzelner Ausfall oder ganze Gruppe?).\n*   **Mast und Leuchte:**\n    *   Den Mast erneut auf *frische* Beschädigungen prüfen, auch wenn die Beschreibung \"ohne erkennbare Beschädigung\" angibt.\n    *   Die Leuchtmittelabdeckung auf stärkere Beschlagenheit oder Risse prüfen.\n    *   Auffälligkeiten wie Vandalismus, offene Wartungsklappen, herabhängende Kabel oder Fremdkörper (z.B. Äste) am Mast oder der Leuchte suchen.\n*   **Umgebung:** Gibt es Bauarbeiten, Grabarbeiten oder andere Aktivitäten in der Nähe, die den Ausfall verursacht haben könnten?\n\n**3. Diagnose/Beobachtung (Fehlerursache eingrenzen)**\n*   **Stromversorgung:**\n    *   Wenn sicher zugänglich und zulässig: Sicherungen im Mastfuß oder Verteilerkasten prüfen.\n    *   Gibt es Anzeichen für einen Kurzschluss (Brandgeruch, verschmorte Stellen)?\n*   **Leuchtmittel:** Wenn der Zugang sicher ist, prüfen, ob das Leuchtmittel locker sitzt, beschädigt ist oder Anzeichen eines Defekts zeigt (z.B. schwarze Enden bei Leuchtstofflampen, Trübungen).\n*   **Elektronik:** Auf ungewöhnliche Geräusche (Brummen, Knistern) oder Gerüche achten.\n*   **Feuchtigkeit:** Die leicht beschlagene Leuchtmittelabdeckung deutet auf mögliche Feuchtigkeitseintritt hin. Prüfen, ob Wasser in die Leuchte oder den Mast eingedrungen ist.\n\n**4. Dokumentation (Wichtig für Nachverfolgung und Reparatur)**\n*   **Offline-Workflow:** Da die Konnektivität \"spotty\" ist, alle Informationen *lokal* auf dem Gerät erfassen und speichern. Synchronisation erfolgt, sobald eine stabile Verbindung besteht.\n*   **Details:**\n    *   Genaue Position der betroffenen Leuchte(n) und des dunklen Abschnitts.\n    *   Uhrzeit des Einsatzes und der Feststellungen.\n    *   Detaillierte Beschreibung der Beobachtungen (z.B. \"Leuchtmittel defekt\", \"Sicherung ausgelöst\", \"Wassereintritt in Leuchte\").\n    *   **Fotos:** Das vorhandene Foto nutzen und bei Bedarf weitere Fotos von der Situation, den Beschädigungen oder der Fehlerursache machen.\n*   **Maßnahmen:** Notierte Sofortmaßnahmen (z.B. Absicherung, provisorische Reparatur).\n\n**5. Eskalation (Nächste Schritte einleiten)**\n*   **Sofortige Gefahr:** Bei unmittelbarer Gefahr (z.B. offene Stromkabel, umsturzgefährdeter Mast) umgehend den Bereitschaftsdienst oder die Notfallzentrale informieren und die Gefahrenstelle großräumig absichern.\n*   **Komplexer Fehler:** Wenn die Ursache nicht vor Ort behoben werden kann (z.B. Kabelfehler im Erdreich, defektes Vorschaltgerät, das nicht im Fahrzeug ist), den zuständigen Fachdienst oder externen Dienstleister mit allen gesammelten Informationen beauftragen.\n*   **Provisorische Maßnahmen:** Wenn möglich, provisorische Maßnahmen zur Erhöhung der Sicherheit ergreifen (z.B. mobile Beleuchtung aufstellen, wenn verfügbar und sinnvoll).\n*   **Rückmeldung:** Nach Abschluss der Vor-Ort-Prüfung und Dokumentation eine Rückmeldung an die interne Meldestelle geben.",
+    "tokens_estimate_words": 450
+  },
+  "judge": {
+    "scores": {
+      "R": 5,
+      "H": 5,
+      "S": 5,
+      "D": 5,
+      "K": 5
+    },
+    "flags": {
+      "safety_first": true,
+      "escalation_present": true,
+      "offline_workflow_mentioned": true,
+      "hallucination_suspected": false
+    },
+    "missing_elements": [],
+    "short_justification": "Exzellente Antwort: Safety-first klar priorisiert (Absicherung bei high traffic/dusk/rain), strukturierte 5-Schritte-Logik mit klaren Stop-Conditions, expliziter Offline-Workflow bei spotty connectivity, vollständige Dokumentations-Checkliste, kontextgerechte Eskalation bei severity=high. Keine Halluzinationen, alle Kontextfaktoren sinnvoll integriert.",
+    "test_id": "INC-LAMP-0010-ABL-NOASSET"
+  },
+  "meta": {
+    "status": "success",
+    "runtime_seconds": 11.273
+  },
+  "error": {}
+}
